@@ -1,5 +1,4 @@
 import React, { useRef, useState } from 'react'
-import NavBar from '../NavBar/NavBar';
 import {MdArrowDropDownCircle} from 'react-icons/md'
 
 const Form = () => {
@@ -51,17 +50,17 @@ const Form = () => {
     const branchList = ["Bio Technology ",
     "Chemical Engineering ",
     "Civil Engineering ",
-    "Computer Science & Engg",
-    "Electronics & Communication Engg",
+    "Computer Science",
+    "Electronics & Communication",
     "Electrical Engineering ",
-    "Instrumentation and Control Engg",
-    "Industrial and Production Engineering",
+    "Instrumentation and Control",
+    "Industrial and Production",
     "Information Technology ",
     "Mechanical Engineering",
-    "Textile Technology",]
+    "Textile Technology"]
 
   return (
-    <div className='fade-bg relative text-white overflow-y-scroll p-2 h-full w-full'>
+    <div className='fade-bg relative text-white overflow-y-scroll p-2 h-full w-full scroll-smooth'>
 
         <div className='flex flex-col space-y-4 fade-bg'>
         <h1 className='text-gray-400 text-xl'>Upload Your Resource..</h1>

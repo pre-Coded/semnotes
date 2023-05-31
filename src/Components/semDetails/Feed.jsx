@@ -70,7 +70,7 @@ const Feed = () => {
         <div className='relative mt-8 p-4 flex flex-col space-y-12'>
 
 
-                <div className="relative w-full flex justify-center items-center">
+                <div className="relative border-2 border-black w-full flex justify-center items-center">
                     <h1 className="w-full bg-white brightness-150 text-black text-xl absolute flex items-center justify-center rounded-lg shadow-lg py-3">{details.year ? "Year " + details.year : <span className='flex items-center space-x-4'><span>Select Year</span> <MdArrowDropDownCircle/></span>} </h1>
 
                     <select onChange={handleDetails} name="year" className='outline-none text-white rounded-md w-full opacity-0'  id="">
