@@ -6,7 +6,7 @@ import {CgNotes} from 'react-icons/cg'
 
 const Notes = ({height, handleNoteHeight}) => {
   return (
-    <div className={`lg:h-4/5 lg:w-[30%] lg:right-0 bottom-0 translate-y-[${height}%] w-full h-3/5  absolute transition-all bg-white z-[100] flex flex-col p-4 rounded-t-lg text-black overflow-hidden`}>
+    <div className={`lg:h-4/5 lg:w-[30%] lg:right-0 bottom-0 ${height === 0 ? "translate-y-0" : "translate-y-full"} w-full h-3/5  absolute transition-all bg-white z-[100] flex flex-col p-4 rounded-t-lg text-black overflow-hidden`}>
         <div className='flex justify-between items-center
         text-3xl'>
             <h1 className='flex space-x-1 items-center justify-center'><CgNotes/><span className='text-xl'>Notes</span></h1>

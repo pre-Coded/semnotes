@@ -62,7 +62,7 @@ const Feed = () => {
     "Textile Technology",]
 
   return (
-    <div className='p-4 fade-bg text-white'>
+    <div className='p-4 fade-bg text-white h-full overflow-y-scroll'>
         <div className=''>
             <h1>Welcome <span className='text-2xl font-bold'>{userName}</span></h1>
         </div>

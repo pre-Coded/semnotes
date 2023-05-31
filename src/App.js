@@ -17,11 +17,11 @@ function App() {
     }
 
   return (
-        <div className="w-full h-[130vh] fade-bg relative overflow-hidden">
+        <div className="w-full h-screen fade-bg relative overflow-hidden">
             <button onClick={handleNoteHeight} className='fixed z-[49] bottom-20 right-4 button-color text-white py-3 px-6 rounded-md flex justify-center items-center space-x-1'>
             <MdOutlineAdd className='text-white text-2xl'/><span>Notes</span></button>
 
-            {/* <Notes height={height} handleNoteHeight = {handleNoteHeight} /> */}
+            <Notes height={height} handleNoteHeight = {handleNoteHeight} />
 
             <NavBar/>
 
