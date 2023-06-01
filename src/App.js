@@ -12,6 +12,7 @@ import {useFireBase} from './utilities/Firebase';
 import SignUp from "./Pages/SignUp";
 import Login from "./Pages/Login";
 import {useEffect} from 'react'
+import NoPage from "./Pages/NoPage";
 
 function App() {
     const navigate = useNavigate();
@@ -23,20 +24,13 @@ function App() {
 
     const firebase = useFireBase();
 
-    useEffect(() => {
-      if(firebase.isLoggedIn === true){
-        navigate('/signup');
-      }else{
-        navigate('/');
-      }
-    }, [])
-
     if(firebase.isLoggedIn === false){
       return (
         <div>
+          <SignUp/>
           <Routes>
-            <Route path="signup" element = {<SignUp/>}/>
-            <Route path="login" element = {<Login/>}/>
+            <Route path="login" element={<Login/>}></Route>
+            <Route path="signup" element={<SignUp/>}></Route>
           </Routes>
         </div>
       )
@@ -52,11 +46,12 @@ function App() {
             <NavBar/>
 
             <Routes>
-              <Route path="/" element={<Home/>}></Route>
-              <Route path="semnotes" element={<SemDetails/>}></Route>
-              <Route path="addresource" element={<Form/>}></Route>
-              <Route path="abtcollege" element={<AbtCollege/>}></Route>
-              <Route path="profile" element={<UserProfile/>}></Route>
+                <Route path="/" element={<Home/>}/>
+                <Route path="semnotes" element={<SemDetails/>}></Route>
+                <Route path="addresource" element={<Form/>}></Route>
+                <Route path="abtcollege" element={<AbtCollege/>}></Route>
+                <Route path="profile" element={<UserProfile/>}></Route>
+                <Route path="*" element={<NoPage/>} />
             </Routes>
         </div>
   );

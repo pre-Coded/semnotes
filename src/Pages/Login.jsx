@@ -16,8 +16,10 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
 
+  const [block, setBlock] = useState('flex');
+
   return (
-    <div className='h-screen w-screen fade-bg flex flex-col justify-center items-center text-white relative'>   
+    <div className={`h-screen w-screen fade-bg ${block} flex-col justify-center items-center text-white relative`}>   
         <form onSubmit={(e)=>{
           e.preventDefault();
           firebase.signInUser(email,pass);
@@ -44,6 +46,8 @@ const Login = () => {
         </form>
 
         <button onClick={()=>{
+          if(block === 'flex') setBlock('hidden');
+          else setBlock('flex');
           navigate('/signup')
                   }} className='px-20 py-4 rounded-lg shadow-lg shadow-blue-900 text-xl bg-white text-gray-600'>Sign Up</button>
 

@@ -21,8 +21,10 @@ const SignUp = () => {
     navigate('/');
   }
 
+  const [block, setBlock] = useState('flex');
+
   return (
-    <div className='h-screen w-screen fade-bg flex flex-col justify-center items-center text-white relative'>   
+    <div className={`h-screen w-screen fade-bg ${block} flex-col justify-center items-center text-white relative`}>   
         <form onSubmit={handleSubmit} className='p-4 flex flex-col justify-center items-center w-full space-y-4 overflow-hidden'>
             <input  className='w-full h-12 p-2 outline-none rounded-lg shadow-white shadow-sm focus:scale-[103%] text-gray-600' placeholder='Username' type="text" name="" id="" required spellCheck="off"/>
 
@@ -44,7 +46,9 @@ const SignUp = () => {
             <input className='px-16 py-4 rounded-lg shadow-lg shadow-blue-900 text-xl button-color' type="submit" value="Sign Up" />
 
         </form>
-        <button className='px-16 py-4 rounded-lg shadow-lg shadow-blue-900 text-xl bg-white text-gray-600' onClick={()=>{
+        <button className='px-16 py-4 rounded-lg shadow-lg shadow-blue-900 text-xl bg-white text-gray-600' onClick={()=>{ 
+              if(block === 'flex') setBlock('hidden');
+              else setBlock('flex');
               navigate("/login")
             }}>Already a user ?</button>
 
