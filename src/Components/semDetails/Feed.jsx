@@ -1,8 +1,13 @@
 import React from 'react'
 import { useState } from 'react'
 import {MdArrowDropDownCircle} from 'react-icons/md'
+import { useFireBase } from '../../utilities/Firebase'
+import { useNavigate } from 'react-router-dom'
 
 const Feed = () => {
+    const firebase = useFireBase();
+    const navigate = useNavigate();
+
     const userName = "Student"
 
     const [details, setDetails] = useState({ year : "", branch : "", sem : "", sub : ""});
@@ -101,9 +106,14 @@ const Feed = () => {
         ]
     ]
 
+    const handleSubmit = () =>{
+        firebase.handleSelected(details);
+        navigate('/semselected');
+    }
+
 
   return (
-    <div className='p-4 fade-bg text-white h-full overflow-y-scroll'>
+    <div className='p-4 fade-bg text-white h-full overflow-y-scroll hide-scrollbar'>
         <div className=''>
             <h1>Welcome <span className='text-2xl font-bold'>{userName}</span></h1>
         </div>
@@ -126,6 +136,7 @@ const Feed = () => {
                 <h1 className="w-full bg-white brightness-150 text-black text-xl absolute flex items-center justify-center rounded-lg shadow-lg py-3">{details.branch ? details.branch : <span className='flex items-center space-x-4'><span>Select Branch</span> <MdArrowDropDownCircle/></span>}</h1>
                     <select onChange={handleDetails} name ="branch" className='outline-none text-white rounded-md w-full opacity-0' id="">
                         <option selected>This is for IT currently</option>
+                        <option value="Information Technology">Information Technology</option>
                     </select>
                 </div>
                 <div className="relative w-full flex justify-center items-center">
@@ -155,7 +166,7 @@ const Feed = () => {
                     }
 
                 <div className='relative w-full h-full'>
-                <button className='bg-blue-500 px-6 py-4 w-[60%] left-1/2 -translate-x-1/2 absolute rounded-lg' type='submit'>Submit</button>
+                <button onClick={handleSubmit} className='bg-blue-500 px-6 py-4 w-[60%] left-1/2 -translate-x-1/2 absolute rounded-lg' type='submit'>Submit</button>
                 </div>
 
             </div>

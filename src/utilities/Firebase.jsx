@@ -38,6 +38,14 @@ export const useFireBase = () => {
 }
 
 export const FireBaseProvider = (props) => {
+    const [dselected, setDetails] = useState("");
+    const handleSelected = (info)=>{
+        setDetails(info);
+    }
+
+
+    const [isLoading, setLoading] = useState(false);
+
     const navigate = useNavigate();
 
     const [user, setUser] = useState(null);
@@ -71,6 +79,8 @@ export const FireBaseProvider = (props) => {
   const putData = (key, data) => set(ref(database, key), data);
 
   const handleUploads = async (year, sem, branch, subject, desc, file) => {
+    setLoading( prev => !prev);
+
     const imgRef = ref(storage, `${branch}/${year}/${sem}/${subject}/${Date.now()}-${file.name}`);
     const uploadResult = await uploadBytes(imgRef, file);
 
@@ -84,13 +94,15 @@ export const FireBaseProvider = (props) => {
         userId : user.uid,
         userEmail : user.email,
         userName : user.displayName
-    } ).then(()=>{alert("File is successfully uploaded.")}).catch(()=>{alert("File wasn't uploaded successfully.")})
+    } ).then(()=>{setLoading( prev => !prev); alert("File is successfully uploaded.")}).catch(()=>{alert("File wasn't uploaded successfully.")})
     }
 
     const handleSignOut = async () =>{
+        setLoading( prev => !prev);
         await signOut(auth).then(()=>{
             navigate('/login')
         })
+        setLoading( prev => !prev);
     }
 
     const isLoggedIn = user ? true : false;
@@ -98,7 +110,7 @@ export const FireBaseProvider = (props) => {
 //   onValue(ref(database, "grandFather"),  (snapshot) => console.log(snapshot.val()) );
 
   return (
-    <FireBaseContext.Provider value={{ signUpWithEmailAndPassword ,signInWithGoogle , putData, handleUploads, user, isLoggedIn , handleSignOut, signInUser }}>
+    <FireBaseContext.Provider value={{ signUpWithEmailAndPassword ,signInWithGoogle , putData, handleUploads, user, isLoggedIn , handleSignOut, signInUser, isLoading , setLoading, dselected, handleSelected}}>
       {props.children}
     </FireBaseContext.Provider>
   );

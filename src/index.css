@@ -43,3 +43,29 @@ body{
     display: none;
   }
   
+@keyframes transition{
+    0%{
+        width: 0;
+    }25%{
+        width: 25%;
+    }70%{
+        width: 75%;
+    }100%{
+        width: 85%;
+    }
+}
+
+@keyframes loadTime {
+    0%{
+        width: 60%;
+    }50%{
+        width: 70%;
+    }100%{
+        width: 90%;
+    }
+}
+
+.animation-loadingBar{
+    animation: transition 150ms ease-out forwards;
+    animation: loadTime 10s ease-in 150ms infinite;
+}

@@ -108,7 +108,7 @@ const Form = () => {
     ]
 
   return (
-    <div className='fade-bg relative text-white overflow-y-scroll p-2 h-full w-full scroll-smooth'>
+    <div className='fade-bg relative text-white hide-scrollbar overflow-y-scroll p-2 h-full w-full scroll-smooth'>
 
         <div className='flex flex-col space-y-4 fade-bg'>
         <h1 className='text-gray-400 text-xl'>Upload Your Resource..</h1>

@@ -11,6 +11,7 @@ const Notes = ({height, handleNoteHeight}) => {
   const firebase = useFireBase();
 
   const handleSubmit = ()=>{
+    firebase.setLoading( prev => !prev);
     if(localStorage.getItem(`${firebase.user.email+"Notes"}`)){
       const stringArr = localStorage.getItem(`${firebase.user.email+"Notes"}`);
       const array = JSON.parse(stringArr);
@@ -21,6 +22,7 @@ const Notes = ({height, handleNoteHeight}) => {
       localStorage.setItem(`${firebase.user.email+"Notes"}`, JSON.stringify(arr));
     }
 
+    firebase.setLoading( prev => !prev);
     setText("");
     handleNoteHeight();
   }

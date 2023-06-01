@@ -13,6 +13,8 @@ import SignUp from "./Pages/SignUp";
 import Login from "./Pages/Login";
 import {useEffect} from 'react'
 import NoPage from "./Pages/NoPage";
+import Loading from "./Pages/Loading";
+import SemDetailsSelected from "./Pages/semDetailsSelected";
 
 function App() {
     const navigate = useNavigate();
@@ -37,7 +39,9 @@ function App() {
     }
 
     return (
-        <div className="w-full h-screen fade-bg relative overflow-hidden">
+        <div className="w-full h-screen fade-bg relative hide-scrollbar overflow-hidden">
+            <Loading isLoading={firebase.isLoading}/>
+
             <button onClick={handleNoteHeight} className='fixed z-[49] bottom-20 right-4 button-color text-white py-3 px-6 rounded-md flex justify-center items-center space-x-1'>
             <MdOutlineAdd className='text-white text-2xl'/><span>Notes</span></button>
 
@@ -51,6 +55,7 @@ function App() {
                 <Route path="addresource" element={<Form/>}></Route>
                 <Route path="abtcollege" element={<AbtCollege/>}></Route>
                 <Route path="profile" element={<UserProfile/>}></Route>
+                <Route path="semselected" element={<SemDetailsSelected/>}></Route>
                 <Route path="*" element={<NoPage/>} />
             </Routes>
         </div>
