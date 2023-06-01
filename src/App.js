@@ -24,8 +24,7 @@ function App() {
     const firebase = useFireBase();
 
     useEffect(() => {
-
-      if(firebase.isLoggedIn === false){
+      if(firebase.isLoggedIn === true){
         navigate('/signup');
       }else{
         navigate('/');
@@ -42,7 +41,7 @@ function App() {
         </div>
       )
     }
-    
+
     return (
         <div className="w-full h-screen fade-bg relative overflow-hidden">
             <button onClick={handleNoteHeight} className='fixed z-[49] bottom-20 right-4 button-color text-white py-3 px-6 rounded-md flex justify-center items-center space-x-1'>
