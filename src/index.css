@@ -15,6 +15,7 @@
 .bg-img{
     background-image: url("./assets/bg.jpeg");
     object-fit: cover;
+    background-repeat: no-repeat;
 }
 
 .btn-prm{

@@ -18,15 +18,19 @@ const Login = () => {
 
   const [block, setBlock] = useState('flex');
 
+  const [emailLabel, setEmailLabel] = useState(false);
+
   return (
-    <div className={`h-screen w-screen fade-bg ${block} flex-col justify-center items-center text-white relative`}>   
+    <div className={`h-screen w-screen bg-[#131618] ${block} flex-col justify-center items-center text-white relative`}>   
         <form onSubmit={(e)=>{
           e.preventDefault();
           firebase.signInUser(email,pass);
         }} className='p-4 flex flex-col justify-center items-center w-full space-y-4 overflow-hidden'>
-            <input onChange={(e)=>{
-              setEmail(e.target.value);
-            }} value={email} className='w-full h-12 p-2 outline-none rounded-lg shadow-white shadow-sm focus:scale-[103%] text-gray-600' placeholder='Email' type="email" name="" id="" required spellCheck="off"/>
+              <input onChange={(e)=>{
+                setEmailLabel(prev => !prev);
+                setEmail(e.target.value);
+                if(email === "") setEmailLabel(prev => !prev);
+              }} value={email} className='w-full h-12 p-2 outline-none rounded-lg shadow-white shadow-sm focus:scale-[103%] text-gray-600' type="email" name="" id="email" required spellCheck="off" placeholder='Enter email'/>
 
             <div ref = {ref} className='w-full h-12 p-2 focus:scale-[103%] shadow-sm rounded-lg flex justify-between items-center bg-white'>
               <input onChange={(e)=>{setPass(e.target.value)}} value={pass} className='w-full h-full outline-none bg-transparent  text-gray-600' placeholder='Password' type="password" name="" id="" required spellCheck="off"/>

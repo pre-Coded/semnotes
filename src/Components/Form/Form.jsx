@@ -13,11 +13,11 @@ const Form = () => {
         setDetails({...details, [event.target.name] : event.target.value})
     }
 
-    // const [file, setFile] = useState(null);
+    const [file, setFile] = useState(null);
 
     const handleUploads = async ()=> {
-        await firebase.handleUploads(details.year, details.sem, details.branch, details.sub, details.type, details.data);
-        // setFile(null);
+        await firebase.handleUploads(details.year, details.sem, file);
+        setFile(null);
     }
 
     const yearList = [1,2,3,4]
@@ -182,12 +182,12 @@ const Form = () => {
                 
                 <div className='flex flex-col space-y-3 p-4 relative'>
 
-                    {/* <div className ="relative w-full h-16">
+                    <div className ="relative w-full h-16">
 
                     <button className='text-black bg-white absolute w-full h-full rounded-md text-2xl'>{ !file ? "Choose File" : "File Selected"}</button>
                     <input onChange={(event) =>{
                         setFile(event.target.files[0]);
-                    }} className='absolute opacity-0 w-full h-full' ref={ref} type="file" name="" id="" /></div> */}
+                    }} className='absolute opacity-0 w-full h-full' ref={ref} type="file" name="" id="" /></div>
 
                     <input onChange={handleDetails} name = "data" value={details.data} type="text" id="" placeholder='link or anything' className='w-full outline-none text-black px-2 py-4 rounded-lg shadow-lg'/>
 

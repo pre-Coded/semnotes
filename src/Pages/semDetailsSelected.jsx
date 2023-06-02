@@ -10,23 +10,29 @@ const SemDetailsSelected = () => {
 
     const info = firebase.dselected;
     const [videoLink, setVideoLink] = useState(null);
-    const [syllabusURL, setSyllabusURL] = useState(null);
+    const [syllabusURL, setSyllabusURL] = useState("");
     
     useEffect( () => {
         firebase.getVideoLinks(info.branch, info.year, info.sem, info.sub).then( (snapshot) => {
             const link = JSON.parse(snapshot.val().link);
             setVideoLink(link);
         })
+
+
+        firebase.getSyllabusURL(`Syllabus/Year${info.year}/Sem${info.sem}/Sem${Number(info.year)+Number(info.sem)}.pdf`).then((url)=>{
+            setSyllabusURL(url);
+        }).catch((err) => console.log(err))
+
     }, [])
 
     // firebase.getSyllabus(info.year, info.sem).then((url)=>{
     //     setSyllabusURL(url);
     // }).catch((err)=>{console.log(err)})
-      
+    
 
     return (
-        <div className='h-screen w-screen z-[100] fade-bg flex flex-col text-white p-2 space-y-3 overflow-hidden relative'>
-            <div className='w-full overflow-x-hidden overflow-y-scroll hide-scrollbar flex flex-col text-white space-y-3'>
+        <div className='h-screen scroll-smooth w-screen z-[100] fade-bg flex flex-col text-white p-2 space-y-3 overflow-hidden relative'>
+            <div className='w-full scroll-smooth overflow-x-hidden overflow-y-scroll hide-scrollbar flex flex-col text-white space-y-3'>
                 <div className='flex items-center justify-center border-b-2 pb-3 sticky top-0 z-10 fade-bg'><AiOutlineLeft className='text-3xl absolute left-4 cursor-pointer' onClick={()=>{
                     navigate('/semnotes');
                 }}/> <span className='text-xl'>semNotes</span> </div>
@@ -44,7 +50,7 @@ const SemDetailsSelected = () => {
 
                 <div className='flex justify-start items-center space-x-3 py-2 px-3'>
                     <span> Syllabus : </span>
-                    <a href="https://firebasestorage.googleapis.com/v0/b/semnotes-7bb62.appspot.com/o/Syllabus%2FSem3%2F3rd%20sem-it.pdf?alt=media&token=684f93e6-2498-4f88-b7af-3515297fe1de&_gl=1*1q2nhm4*_ga*OTI0MDIwNjI1LjE2NzI1NjY1MzA.*_ga_CW55HF8NVT*MTY4NTY5NDc2Ny4xNy4xLjE2ODU2OTc0MzguMC4wLjA." className='px-6 py-2 bg-white text-black rounded-lg' target="_blank" download="true">Preview</a>
+                    <a href={syllabusURL === "" ? "#" : syllabusURL}  className='px-6 py-2 bg-white text-black rounded-lg' target="_blank" download>Preview</a>
                 </div>
                 <div className='flex flex-col py-2 px-3 border-[0.5px] border-gray-300'>
                     <span className='border-b-[0.5px] pb-2'>Recommended Channels</span>

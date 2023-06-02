@@ -1,6 +1,9 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { initializeApp } from "firebase/app";
 import { useNavigate } from "react-router-dom";
+import "firebase/database"
+import "firebase/storage"
+
 
 import { getAuth, 
     onAuthStateChanged, 
@@ -13,16 +16,16 @@ import { getAuth,
 
 import { getDatabase, 
         set, 
-        ref, 
         get, 
         child, 
-        update, 
+        update,
+        ref as dataBaseRef,
 } from "firebase/database";
 
 import { getFirestore,
 } from 'firebase/firestore'
 
-import { getStorage, 
+import { getStorage, uploadBytes, getDownloadURL, ref as storageRef
 } from "firebase/storage";
 
 const fireBaseConfig = {
@@ -52,7 +55,6 @@ export const useFireBase = () => {
 }
 
 export const FireBaseProvider = (props) => {
-
     const [user, setUser] = useState(null);
     useEffect(() => {
         onAuthStateChanged(auth, user => {
@@ -104,13 +106,13 @@ export const FireBaseProvider = (props) => {
         setLoading(prev => !prev);
     }
 
-    const handleUploads = async (year, sem, branch, subject, type, data) => {
-        setLoading(prev => !prev);
+    const handleUploads = async (year, sem, syllabus) => {
+        // setLoading(prev => !prev);
 
         // const syllabusRef = ref(storage, `${branch}/${year}/${sem}/${subject}/${Date.now()}-${file.name}`);
         // const uploadResult = await uploadBytes(syllabusRef, file);
 
-        const db = getDatabase();
+        // const db = getDatabase();
 
         // return await ref(db, `${branch}/${year}/${sem}/${subject}/${type}`).push().set(data).then(()=>{
         //     alert("sucessful");
@@ -130,33 +132,45 @@ export const FireBaseProvider = (props) => {
 
         // getting already existing value;
 
-        await get(child(ref(db), `${branch}/${year}/${sem}/${subject}/${type}`)).then(async (snapshot) => {
-            if (snapshot.exists()) {
-                const arr = (snapshot.val().link);
-                arr.push(data);
-                return await update(ref(db, `${branch}/${year}/${sem}/${subject}/${type}`),
-                    { link: arr, }
-                ).then(() => {
-                    setLoading(prev => !prev); alert("File is successfully uploaded.");
-                })
-            }
+        // await get(child(ref(db), `${branch}/${year}/${sem}/${subject}/${type}`)).then(async (snapshot) => {
+        //     if (snapshot.exists()) {
+        //         const arr = (snapshot.val().link);
+        //         arr.push(data);
+        //         return await update(ref(db, `${branch}/${year}/${sem}/${subject}/${type}`),
+        //             { link: arr, }
+        //         ).then(() => {
+        //             setLoading(prev => !prev); alert("File is successfully uploaded.");
+        //         })
+        //     }
 
-            const arr = [data];
+        //     const arr = [data];
 
-            return await set(ref(db, `${branch}/${year}/${sem}/${subject}/${type}`), {
-                link: arr,
-            }).then(() => { setLoading(prev => !prev); alert("File is successfully uploaded.") }).catch(() => { alert("File wasn't uploaded successfully.") })
+        //     return await set(ref(db, `${branch}/${year}/${sem}/${subject}/${type}`), {
+        //         link: arr,
+        //     }).then(() => { setLoading(prev => !prev); alert("File is successfully uploaded.") }).catch(() => { alert("File wasn't uploaded successfully.") })
+        // })
+
+        const imageRef = storageRef(storage, `Syllabus/Year${year}/Sem${sem}/${syllabus.name}`);
+        return await uploadBytes(imageRef,syllabus).then((url)=>{
+            console.log(url);
         })
-
     }
 
+    const getSyllabusURL = async (path)=>{
+        const fileRef = storageRef(storage, path);
+        try {
+          return await getDownloadURL(fileRef);
+        } catch (error) {
+          console.error('Error getting syllabus URL:', error);
+          throw error;
+        }
+
+    }
 
     const getVideoLinks = (branch, year, sem, subject) => {
-        const db = getDatabase();
-        return get(child(ref(db), `${branch}/${year}/${sem}/${subject}/Videos-Links`));
+        return get(child(dataBaseRef(database), `${branch}/${year}/${sem}/${subject}/Videos-Links`));
     }
     
-
     const isLoggedIn = user ? true : false;
 
     return (
@@ -173,6 +187,7 @@ export const FireBaseProvider = (props) => {
             dselected, 
             handleSelected, 
             getVideoLinks,
+            getSyllabusURL,
         }}>
             {props.children}
         </FireBaseContext.Provider>

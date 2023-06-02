@@ -39,7 +39,7 @@ const Notes = ({height, handleNoteHeight}) => {
         <textarea onChange={(e) =>{setText(e.target.value);}} value={text} name="" id="" cols="30" rows="10" className='mt-4 resize-none outline-none p-2 text-gray-400 overflow-x-scroll' placeholder='Take Notes here....' spellCheck="false"
         ></textarea>
 
-        <button onClick={handleSubmit} className='button-color absolute
+        <button onClick={handleSubmit} className='btn-mn absolute
         right-4 bottom-6 aspect-square p-3 font-bold text-2xl flex justify-center items-center text-white rounded-full' type="submit">
             <MdDownloadDone/>
         </button>

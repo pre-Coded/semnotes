@@ -40,7 +40,7 @@ function App() {
     }
 
     return (
-        <div className={`w-full h-screen bg-img relative hide-scrollbar overflow-hidden`}>
+        <div className={`w-full bg-img h-screen  relative hide-scrollbar overflow-hidden`}>
             <Loading isLoading={firebase.isLoading}/>
 
             <button onClick={handleNoteHeight} className='fixed z-[49] bottom-20 right-4 text-black p-4 rounded-full flex justify-center items-center btn-prm brightness-200 border-[1px]'>
