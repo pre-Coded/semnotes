@@ -15,6 +15,7 @@ import {useEffect} from 'react'
 import NoPage from "./Pages/NoPage";
 import Loading from "./Pages/Loading";
 import SemDetailsSelected from "./Pages/semDetailsSelected";
+import BG from './assets/bg.jpeg'
 
 function App() {
     const navigate = useNavigate();
@@ -39,11 +40,11 @@ function App() {
     }
 
     return (
-        <div className="w-full h-screen fade-bg relative hide-scrollbar overflow-hidden">
+        <div className={`w-full h-screen bg-img relative hide-scrollbar overflow-hidden`}>
             <Loading isLoading={firebase.isLoading}/>
 
-            <button onClick={handleNoteHeight} className='fixed z-[49] bottom-20 right-4 button-color text-white py-3 px-6 rounded-md flex justify-center items-center space-x-1'>
-            <MdOutlineAdd className='text-white text-2xl'/><span>Notes</span></button>
+            <button onClick={handleNoteHeight} className='fixed z-[49] bottom-20 right-4 text-black p-4 rounded-full flex justify-center items-center btn-prm brightness-200 border-[1px]'>
+            <MdOutlineAdd className='text-2xl'/></button>
 
             <Notes height={height} handleNoteHeight = {handleNoteHeight} />
 

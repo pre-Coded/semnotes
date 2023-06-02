@@ -8,7 +8,7 @@ const Feed = () => {
     const firebase = useFireBase();
     const navigate = useNavigate();
 
-    const userName = "Student"
+    const userName = firebase.user.email;
 
     const [details, setDetails] = useState({ year : "", branch : "", sem : "", sub : ""});
 
@@ -32,8 +32,6 @@ const Feed = () => {
     "Mechanical Engineering",
     "Textile Technology",
     ]
-
-
 
     const informationTech = [
         [
@@ -113,7 +111,7 @@ const Feed = () => {
 
 
   return (
-    <div className='p-4 fade-bg text-white h-full overflow-y-scroll hide-scrollbar'>
+    <div className='p-4 text-white h-full overflow-y-scroll hide-scrollbar'>
         <div className=''>
             <h1>Welcome <span className='text-2xl font-bold'>{userName}</span></h1>
         </div>

@@ -15,11 +15,11 @@ const NavBar = () => {
     }
 
   return (
-    <div className='fixed bottom-0 w-full h-16 dark-bg z-10 md:w-[50%] lg:w-[30%]  md:bottom-6 md:left-1/2 md:-translate-x-1/2 md:rounded-2xl
-    md:bg-white/5
-     md:backdrop-blur-md'>
+    <div className='fixed bottom-2 w-[95%] rounded-lg   h-16 bg-[#0E0C0A] backdrop-blur-lg z-10 md:w-[50%] lg:w-[30%]  md:bottom-6 left-1/2 -translate-x-1/2 md:rounded-2xl
+    md:bg-white/5'>
 
         <ul className='flex justify-around items-center h-full w-full text-white relative text-3xl'>
+            <div className='h-[1px] left-0 w-1/5 bg-white absolute top-0'></div>
             <li id="1" onClick={handleWidth} className=''>
                 <Link to="/">
                     <AiFillHome/>

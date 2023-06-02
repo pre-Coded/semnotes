@@ -18,7 +18,7 @@ const Home = () => {
   }
 
   return (
-    <div className='fade-bg h-screen w-screen relative overflow-x-hidden hide-scrollbar overflow-y-scroll'>
+    <div className='h-screen w-screen relative overflow-x-hidden hide-scrollbar overflow-y-scroll'>
         <Feed handleWidth={handleWidth} handleNoteWidth ={handleNoteWidth} />
         <Downloads width={downloadsWidth} handleWidth={handleWidth} />
         <NoteHistory width={noteHistoryWidth} handleNoteWidth ={handleNoteWidth} />

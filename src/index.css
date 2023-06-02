@@ -5,19 +5,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap');
 
 .dark-bg{
-    background-color: #0A0A0B;
+    background-color: #18191A;
 }
 
 .fade-bg{
-    background-color: #252939;
+    background-color: #272A2E;
 }
 
-.button-color{
-    background-color: #215BF0;
+.bg-img{
+    background-image: url("./assets/bg.jpeg");
+    object-fit: cover;
 }
 
-.text-white{
-    color: #ffffff;
+.btn-prm{
+    background-color: #66BD68;
+}
+
+.btn-mn{
+    background-color: #6CC1FA;
 }
 
 body{

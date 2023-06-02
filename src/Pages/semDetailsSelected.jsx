@@ -1,5 +1,6 @@
-import React from 'react'
-import { AiOutlineLeft } from 'react-icons/ai'
+import { connectStorageEmulator } from 'firebase/storage'
+import React, {useEffect, useState} from 'react'
+import { AiOutlineConsoleSql, AiOutlineLeft } from 'react-icons/ai'
 import { useNavigate } from 'react-router-dom'
 import { useFireBase } from '../utilities/Firebase'
 
@@ -8,6 +9,20 @@ const SemDetailsSelected = () => {
     const firebase = useFireBase();
 
     const info = firebase.dselected;
+    const [videoLink, setVideoLink] = useState(null);
+    const [syllabusURL, setSyllabusURL] = useState(null);
+    
+    useEffect( () => {
+        firebase.getVideoLinks(info.branch, info.year, info.sem, info.sub).then( (snapshot) => {
+            const link = JSON.parse(snapshot.val().link);
+            setVideoLink(link);
+        })
+    }, [])
+
+    // firebase.getSyllabus(info.year, info.sem).then((url)=>{
+    //     setSyllabusURL(url);
+    // }).catch((err)=>{console.log(err)})
+      
 
     return (
         <div className='h-screen w-screen z-[100] fade-bg flex flex-col text-white p-2 space-y-3 overflow-hidden relative'>
@@ -29,16 +44,17 @@ const SemDetailsSelected = () => {
 
                 <div className='flex justify-start items-center space-x-3 py-2 px-3'>
                     <span> Syllabus : </span>
-                    <button href='#' download className='px-6 py-2 bg-white text-black rounded-lg'>Download</button>
+                    <a href="https://firebasestorage.googleapis.com/v0/b/semnotes-7bb62.appspot.com/o/Syllabus%2FSem3%2F3rd%20sem-it.pdf?alt=media&token=684f93e6-2498-4f88-b7af-3515297fe1de&_gl=1*1q2nhm4*_ga*OTI0MDIwNjI1LjE2NzI1NjY1MzA.*_ga_CW55HF8NVT*MTY4NTY5NDc2Ny4xNy4xLjE2ODU2OTc0MzguMC4wLjA." className='px-6 py-2 bg-white text-black rounded-lg' target="_blank" download="true">Preview</a>
                 </div>
                 <div className='flex flex-col py-2 px-3 border-[0.5px] border-gray-300'>
                     <span className='border-b-[0.5px] pb-2'>Recommended Channels</span>
                     <div className='flex flex-col'>
                         <ol className='list-inside list-decimal flex flex-col items-start justify-center p-2'>
-                            <li className=''><a href='#' target="_blank">{"Links"}</a></li>
-                            <li className=''><a href='#' target="_blank">{"Links"}</a></li>
-                            <li className=''><a href='#' target="_blank">{"Links"}</a></li>
-                            <li className=''><a href='#' target="_blank">{"Links"}</a></li>
+                            {
+                                videoLink ? videoLink.map((link, index)=>{
+                                    return <li className=''><a href={link} target="_blank" className='text-blue-600 underline'>{link}</a></li>
+                                }) : "Nothing to show"
+                            }
                         </ol>
                     </div>
                 </div>
@@ -47,13 +63,13 @@ const SemDetailsSelected = () => {
                     <div>Notes</div>
                     <ol className='list-decimal flex flex-col items-start justify-center pl-4 mt-4 space-y-4'>
                         <li className='w-full pl-2'>
-                            <li className='flex items-center justify-between w-full'><a href='#' target='_blank' className='px-6 py-2 bg-white text-black rounded-lg'>Preview</a> <button className="px-6 py-2 bg-green-500 text-white rounded-lg">Download</button></li>
+                            <div className='flex items-center justify-between w-full'><a href='#' target='_blank' className='px-6 py-2 bg-white text-black rounded-lg'>Preview</a> <button className="px-6 py-2 bg-green-500 text-white rounded-lg">Download</button></div>
                         </li>
                         <li className='w-full pl-2'>
-                            <li className='flex items-center justify-between w-full'><a href='#' target='_blank' className='px-6 py-2 bg-white text-black rounded-lg'>Preview</a> <button className="px-6 py-2 bg-green-500 text-white rounded-lg">Download</button></li>
+                            <div className='flex items-center justify-between w-full'><a href='#' target='_blank' className='px-6 py-2 bg-white text-black rounded-lg'>Preview</a> <button className="px-6 py-2 bg-green-500 text-white rounded-lg">Download</button></div>
                         </li>
                         <li className='w-full pl-2'>
-                            <li className='flex items-center justify-between w-full'><a href='#' target='_blank' className='px-6 py-2 bg-white text-black rounded-lg'>Preview</a> <button className="px-6 py-2 bg-green-500 text-white rounded-lg">Download</button></li>
+                            <div className='flex items-center justify-between w-full'><a href='#' target='_blank' className='px-6 py-2 bg-white text-black rounded-lg'>Preview</a> <button className="px-6 py-2 bg-green-500 text-white rounded-lg">Download</button></div>
                         </li>
                     </ol>
                 </div>
@@ -78,4 +94,4 @@ const SemDetailsSelected = () => {
     )
 }
 
-export default SemDetailsSelected
+export default SemDetailsSelected 
