@@ -22,7 +22,7 @@ import { getDatabase,
         ref as dataBaseRef,
 } from "firebase/database";
 
-import { getFirestore,
+import { collection, getDocs, getFirestore,
 } from 'firebase/firestore'
 
 import { getStorage, uploadBytes, getDownloadURL, ref as storageRef
@@ -66,20 +66,22 @@ export const FireBaseProvider = (props) => {
         })
     }, []);
 
-    const [dselected, setDetails] = useState("");
-    const handleSelected = (info) => {
-        setDetails(info);
-    }
+
+    const [detailsOfUser, setDetails] = useState({
+        branch : "",
+        sem : "",
+        sub : ""
+    })
 
     const [isLoading, setLoading] = useState(false);
 
     const navigate = useNavigate();
 
-
     const signUpWithEmailAndPassword = async (email, password) => {
         setLoading(prev => !prev);
         await createUserWithEmailAndPassword(fireBaseAuth, email, password);
         setLoading(prev => !prev);
+        navigate('/');
     };
 
     const signInWithGoogle = async () => {
@@ -101,7 +103,8 @@ export const FireBaseProvider = (props) => {
     const handleSignOut = async () => {
         setLoading(prev => !prev);
         await signOut(auth).then(() => {
-            navigate('/login')
+            setUser(null);
+            navigate('/')
         })
         setLoading(prev => !prev);
     }
@@ -166,9 +169,9 @@ export const FireBaseProvider = (props) => {
         }
 
     }
-
-    const getVideoLinks = (branch, year, sem, subject) => {
-        return get(child(dataBaseRef(database), `${branch}/${year}/${sem}/${subject}/Videos-Links`));
+    
+    const getVideoLinks = (branch,  subject) => {
+        return getDocs(collection(firestore, `/Information Technology/DAA/Video-Links/`));
     }
     
     const isLoggedIn = user ? true : false;
@@ -184,10 +187,10 @@ export const FireBaseProvider = (props) => {
             signInUser, 
             isLoading, 
             setLoading, 
-            dselected, 
-            handleSelected, 
             getVideoLinks,
             getSyllabusURL,
+            detailsOfUser, 
+            setDetails,
         }}>
             {props.children}
         </FireBaseContext.Provider>

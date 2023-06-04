@@ -1,62 +1,112 @@
 import React, {useState, useRef} from 'react'
-import {BsMicrosoft, BsGoogle} from 'react-icons/bs'
-import {AiFillGithub, AiFillEyeInvisible, AiFillEye} from 'react-icons/ai'
+import {AiFillEyeInvisible, AiFillEye} from 'react-icons/ai'
 import { useNavigate } from 'react-router-dom'
 import { useFireBase } from '../utilities/Firebase'
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const firebase = useFireBase();
 
   const ref = useRef(null);
 
   const [eye, setEye] = useState(true);
 
-  const [email, setEmail] = useState('')
-  const [pass, setPass] = useState('')
+  const firebase = useFireBase();
+
+  const [email, setEmail] = useState("");
+  const [pass, setPass] = useState("");
+
+
+  const [emailLabel, setEmailLabel] = useState(false);
+  const [passLabel, setPassLabel] = useState(false);
 
   const handleSubmit = async (e) =>{
     e.preventDefault();
-    await firebase.signUpWithEmailAndPassword(email, pass);
-    navigate('/');
+    firebase.signUpWithEmailAndPassword(email,pass);
   }
 
   const [block, setBlock] = useState('flex');
 
+  const sems = [1,2,3,4,5,6,7,8];
+  const branches = ["Information Technology"]
+
   return (
-    <div className={`h-screen w-screen fade-bg ${block} flex-col justify-center items-center text-white relative`}>   
-        <form onSubmit={handleSubmit} className='p-4 flex flex-col justify-center items-center w-full space-y-4 overflow-hidden'>
-            <input  className='w-full h-12 p-2 outline-none rounded-lg shadow-white shadow-sm focus:scale-[103%] text-gray-600' placeholder='Username' type="text" name="" id="" required spellCheck="off"/>
+    <div className={`h-screen w-screen bg-black ${block}text-white relative overflow-hidden flex flex-col justify-center items-center`}>   
+    
+        <form onSubmit={handleSubmit} className='h-full flex flex-col justify-center items-center w-full space-y-4 relative'>
+              <div className='text-3xl text-white self-start pl-6 flex relative'>Registere Here
+              <div className='flex space-x-1 absolute bottom-2 -right-8'>
+                <span className='h-1 aspect-square rounded-full animate-first bg-white'></span>
+                <span className='h-1 aspect-square rounded-full animate-second bg-white'></span>
+                <span className='h-1 aspect-square rounded-full animate-third bg-white'></span>
+                <span className='h-1 aspect-square rounded-full animate-fourth bg-white'></span>
+              </div>
+              </div>
+              <div className='w-[90%] h-14 p-2 flex justify-start items-center relative border-[1px] border-white'>
+                <label for="email" className={`text-white absolute left-2 bg-black ${emailLabel ? "-translate-y-7 rounded text-xs opacity-100" : "opacity-0"} transition-all text-sm`}>Email</label>
+                <input 
+                onChange={(e)=>{
+                  if(e.target.value !== "" && emailLabel === false)setEmailLabel(prev => !prev);
+                  setEmail(e.target.value);
+                  if(e.target.value === "" && emailLabel === true) setEmailLabel(prev => !prev);
+                }} 
+                value={email} className='w-full h-full bg-black outline-none text-white text-sm' type="email" name="" id="email" required spellCheck="off" placeholder='Email'/>
+              </div>
 
-            <input onChange={(e)=>{setEmail(e.target.value)}} value={email} className='w-full h-12 p-2 outline-none rounded-lg shadow-white shadow-sm focus:scale-[103%] text-gray-600' placeholder='Email' type="email" name="" id="" required spellCheck="off"/>
-
-            <div ref = {ref} className='w-full h-12 p-2 focus:scale-[103%] shadow-sm rounded-lg flex justify-between items-center bg-white'>
-              <input onChange={(e)=>{setPass(e.target.value)}} value={pass} className='w-full h-full outline-none bg-transparent  text-gray-600' placeholder='Password' type="password" name="" id="" required spellCheck="off"/>
+            <div ref = {ref} className='w-[90%] h-14 p-2 flex justify-between items-center border-[1px] border-white relative'>
+              <label for="pass" className={`text-white absolute left-2 bg-black ${passLabel ? "-translate-y-7 rounded text-xs opacity-100" : "opacity-0"} transition-all text-sm`}>Password</label>
+              <input onChange={(e)=>{
+                  if(e.target.value !== "" && passLabel === false) setPassLabel(prev => !prev);
+                  setPass(e.target.value);
+                  if(e.target.value === "" && passLabel === true) setPassLabel(prev => !prev);
+                }}value={pass} className='w-full h-full outline-none bg-transparent text-sm text-white' placeholder='Password' type="password" name="" id="pass" required spellCheck="off"/>
               {
-                eye ? <AiFillEye className='text-gray-400 text-3xl'  onClick={()=>{
+                eye ? <AiFillEyeInvisible className='text-white text-3xl'  onClick={()=>{
                   setEye(prev => !prev);
-                  ref.current.children[0].type = "text";
-                }}/> : <AiFillEyeInvisible className='text-gray-400 text-3xl' onClick={()=>{
+                  ref.current.children[1].type = "text";
+                }}/> : <AiFillEye className='text-white text-3xl' onClick={()=>{
                   setEye(prev => !prev);
-                  ref.current.children[0].type = "password";
+                  ref.current.children[1].type = "password";
                 }}/>
               }
             </div>
 
-            <input className='px-16 py-4 rounded-lg shadow-lg shadow-blue-900 text-xl button-color' type="submit" value="Sign Up" />
+            <div className='w-[90%] h-14 relative flex justify-center items-center bg-black text-white border-[1px]'>
+              <div>{firebase.detailsOfUser.sem === "" ? "Select Semester" : "Semester "+firebase.detailsOfUser.sem}</div>
+              <select onChange={(e)=>{
+                firebase.setDetails({...firebase.detailsOfUser, [e.target.name] : e.target.value});
+              }} className='h-full outline-none text-white bg-transparent absolute opacity-0' name="sem" required>
+                <option className='' defaultValue={"Select Semester"}>Select Semester</option>
+                {
+                  sems.map((sem)=>{
+                    return (
+                      <option value={sem}>Sem {sem}</option>
+                    )
+                  })
+                }
+              </select>
+            </div>
 
+            <div className='w-[90%] h-14 relative flex justify-center items-center bg-black text-white border-[1px]'>
+              <div>{firebase.detailsOfUser.branch === "" ? "Select Branch" : firebase.detailsOfUser.branch}</div>
+              <select onChange={(e)=>{
+                firebase.setDetails({...firebase.detailsOfUser, [e.target.name] : e.target.value})
+              }} className='h-full outline-none text-white bg-transparent absolute opacity-0 ' name='branch' required>
+                <option className='' defaultValue={"Select Branch"}>Select Branch</option>
+                {
+                  branches.map((branch)=>{
+                    return (
+                      <option value={branch}>{branch}</option>
+                    )
+                  })
+                }
+              </select>
+            </div>
+            
+            <div className='text-gray-400 text-sm py-2'>Already a user?<span onClick={()=>{
+              navigate('/')
+                      }} className='text-white border-b-[2px] pb-[2px]'>{"  "}Log In</span></div>
+            <input className='py-4 px-24 bg-white text-xl button-color' type="submit" value="Register"/>
         </form>
-        <button className='px-16 py-4 rounded-lg shadow-lg shadow-blue-900 text-xl bg-white text-gray-600' onClick={()=>{ 
-              if(block === 'flex') setBlock('hidden');
-              else setBlock('flex');
-              navigate("/login")
-            }}>Already a user ?</button>
-
-        <div className='absolute bottom-6 flex justify-around items-center p-2 space-x-8 text-4xl'>
-            <div onClick={firebase.signInWithGoogle} className='bg-white p-2 rounded-md shadow-sm shadow-white text-black'><BsGoogle/></div>
-            <div className='bg-white p-2 rounded-md shadow-sm shadow-white text-black'><BsMicrosoft/></div>
-            <div className='bg-white p-2 rounded-md shadow-sm shadow-white text-black'><AiFillGithub/></div>
-        </div>
     </div>
   )
 }

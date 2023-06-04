@@ -19,6 +19,7 @@ const NoteHistory = ({width, handleNoteWidth}) => {
 
             <AiFillDelete onClick={()=>{
                 localStorage.removeItem(`${firebase.user.email+"Notes"}`);
+                console.log(localStorage);
             }} className='text-3xl text-red-800 brightness-200'/>
         </div>
         <div className='w-full h-[80%] overflow-y-scroll hide-scrollbar relative'>
@@ -28,7 +29,7 @@ const NoteHistory = ({width, handleNoteWidth}) => {
                     <pre className='absolute left-1/2 top-1/2 -translate-x-1/2 -tranlate-y-1/2'>Nothing to show </pre> :
                     JSON.parse(localStorage.getItem(`${firebase.user.email+"Notes"}`)).map((notes)=>{
                         return(
-                            <li  id={Date.now()} className='border-b-[2px] border-gray-600 p-2 flex justify-between items-center'>
+                            <li id={Date.now()} className='border-b-[2px] border-gray-600 p-2 flex justify-between items-center'>
                                 <span className='w-full'>{notes}</span>
                                 <AiOutlineDelete onClick={handleDelete} className='text-2xl text-red-600'/>
                             </li>

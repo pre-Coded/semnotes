@@ -13,12 +13,13 @@ const SemDetailsSelected = () => {
     const [syllabusURL, setSyllabusURL] = useState("");
     
     useEffect( () => {
-        firebase.getVideoLinks(info.branch, info.year, info.sem, info.sub).then( (snapshot) => {
-            const link = JSON.parse(snapshot.val().link);
-            setVideoLink(link);
+        firebase.getVideoLinks(info.branch, info.sub).then( (docs) => {
+            console.log(docs);
+        }).catch((err) =>{
+            setVideoLink(null);
+            console.log(err);
         })
-
-
+        
         firebase.getSyllabusURL(`Syllabus/Year${info.year}/Sem${info.sem}/Sem${Number(info.year)+Number(info.sem)}.pdf`).then((url)=>{
             setSyllabusURL(url);
         }).catch((err) => console.log(err))

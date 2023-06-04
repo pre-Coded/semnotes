@@ -50,11 +50,11 @@ const Form = () => {
                 "NM",
             ],
             [   
-                "ALGORITHM",
-                "JAVA PROGRAMMING",
-                "DATA MINING",
+                "DAA",
+                "JP",
+                "DM",
                 "FLAT",
-                "OPERATING SYSTEM",
+                "OS",
             ]
         ],
         [

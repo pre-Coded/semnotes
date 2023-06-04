@@ -13,9 +13,15 @@
 }
 
 .bg-img{
-    background-image: url("./assets/bg.jpeg");
-    object-fit: cover;
-    background-repeat: no-repeat;
+        background: linear-gradient(
+          50deg,
+          rgba(255, 255, 255, 0.4) 12%,
+          rgba(255, 255, 255, 0.1) 77%
+        );
+        background-blend-mode: ;
+        box-shadow: 0px 4px 24px 1px rgba(0, 0, 0, 0.28);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
 }
 
 .btn-prm{
@@ -74,4 +80,47 @@ body{
 .animation-loadingBar{
     animation: transition 150ms ease-out forwards;
     animation: loadTime 10s ease-in 150ms infinite;
+}
+
+.backdrop-filter{
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: saturate(180%) blur(10px);
+}
+
+.animate-width{
+    animation: width 4s ease-out infinite;
+}
+
+@keyframes width {
+    0%{
+        width: 0%;
+    }100%{
+        width: 100%;
+    }
+}
+
+@keyframes scale {
+    0%{
+        transform: scale(100%);
+    }50%{
+        transform: scale(150%);
+    }100%{
+        transform: scale(200%);
+    }
+}
+
+.animate-first{
+    animation: scale 500ms ease-in alternate-reverse infinite;
+}
+
+.animate-second{
+    animation: scale 500ms ease-in 500ms  alternate-reverse infinite;
+}
+
+.animate-third{
+    animation: scale 500ms ease-in 1s  alternate-reverse infinite;
+}
+
+.animate-fourth{
+    animation: scale 500ms ease-in 1.5s  alternate-reverse infinite;
 }
