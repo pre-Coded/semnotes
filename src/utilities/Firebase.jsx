@@ -59,6 +59,9 @@ export const FireBaseProvider = (props) => {
         sub : ""
     })
 
+
+    const [videoList, setVideoList] = useState(null);
+    const [noteList, setNoteList] = useState(null);
     const [user, setUser] = useState(null);
 
     useEffect( () => {
@@ -101,6 +104,7 @@ export const FireBaseProvider = (props) => {
             setLoading(prev => !prev);
         }).catch(() => {
             alert("Enter valid credentials.");
+            setLoading(prev => !prev);
         })
     }
     const handleSignOut = async () => {
@@ -211,7 +215,11 @@ export const FireBaseProvider = (props) => {
             putData,
             getData,
             syllabusURL,
-            setsyllabusURL
+            setsyllabusURL,
+            videoList, 
+            setVideoList,
+            noteList, 
+            setNoteList
         }}>
             {props.children}
         </FireBaseContext.Provider>
