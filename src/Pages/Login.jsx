@@ -21,8 +21,6 @@ const Login = () => {
   const [emailLabel, setEmailLabel] = useState(false);
   const [passLabel, setPassLabel] = useState(false);
 
-
-
   return (
     <div className={`h-screen w-screen bg-black ${block}text-white relative overflow-hidden flex flex-col justify-center items-center`}>
         

@@ -21,16 +21,29 @@ const SignUp = () => {
 
   const handleSubmit = async (e) =>{
     e.preventDefault();
-    firebase.signUpWithEmailAndPassword(email,pass);
-  }
 
-  const [block, setBlock] = useState('flex');
+    const index = email.indexOf(".com");
+    if(email.indexOf(".com") === -1){
+      return;
+    }
+
+    await firebase.signUpWithEmailAndPassword(email,pass);
+
+    await firebase.putData(`ExamRescue/${email.substring(0,index)}/academicDetails`, {
+      branch : firebase.detailsOfUser.branch,
+      sem : firebase.detailsOfUser.sem,
+    }).then((res)=>{
+      console.log("Uploaded Successfully", res);
+    }).catch((err)=>{
+      console.log("Error in uploading",err);
+    })
+  }
 
   const sems = [1,2,3,4,5,6,7,8];
   const branches = ["Information Technology"]
 
   return (
-    <div className={`h-screen w-screen bg-black ${block}text-white relative overflow-hidden flex flex-col justify-center items-center`}>   
+    <div className={`h-screen w-screen bg-black text-white relative overflow-hidden flex flex-col justify-center items-center`}>   
     
         <form onSubmit={handleSubmit} className='h-full flex flex-col justify-center items-center w-full space-y-4 relative'>
               <div className='text-3xl text-white self-start pl-6 flex relative'>Registere Here
@@ -101,11 +114,10 @@ const SignUp = () => {
                 }
               </select>
             </div>
-            
             <div className='text-gray-400 text-sm py-2'>Already a user?<span onClick={()=>{
               navigate('/')
                       }} className='text-white border-b-[2px] pb-[2px]'>{"  "}Log In</span></div>
-            <input className='py-4 px-24 bg-white text-xl button-color' type="submit" value="Register"/>
+            <input className='py-4 px-24 bg-white text-xl button-color text-black' type="submit" value="Register"/>
         </form>
     </div>
   )

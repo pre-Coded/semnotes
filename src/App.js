@@ -28,6 +28,36 @@ function App() {
 
     const firebase = useFireBase();
 
+    // const retrieveData = async () =>{
+    //   const email = firebase.user.email;
+    //   const userEmail = email.substring(0, email.indexOf(".com"));
+    //   await firebase.getData(`ExamRescue/${userEmail}/academicDetails`).then((snapshot)=>{
+    //       const {branch, sem} = snapshot.val();
+
+    //       firebase.setDetails({
+    //           branch : branch,
+    //           sem : sem,
+    //           sub : ""
+    //       });
+    //   }).catch((err)=>{
+    //       console.log(err);
+    //   })
+    // }
+
+    // useEffect( () =>{
+    //   retrieveData();
+    // }, [firebase.isLoggedIn])
+
+    // if(firebase.isLoggedIn === false){
+    //   console.log("run for the first time");
+    //   retrieveData();
+    // }else if(firebase.isLoggedIn === true){
+    //   console.log("running");
+    //   retrieveData();
+    // }
+
+    console.log("Running App js");
+
     if(firebase.isLoggedIn === false){
       return <div>
         <Loading isLoading={firebase.isLoading}/>
@@ -51,7 +81,6 @@ function App() {
 
             <Routes>
                 <Route path="/" element={<Home/>}/>
-                <Route path="semnotes" element={<SemDetails/>}></Route>
                 <Route path="addresource" element={<Form/>}></Route>
                 <Route path="abtcollege" element={<AbtCollege/>}></Route>
                 <Route path="profile" element={<UserProfile/>}></Route>

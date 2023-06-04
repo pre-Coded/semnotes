@@ -17,6 +17,8 @@ const Home = () => {
     return noteHistoryWidth === 0 ? setNoteHisWidth(100) : setNoteHisWidth(0);
   }
 
+  console.log("running Home js");
+  
   return (
     <div className='h-screen w-screen relative overflow-x-hidden hide-scrollbar overflow-y-scroll'>
         <Feed handleWidth={handleWidth} handleNoteWidth ={handleNoteWidth} />

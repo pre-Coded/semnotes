@@ -1,9 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { initializeApp } from "firebase/app";
 import { useNavigate } from "react-router-dom";
-import "firebase/database"
-import "firebase/storage"
-
 
 import { getAuth, 
     onAuthStateChanged, 
@@ -55,31 +52,38 @@ export const useFireBase = () => {
 }
 
 export const FireBaseProvider = (props) => {
-    const [user, setUser] = useState(null);
-    useEffect(() => {
-        onAuthStateChanged(auth, user => {
-            if (user) {
-                setUser(user);
-            } else {
-                setUser(null);
-            }
-        })
-    }, []);
-
-
+    const [isLoading, setLoading] = useState(false);
     const [detailsOfUser, setDetails] = useState({
         branch : "",
         sem : "",
         sub : ""
     })
 
-    const [isLoading, setLoading] = useState(false);
+    const [user, setUser] = useState(null);
+
+    useEffect( () => {
+        onAuthStateChanged(auth, user => {
+            setLoading(prev => !prev);
+            if (user) {
+                console.log("running")
+                setUser(user);
+            }
+            else{
+                setUser(null);
+            }
+            setLoading(prev => !prev);
+        })      
+    }, []);
+
 
     const navigate = useNavigate();
-
     const signUpWithEmailAndPassword = async (email, password) => {
         setLoading(prev => !prev);
-        await createUserWithEmailAndPassword(fireBaseAuth, email, password);
+        await createUserWithEmailAndPassword(fireBaseAuth, email, password).then((sucess)=>{
+            console.log("signed Up");
+        }).catch((err)=>{
+            console.log(err);
+        });
         setLoading(prev => !prev);
         navigate('/');
     };
@@ -99,17 +103,21 @@ export const FireBaseProvider = (props) => {
             alert("Enter valid credentials.");
         })
     }
-
     const handleSignOut = async () => {
         setLoading(prev => !prev);
         await signOut(auth).then(() => {
             setUser(null);
+            setDetails({
+                branch : "",
+                sem: "",
+                sub : "",
+            })
             navigate('/')
         })
         setLoading(prev => !prev);
     }
 
-    const handleUploads = async (year, sem, syllabus) => {
+    const handleUploads = async (sem, syllabus) => {
         // setLoading(prev => !prev);
 
         // const syllabusRef = ref(storage, `${branch}/${year}/${sem}/${subject}/${Date.now()}-${file.name}`);
@@ -153,12 +161,13 @@ export const FireBaseProvider = (props) => {
         //     }).then(() => { setLoading(prev => !prev); alert("File is successfully uploaded.") }).catch(() => { alert("File wasn't uploaded successfully.") })
         // })
 
-        const imageRef = storageRef(storage, `Syllabus/Year${year}/Sem${sem}/${syllabus.name}`);
+        const imageRef = storageRef(storage, `Syllabus/Sem${sem}/${syllabus.name}`);
         return await uploadBytes(imageRef,syllabus).then((url)=>{
             console.log(url);
         })
     }
 
+    const [syllabusURL, setsyllabusURL] = useState(null);
     const getSyllabusURL = async (path)=>{
         const fileRef = storageRef(storage, path);
         try {
@@ -169,9 +178,17 @@ export const FireBaseProvider = (props) => {
         }
 
     }
-    
-    const getVideoLinks = (branch,  subject) => {
-        return getDocs(collection(firestore, `/Information Technology/DAA/Video-Links/`));
+    const getVideoLinks = async (branch,  subject) => {
+        setLoading(prev => !prev);
+        await getDocs(collection(firestore, `/${branch}/${subject}/Video-Links/`));
+        setLoading(prev => !prev);
+    }
+    const putData = async (path, data) => {
+        return await set( dataBaseRef(database, path), data);
+    }
+
+    const getData = async (path) =>{
+        return await get(child(dataBaseRef(database), path))
     }
     
     const isLoggedIn = user ? true : false;
@@ -191,6 +208,10 @@ export const FireBaseProvider = (props) => {
             getSyllabusURL,
             detailsOfUser, 
             setDetails,
+            putData,
+            getData,
+            syllabusURL,
+            setsyllabusURL
         }}>
             {props.children}
         </FireBaseContext.Provider>
