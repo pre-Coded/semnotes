@@ -62,6 +62,7 @@ const UserProfile = () => {
                 </button>
             </div>
         </div>
+        <div className='h-36 bg-black w-full'></div>
     </div>
   )
 }
