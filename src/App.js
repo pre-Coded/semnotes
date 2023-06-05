@@ -13,9 +13,10 @@ import SignUp from "./Pages/SignUp";
 import Login from "./Pages/Login";
 import {useEffect} from 'react'
 import NoPage from "./Pages/NoPage";
-import Loading from "./Pages/Loading";
+import Loading from "./Pages/LoadingOverlay";
 import SemDetailsSelected from "./Pages/semDetailsSelected";
 import BG from './assets/bg.jpeg'
+import LoadingOverlay from "./Pages/LoadingOverlay";
 
 function App() {
     const [height, setHeight] = useState(100);
@@ -58,31 +59,43 @@ function App() {
 
     console.log("Running App js");
 
-    if(firebase.isLoggedIn === false){
-      return <div>
-        <Loading isLoading={firebase.isLoading}/>
-        <Routes>
-        <Route path='/' element={<Login/>}></Route>
-        <Route path="/login" element={<Login/>}></Route>
-        <Route path="/signup" element={<SignUp/>}></Route>
-        </Routes>
-      </div>
-    }
+    // if(firebase.isLoggedIn === false){
+    //   return <div>
+    //     <Loading isLoading={firebase.isLoading}/>
+    //     <Routes>
+    //     <Route path='/' element={<Login/>}></Route>
+    //     <Route path="/login" element={<Login/>}></Route>
+    //     <Route path="/signup" element={<SignUp/>}></Route>
+    //     </Routes>
+    //   </div>
+    // }
 
 
     return (
         <div className={`w-full bg-black h-screen  relative hide-scrollbar overflow-hidden`}>
-            <Loading isLoading={firebase.isLoading}/>
-            <NavBar/>
-
-            <Routes>
-                <Route path="/" element={<Home/>}/>
-                <Route path="addresource" element={<Form/>}></Route>
-                <Route path="abtcollege" element={<AbtCollege/>}></Route>
-                <Route path="profile" element={<UserProfile/>}></Route>
-                <Route path="semselected" element={<SemDetailsSelected/>}></Route>
-                <Route path="*" element={<NoPage/>} />
-            </Routes>
+           <LoadingOverlay isLoading ={firebase.isLoading}></LoadingOverlay>
+            {
+              firebase.isLoggedIn ? 
+              <>
+              <NavBar/>
+              <Routes>
+                  <Route path="/" element={<Home/>}/>
+                  <Route path="addresource" element={<Form/>}></Route>
+                  <Route path="abtcollege" element={<AbtCollege/>}></Route>
+                  <Route path="profile" element={<UserProfile/>}></Route>
+                  <Route path="semselected" element={<SemDetailsSelected/>}></Route>
+                  <Route path="*" element={<NoPage/>} />
+              </Routes>
+              </> :
+              <>
+              <Loading isLoading={firebase.isLoading}/>
+              <Routes>
+              <Route path='/' element={<Login/>}></Route>
+              <Route path="/login" element={<Login/>}></Route>
+              <Route path="/signup" element={<SignUp/>}></Route>
+              </Routes>
+              </>
+            }
         </div>
   );
 }
