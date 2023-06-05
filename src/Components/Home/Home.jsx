@@ -18,12 +18,10 @@ const Home = () => {
   }
 
   console.log("running Home js");
-  
+
   return (
     <div className='h-screen w-screen relative overflow-x-hidden hide-scrollbar overflow-y-scroll'>
         <Feed handleWidth={handleWidth} handleNoteWidth ={handleNoteWidth} />
-        <Downloads width={downloadsWidth} handleWidth={handleWidth} />
-        <NoteHistory width={noteHistoryWidth} handleNoteWidth ={handleNoteWidth} />
     </div>
   )
 }

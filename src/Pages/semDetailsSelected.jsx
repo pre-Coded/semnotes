@@ -70,22 +70,22 @@ const SemDetailsSelected = () => {
     // }
 
     useEffect( ()=>{
-        console.log("semselected");
-            console.log("logged in");
-            const email = firebase.user.email;
-            const userEmail = email.substring(0, email.indexOf(".com"));
-            firebase.getData(`ExamRescue/${userEmail}/academicDetails`).then((snapshot)=>{
-                const {branch, sem} = snapshot.val();
+        const email = firebase.user.email;
+        const userEmail = email.substring(0, email.indexOf(".com"));
 
-                firebase.getSyllabusURL(`Syllabus/Sem${sem}.pdf`).then((url)=>{
-                    firebase.setsyllabusURL(url);
-                });
-
-                firebase.setDetails({
-                    branch : branch,
-                    sem : sem,
-                    sub : ""
+        firebase.setLoading(prev => !prev);
+        firebase.getData(`ExamRescue/${userEmail}/academicDetails`).then((snapshot)=>{
+            const {branch, sem} = snapshot.val();
+            
+            firebase.getSyllabusURL(`Syllabus/Sem${sem}.pdf`).then((url)=>{
+                firebase.setLoading(prev => !prev);
+                firebase.setsyllabusURL(url);
             });
+            firebase.setDetails({
+                branch : branch,
+                sem : sem,
+                sub : ""
+        });
         })
     }, [])
 
@@ -165,19 +165,23 @@ const SemDetailsSelected = () => {
     const handleSubjectSelection = async (e)=>{
         firebase.setDetails({...firebase.detailsOfUser, [e.target.name] : e.target.value});
 
-        const response = await youtube.get('/search', {
+        firebase.setLoading(prev => !prev);
+
+        await youtube.get('/search', {
             params: {
                 q : e.target.value,
                 type : "playList",
                 order : "rating",
             }
-        })
-        firebase.setVideoList(response.data.items);
+        }).then(async (response)=>{
+            firebase.setVideoList(response.data.items);
 
-        await axios.get(`${URL}${e.target.value}`).then((res)=>{
-            console.log(res.data.items);
-            firebase.setNoteList(res.data.items);
-        });
+            await axios.get(`${URL}${e.target.value}`).then((res)=>{
+                firebase.setLoading(prev => !prev);
+                firebase.setNoteList(res.data.items);
+            });
+        })
+
     }
 
     return (
@@ -190,7 +194,7 @@ const SemDetailsSelected = () => {
                     <div className='flex items-center space-x-4'>
                         <span>{"Semester : " + firebase.detailsOfUser.sem}</span>
                     </div>
-                    <div className='h-12 w-48 bg-white text-black flex items-center justify-center overflow-hidden rela'>
+                    <div className='h-12 w-48 bg-white text-black flex items-center justify-center overflow-hidden relative'>
                         <div className=''>{firebase.detailsOfUser.sub !== "" ? "Another ?" : "Choose Subject"}</div>
                         <select name='sub' onChange={handleSubjectSelection} className='absolute opacity-0 h-full w-full bg-transparent'>
                             <option defaultValue={""}>Choose Subject</option>
@@ -205,10 +209,14 @@ const SemDetailsSelected = () => {
                     </div>
                 </div>
 
-                <div className='flex justify-start items-center space-x-3 py-2 px-3'>
+                {
+                    firebase.detailsOfUser.sub === "" ?
+                    "" : 
+                    <>
+                    <div className='flex justify-start items-center space-x-3 py-2 px-3'>
                     <span> Syllabus : </span>
                     <a href={firebase.syllabusURL === null ? "#" : firebase.syllabusURL}  className='px-6 py-2 bg-white text-black rounded-lg' target="_blank" download>Preview</a>
-                </div>
+                    </div>
 
                 <div className='flex flex-col border-[0.5px] border-gray-300 h-[50%] relative'>
                     <span className='border-b-2 p-2 relative overflow-hidden whitespace-nowrap text-ellipsis'>{firebase.detailsOfUser.sub === "" ? "Youtube Videos for" : firebase.detailsOfUser.sub}</span>
@@ -218,7 +226,7 @@ const SemDetailsSelected = () => {
                         <div className='p-2'>
                             {
                                 firebase.videoList === null ? 
-                                "" : 
+                                "No VideoPlaylist available" : 
                                 firebase.videoList.map((video)=>{
                                     console.log(video);
                                     const videoSrc = `https://www.youtube.com/playlist?list=${video.id.playlistId}`;
@@ -244,7 +252,7 @@ const SemDetailsSelected = () => {
                     <ul className='flex flex-col p-2 mt-4 space-y-4 text-white overflow-x-hidden overflow-y-scroll hide-scrollbar'>
                         {   
 
-                            firebase.noteList === null ? "" :
+                            firebase.noteList === null ? "No Notes available" :
                             firebase.noteList.map((notes)=>{
                                 const displayLink = notes.displayLink;
 
@@ -268,6 +276,9 @@ const SemDetailsSelected = () => {
                         </li>
                     </ol>
                 </div>
+
+                </>
+                }
             </div>
             <div className='h-16 w-full'></div>
         </div>

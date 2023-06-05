@@ -4,32 +4,45 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap');
 
-.dark-bg{
-    background-color: #18191A;
+.bg-main{
+    background-color: #121212;
 }
 
-.fade-bg{
-    background-color: #272A2E;
+.bg-btn-primary{
+    background-color: #FF5722;
 }
 
-.bg-img{
-        background: linear-gradient(
-          50deg,
-          rgba(255, 255, 255, 0.4) 12%,
-          rgba(255, 255, 255, 0.1) 77%
-        );
-        background-blend-mode: ;
-        box-shadow: 0px 4px 24px 1px rgba(0, 0, 0, 0.28);
-        backdrop-filter: blur(5px);
-        -webkit-backdrop-filter: blur(5px);
+.bg-btn-secondry{
+    background-color: #00BCD4;
 }
 
-.btn-prm{
-    background-color: #66BD68;
+.bg-btn-success{
+    background-color: #4CAF50 ;
 }
 
-.btn-mn{
-    background-color: #6CC1FA;
+.bg-btn-light{
+    background-color: #ffffff;
+}
+
+.link {
+    color : #00BCD4;
+}
+
+.link-visited{
+    color : #FF5722;
+}
+
+.main-text{
+    color : #ffffff;
+}
+
+.para-text{
+    color: #CCCCCC;
+}
+
+
+.para-txt{
+    color : rgba(100, 82, 82, 0.37)
 }
 
 body{
@@ -130,14 +143,14 @@ body{
 }
 
 .animate-TopWidth{
-    animation: width 500ms ease-in 500ms;
+    animation: width 1s ease-in 1s infinite;
 }
 .animate-BottomWidth{
-    animation: width 500ms ease-in 500ms;
+    animation: width 1s ease-in 1s infinite;
 }
 .animate-LeftHeight{
-    animation: height 500ms ease-in 500ms;
+    animation: height 1s ease-in 2s infinite;
 }
 .animate-RightHeight{
-    animation: height 500ms ease-in 500ms;
+    animation: height 1s ease-in 2s infinite;
 }

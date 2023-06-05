@@ -1,13 +1,14 @@
 import React from 'react'
+import CardStack from './CardStack'
 import TopBar from './TopBar'
 
-const Feed = ({handleWidth, handleNoteWidth}) => {
+const Feed = () => {
 
   return (
-    <div className='text-white flex flex-col'>
-        <TopBar handleWidth = {handleWidth} handleNoteWidth ={ handleNoteWidth } />
-        <div className='p-4 first-letter:text-2xl first-letter:italic'>
-        
+    <div className='text-white h-full w-full flex flex-col items-center justify-center relative'>
+        <TopBar />
+        <div className='bg-main h-[50%] w-[80%] p-4 rounded-md shadow-md relative flex items-center justify-center overflow-hidden'>
+          <CardStack/>
         </div>
     </div>
   )

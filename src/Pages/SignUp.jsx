@@ -43,47 +43,44 @@ const SignUp = () => {
   const branches = ["Information Technology"]
 
   return (
-    <div className={`h-screen w-screen bg-black text-white relative overflow-hidden flex flex-col justify-center items-center`}>   
-    
+    <div className={`h-screen w-screen relative overflow-hidden flex flex-col justify-center items-center`}>   
         <form onSubmit={handleSubmit} className='h-full flex flex-col justify-center items-center w-full space-y-4 relative'>
-              <div className='text-3xl text-white self-start pl-6 flex relative'>Registere Here
-              <div className='flex space-x-1 absolute bottom-2 -right-8'>
-                <span className='h-1 aspect-square rounded-full animate-loading bg-white'></span>
-                <span className='h-1 aspect-square rounded-full animate-loading  bg-white'></span>
-                <span className='h-1 aspect-square rounded-full animate-loading bg-white'></span>
-                <span className='h-1 aspect-square rounded-full animate-loading  bg-white'></span>
+              
+              <div className='flex flex-col items-center justify-center relative'>
+                  <span className='para-text text-xl'>Take the Next Step</span>
+                  <span className='main-text text-2xl'>Register</span>
               </div>
-              </div>
-              <div className='w-[90%] h-14 p-2 flex justify-start items-center relative border-[1px] border-white'>
-                <label for="email" className={`text-white absolute left-2 bg-black ${emailLabel ? "-translate-y-7 rounded text-xs opacity-100" : "opacity-0"} transition-all text-sm`}>Email</label>
+
+              <div className='w-[90%] h-14 p-2 flex justify-start items-center bg-main rounded-md shadow-md relative'>
+                <label for="email" className={`text-white absolute left-2 bg-transparent ${emailLabel ? "-translate-y-7 rounded text-xs opacity-100" : "opacity-0"} transition-all text-sm`}>Email</label>
                 <input 
                 onChange={(e)=>{
                   if(e.target.value !== "" && emailLabel === false)setEmailLabel(prev => !prev);
                   setEmail(e.target.value);
                   if(e.target.value === "" && emailLabel === true) setEmailLabel(prev => !prev);
                 }} 
-                value={email} className='w-full h-full bg-black outline-none text-white text-sm' type="email" name="" id="email" required spellCheck="off" placeholder='Email'/>
+                value={email} className='w-full h-full bg-transparent outline-none text-sm' type="email" name="" id="email" required spellCheck="off" placeholder='Email'/>
               </div>
 
-            <div ref = {ref} className='w-[90%] h-14 p-2 flex justify-between items-center border-[1px] border-white relative'>
-              <label for="pass" className={`text-white absolute left-2 bg-black ${passLabel ? "-translate-y-7 rounded text-xs opacity-100" : "opacity-0"} transition-all text-sm`}>Password</label>
+            <div ref = {ref} className='w-[90%] h-14 p-2 flex justify-between items-center relative bg-main rounded-md shadow-md'>
+              <label for="pass" className={`text-white absolute left-2 bg-transparent ${passLabel ? "-translate-y-7 rounded text-xs opacity-100" : "opacity-0"} transition-all text-sm`}>Password</label>
               <input onChange={(e)=>{
                   if(e.target.value !== "" && passLabel === false) setPassLabel(prev => !prev);
                   setPass(e.target.value);
                   if(e.target.value === "" && passLabel === true) setPassLabel(prev => !prev);
                 }}value={pass} className='w-full h-full outline-none bg-transparent text-sm text-white' placeholder='Password' type="password" name="" id="pass" required spellCheck="off"/>
               {
-                eye ? <AiFillEyeInvisible className='text-white text-3xl'  onClick={()=>{
+                eye ? <AiFillEyeInvisible className='para-text text-3xl'  onClick={()=>{
                   setEye(prev => !prev);
                   ref.current.children[1].type = "text";
-                }}/> : <AiFillEye className='text-white text-3xl' onClick={()=>{
+                }}/> : <AiFillEye className='para-text text-3xl' onClick={()=>{
                   setEye(prev => !prev);
                   ref.current.children[1].type = "password";
                 }}/>
               }
             </div>
 
-            <div className='w-[90%] h-14 relative flex justify-center items-center bg-black text-white border-[1px] overflow-hidden'>
+            <div className='w-[90%] h-14 relative flex justify-center items-center bg-main rounded-md shadow-md para-text overflow-hidden'>
               <div>{firebase.detailsOfUser.sem === "" ? "Select Semester" : "Semester "+firebase.detailsOfUser.sem}</div>
               <select onChange={(e)=>{
                 firebase.setDetails({...firebase.detailsOfUser, [e.target.name] : e.target.value});
@@ -99,7 +96,7 @@ const SignUp = () => {
               </select>
             </div>
 
-            <div className='w-[90%] h-14 relative flex justify-center items-center bg-black text-white border-[1px] overflow-hidden'>
+            <div className='w-[90%] h-14 relative flex justify-center items-center bg-main rounded-md shadow-md para-text overflow-hidden'>
               <div>{firebase.detailsOfUser.branch === "" ? "Select Branch" : firebase.detailsOfUser.branch}</div>
               <select onChange={(e)=>{
                 firebase.setDetails({...firebase.detailsOfUser, [e.target.name] : e.target.value})
@@ -114,10 +111,10 @@ const SignUp = () => {
                 }
               </select>
             </div>
-            <div className='text-gray-400 text-sm py-2'>Already a user?<span onClick={()=>{
+            <div className='para-text text-sm py-2'>Already a user?<span onClick={()=>{
               navigate('/')
-                      }} className='text-white border-b-[2px] pb-[2px]'>{"  "}Log In</span></div>
-            <input className='py-4 px-24 bg-white text-xl button-color text-black' type="submit" value="Register"/>
+                      }} className='link'>{"  "}Log In</span></div>
+            <input className='tracking-wider py-4 px-24 bg-btn-primary rounded-md shadow-md text-xl button-color main-text' type="submit" value="Register"/>
         </form>
     </div>
   )

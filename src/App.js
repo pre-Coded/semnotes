@@ -1,22 +1,18 @@
 import { Routes, Route, useNavigate } from "react-router-dom";
 import Home from "./Components/Home/Home";
-import SemDetails from "./Components/semDetails/semDetails";
 import Form from "./Components/Form/Form.jsx";
 import NavBar from "./Components/NavBar/NavBar";
-import Notes from "./Pages/Notes";
 import {useState} from 'react';
-import {MdOutlineAdd} from 'react-icons/md'
 import AbtCollege from "./Components/AbtCollege/AbtCollege";
 import UserProfile from "./Components/Profile/UserProfile";
 import {useFireBase} from './utilities/Firebase';
 import SignUp from "./Pages/SignUp";
 import Login from "./Pages/Login";
-import {useEffect} from 'react'
 import NoPage from "./Pages/NoPage";
 import Loading from "./Pages/LoadingOverlay";
 import SemDetailsSelected from "./Pages/semDetailsSelected";
-import BG from './assets/bg.jpeg'
 import LoadingOverlay from "./Pages/LoadingOverlay";
+
 
 function App() {
     const [height, setHeight] = useState(100);
@@ -72,7 +68,7 @@ function App() {
 
 
     return (
-        <div className={`w-full bg-black h-screen  relative hide-scrollbar overflow-hidden`}>
+        <div className={`w-full h-screen bg-black relative hide-scrollbar overflow-hidden`}>
            <LoadingOverlay isLoading ={firebase.isLoading}></LoadingOverlay>
             {
               firebase.isLoggedIn ? 

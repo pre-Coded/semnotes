@@ -98,14 +98,7 @@ export const FireBaseProvider = (props) => {
     };
 
     const signInUser = async (email, pass) => {
-        setLoading(prev => !prev);
-        await signInWithEmailAndPassword(auth, email, pass).then(() => {
-            navigate('/');
-            setLoading(prev => !prev);
-        }).catch(() => {
-            alert("Enter valid credentials.");
-            setLoading(prev => !prev);
-        })
+        return await signInWithEmailAndPassword(auth, email, pass);
     }
     const handleSignOut = async () => {
         setLoading(prev => !prev);

@@ -23,54 +23,25 @@ const EditAccount = ({call, setCall}) => {
     const firebase = useFireBase();
 
   return (
-    <div className={`${call ? "block" : "hidden"} h-screen w-screen absolute flex items-center justify-center bg-transparent backdrop-blur-sm overflow-hidden`}>
+    <div className={`${call ? "h-screen w-screen z-9999" : "h-0 w-0 -z-[9999]"} absolute flex items-center justify-center bg-transparent backdrop-blur-sm overflow-hidden`}>
 
-        <div className='h-[60%] w-full m-4 bg-black text-white border-[1px] flex flex-col p-4 space-y-4 overflow-x-hidden overflow-y-scroll hide-scrollbar'>
-            <div className='text-xl flex justify-between items-center border-b-[1px] pb-1'><span>Edit Account</span>
-            <RxCross1 onClick={()=>{setCall(prev => !prev)}} className='text-3xl'/>
+        <div className={`${call ? "scale-100" : "scale-0"} h-[60%] border-y-[2px] border-y-[#FF5722] w-full m-4 bg-black rounded-md shadow-md flex flex-col p-4 space-y-4 overflow-x-hidden overflow-y-scroll hide-scrollbar transition-all`}>
+            <div className='text-xl flex justify-between para-text items-center pb-4 border-b-[2px] border-b-[#121212]'><span>Edit Account</span>
+            <RxCross1 onClick={()=>{setCall(prev => !prev)}} className='text-3xl text-main'/>
             </div>
 
-            <div className='h-14 p-2 flex justify-start items-center relative border-[1px] border-white'>
-                <label for="username" className={`text-white absolute left-2 bg-black ${usernameLabel ? "-translate-y-7 rounded text-xs opacity-100" : "opacity-0"} transition-all text-sm`}>Username</label>
+            <div className='h-14 p-2 flex justify-start items-center relative rounded-md shadow-md bg-main'>
+                <label for="username" className={`text-white absolute left-2 bg-transparent ${usernameLabel ? "-translate-y-7 rounded text-xs opacity-100" : "opacity-0"} transition-all text-sm`}>Username</label>
                 <input 
                 onChange={(e)=>{
                   if(e.target.value !== "" && usernameLabel === false) setUserlabel(prev => !prev);
                   setUsername(e.target.value);
                   if(e.target.value === "" && usernameLabel === true) setUserlabel(prev => !prev);
                 }} 
-                value={username} className='w-full h-full bg-black outline-none text-white text-sm' type="email" name="" id="username" required spellCheck="off" placeholder='Add Username'/>
+                value={username} className='w-full h-full bg-transparent outline-none text-white text-sm' type="email" name="" id="username" required spellCheck="off" placeholder='Add Username'/>
             </div>
 
-            <div className='h-14 p-2 flex justify-start items-center relative border-[1px] border-white'>
-                <label for="email" className={`text-white absolute left-2 bg-black ${emailLabel ? "-translate-y-7 rounded text-xs opacity-100" : "opacity-0"} transition-all text-sm`}>Email</label>
-                <input 
-                onChange={(e)=>{
-                  if(e.target.value !== "" && emailLabel === false) setEmailLabel(prev => !prev);
-                  setemail(e.target.value);
-                  if(e.target.value === "" && emailLabel === true) setEmailLabel(prev => !prev);
-                }} 
-                value={email} className='w-full h-full bg-black outline-none text-white text-sm' type="email" name="" id="email" required spellCheck="off" placeholder='Update Email'/>
-            </div>
-
-            <div ref = {ref} className='h-14 p-2 flex justify-between items-center border-[1px] border-white relative'>
-              <label for="pass" className={`text-white absolute left-2 bg-black ${passLabel ? "-translate-y-7 rounded text-xs opacity-100" : "opacity-0"} transition-all text-sm`}>Password</label>
-              <input onChange={(e)=>{
-                  if(e.target.value !== "" && passLabel === false) setPassLabel(prev => !prev);
-                  setPass(e.target.value);
-                  if(e.target.value === "" && passLabel === true) setPassLabel(prev => !prev);
-                }}value={pass} className='w-full h-full outline-none bg-transparent text-sm text-white' placeholder='Update Password' type="password" name="" id="pass" required spellCheck="off"/>
-              {
-                eye ? <AiFillEyeInvisible className='text-white text-3xl'  onClick={()=>{
-                  setEye(prev => !prev);
-                  ref.current.children[1].type = "text";
-                }}/> : <AiFillEye className='text-white text-3xl' onClick={()=>{
-                  setEye(prev => !prev);
-                  ref.current.children[1].type = "password";
-                }}/>
-              }
-            </div>
-
-            <div className='w-full h-14 relative flex justify-center items-center bg-black text-white border-[1px] overflow-hidden'>
+            <div className='h-14 p-2 flex justify-center items-center relative rounded-md shadow-md bg-main overflow-hidden'>
               <div>{firebase.detailsOfUser.sem === "" ? "Change Semester" : "Semester "+firebase.detailsOfUser.sem}</div>
               <select onChange={(e)=>{
                 firebase.setDetails({...firebase.detailsOfUser, [e.target.name] : e.target.value});
@@ -86,12 +57,12 @@ const EditAccount = ({call, setCall}) => {
               </select>
             </div>
 
-            <div className='w-full h-14 relative flex justify-center items-center bg-black text-white border-[1px] overflow-hidden'>
+            <div className='h-14 p-2 flex justify-center items-center relative rounded-md shadow-md bg-main overflow-hidden'>
               <div className='flex items-center  justify-center'><BiCloudUpload className='text-2xl mr-2'/>Profile Photo</div>
               <input onChange={(e)=>{
               }} className='h-full w-full outline-none text-white bg-transparent absolute opacity-0' type="file" required/>
             </div>
-            <button className='py-4 bg-white grid place-items-center text-black brightness-150'>Save</button>
+            <button className='py-4 rounded-md text-xl tracking-wider bg-btn-success grid place-items-center brightness-125'>Save</button>
         </div>
     </div>
   )
