@@ -48,10 +48,10 @@ const SignUp = () => {
         <form onSubmit={handleSubmit} className='h-full flex flex-col justify-center items-center w-full space-y-4 relative'>
               <div className='text-3xl text-white self-start pl-6 flex relative'>Registere Here
               <div className='flex space-x-1 absolute bottom-2 -right-8'>
-                <span className='h-1 aspect-square rounded-full animate-first bg-white'></span>
-                <span className='h-1 aspect-square rounded-full animate-second bg-white'></span>
-                <span className='h-1 aspect-square rounded-full animate-third bg-white'></span>
-                <span className='h-1 aspect-square rounded-full animate-fourth bg-white'></span>
+                <span className='h-1 aspect-square rounded-full animate-loading bg-white'></span>
+                <span className='h-1 aspect-square rounded-full animate-loading  bg-white'></span>
+                <span className='h-1 aspect-square rounded-full animate-loading bg-white'></span>
+                <span className='h-1 aspect-square rounded-full animate-loading  bg-white'></span>
               </div>
               </div>
               <div className='w-[90%] h-14 p-2 flex justify-start items-center relative border-[1px] border-white'>
@@ -83,11 +83,11 @@ const SignUp = () => {
               }
             </div>
 
-            <div className='w-[90%] h-14 relative flex justify-center items-center bg-black text-white border-[1px]'>
+            <div className='w-[90%] h-14 relative flex justify-center items-center bg-black text-white border-[1px] overflow-hidden'>
               <div>{firebase.detailsOfUser.sem === "" ? "Select Semester" : "Semester "+firebase.detailsOfUser.sem}</div>
               <select onChange={(e)=>{
                 firebase.setDetails({...firebase.detailsOfUser, [e.target.name] : e.target.value});
-              }} className='h-full outline-none text-white bg-transparent absolute opacity-0' name="sem" required>
+              }} className='h-full w-full outline-none text-white bg-transparent absolute opacity-0' name="sem" required>
                 <option className='' defaultValue={"Select Semester"}>Select Semester</option>
                 {
                   sems.map((sem)=>{
@@ -99,11 +99,11 @@ const SignUp = () => {
               </select>
             </div>
 
-            <div className='w-[90%] h-14 relative flex justify-center items-center bg-black text-white border-[1px]'>
+            <div className='w-[90%] h-14 relative flex justify-center items-center bg-black text-white border-[1px] overflow-hidden'>
               <div>{firebase.detailsOfUser.branch === "" ? "Select Branch" : firebase.detailsOfUser.branch}</div>
               <select onChange={(e)=>{
                 firebase.setDetails({...firebase.detailsOfUser, [e.target.name] : e.target.value})
-              }} className='h-full outline-none text-white bg-transparent absolute opacity-0 ' name='branch' required>
+              }} className='h-full w-full outline-none text-white bg-transparent absolute opacity-0 ' name='branch' required>
                 <option className='' defaultValue={"Select Branch"}>Select Branch</option>
                 {
                   branches.map((branch)=>{

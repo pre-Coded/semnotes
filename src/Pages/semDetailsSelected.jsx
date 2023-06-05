@@ -34,10 +34,6 @@ const SemDetailsSelected = () => {
     //       console.log("runningSemdetails");
     //       retrieveData();
     //   }, [firebase.user])
-
-    const info = firebase.detailsOfUser;
-    const [videoLink, setVideoLink] = useState(null);
-    const [syllabusURL, setSyllabusURL] = useState("");
     
     // useEffect( () => {
     //     firebase.getVideoLinks(info.branch, info.sub).then( (docs) => {
@@ -194,7 +190,7 @@ const SemDetailsSelected = () => {
                     <div className='flex items-center space-x-4'>
                         <span>{"Semester : " + firebase.detailsOfUser.sem}</span>
                     </div>
-                    <div className='h-12 w-48 bg-white text-black flex items-center justify-center'>
+                    <div className='h-12 w-48 bg-white text-black flex items-center justify-center overflow-hidden rela'>
                         <div className=''>{firebase.detailsOfUser.sub !== "" ? "Another ?" : "Choose Subject"}</div>
                         <select name='sub' onChange={handleSubjectSelection} className='absolute opacity-0 h-full w-full bg-transparent'>
                             <option defaultValue={""}>Choose Subject</option>
