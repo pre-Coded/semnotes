@@ -1,53 +1,68 @@
-import React, { useState } from 'react';
-import { motion, useMotionValue, useTransform } from 'framer-motion';
+import React, { useRef, useState } from "react";
+// Import Swiper React components
+import { Swiper, SwiperSlide } from "swiper/react";
+import {AiOutlineArrowLeft, AiOutlineArrowRight} from 'react-icons/ai'
 
-const CardStack = () => {
-  const [cards, setCards] = useState(['Card 1', 'Card 2', 'Card 3']);
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/effect-cards";
 
-  const cardDragged = (index) => {
-    const draggedCard = cards[index];
-    setCards((prevCards) => {
-      const newCards = prevCards.filter((_, i) => i !== index);
-      return [...newCards, draggedCard];
-    });
-  };
+// import required modules
+import { EffectCards } from "swiper";
 
-  const renderCards = () => {
-    return cards.map((card, index) => (
-      <DraggableCard key={index} index={index} onDrag={cardDragged}>
-        {card}
-      </DraggableCard>
-    ));
-  };
+export default function App() {
 
-  return <div id="card-container" className='h-full w-full'>{renderCards()}</div>;
-};
-
-const DraggableCard = ({ children, index, onDrag }) => {
-  const x = useMotionValue(0);
-  const opacity = useTransform(x, [-100, 0], [0.5, 1]);
-  const rotate = useTransform(x, [-100, 90], [-50, 45]);
-
-  const handleDrag = (event, info) => {
-    const { point } = info;
-    if (point.x < -50) {
-      onDrag(index);
-    }
-  };
+  const cardStyle = "p-2 rounded-md shadow-md flex flex-col item-center"
 
   return (
-    <motion.div
-      drag="x"
-      dragConstraints={{ left: 0, right: 0 }}
-      style={{ x, opacity, rotate }}
-      onDragEnd={handleDrag}
-      onDragPropagation ="true"
-    >
-      <div className={``}>
-        {children}
-      </div>
-    </motion.div>
-  );
-};
+    <>
+      <Swiper
+        effect={"cards"}
+        grabCursor={true}
+        modules={[EffectCards]}
+        className="mySwiper h-full w-full p-2"
+      >
+        <SwiperSlide className="h-full w-full flex flex-col items-center bg-main space-y-3 rounded-lg shadow-lg">
+          <span></span>
+          <span className="main-text bg-black shadow-2xl">Problem</span>
+          <span className="para-text overflow-scroll p-2 hide-scrollbar text-sm tracking-wider">
+            Are you feeling overwhelmed and concerned about the time-consuming process of searching for the best reference notes, syllabus, previous year papers, and a suitable YouTube playlist for an upcoming exam? Do you worry that this search might be taking away valuable time that could be better utilized for preparation? We understand your concerns and are here to help!
+          </span>
+        </SwiperSlide>
+        <SwiperSlide className="h-full w-full flex flex-col items-center bg-[#222222] space-y-3 rounded-lg shadow-lg">
+          <span></span>
+          <span className="main-text">Solution</span>
+          <span className="para-text overflow-scroll p-2 hide-scrollbar text-sm tracking-wider relative flex flex-col space-y-3">
+          <span>
+          We through ExamRescue aim to assist you in finding the most relevant and reliable study resources efficiently. By understanding your requirements and preferences, we can provide tailored recommendations for reference notes, syllabus, previous year papers, and YouTube playlists related to your subject of interest. This way, you can save time and focus more on your exam preparation.
+          </span>
+          <button className="bg-main rounded-md shadow-md p-3 text-main flex items-center justify-center space-x-4 tracking-wider">
+            <AiOutlineArrowLeft/>
+            Slide to know How!
+          </button>
+          </span>
+        </SwiperSlide>
+        <SwiperSlide className="h-full w-full flex flex-col items-center bg-[#333333] space-y-3 rounded-lg shadow-lg">
+          <span></span>
+          <span className="main-text">How ?</span>
+          <span className="para-text overflow-scroll p-2 hide-scrollbar text-sm tracking-wider relative flex flex-col space-y-3">
+          <span className="flex flex-col items-center justify-center">
+              <span className="main-text bg-main shadow-md rounded-md p-2">Step 1 : </span>
+              <span className="para-text text-center tracking-wider">
+                Choose the second icon from navbar
+              </span>
+          </span>
 
-export default CardStack;
+            <span className="flex flex-col items-center justify-center">
+              <span className="main-text bg-main shadow-md rounded-md p-2">Step 2 : </span>
+              <span className="para-text text-center tracking-wider">
+                You will have your branch and sem details.
+                Select the subject.And there you have it.
+              </span>
+            </span>
+          </span>
+        </SwiperSlide>
+      </Swiper>
+    </>
+  );
+}

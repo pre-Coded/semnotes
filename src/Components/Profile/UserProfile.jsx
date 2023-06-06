@@ -4,6 +4,9 @@ import { AiFillCaretDown} from 'react-icons/ai'
 import { useFireBase } from '../../utilities/Firebase'
 import EditAccount from '../../Pages/EditAccount'
 import AnimatedButton from './AnimatedButton'
+import AccountInfo from './AccountInfo'
+import ContactUs from './ContactUs'
+import Feedback from './Feedback'
 
 const UserProfile = () => {
     const firebase = useFireBase();
@@ -31,9 +34,9 @@ const UserProfile = () => {
 
         <div className='flex flex-col px-2 mt-4 w-full overflow-y-scroll'>
             <div className='p-2 text-sm flex flex-col space-y-2'>
-                <AnimatedButton state={account} setState={setAccount} btn={"Account Info"} data={"Account"}/>
-                <AnimatedButton state={contact} setState={setContact} btn={"Contact Us"} data={"Contact"}/>
-                <AnimatedButton state={follow} setState={setFollow} btn={"Follow Us"} data={"Follow"}/>
+                <AnimatedButton state={account} setState={setAccount} btn={"Account Info"} data={<AccountInfo/>}/>
+                <AnimatedButton state={contact} setState={setContact} btn={"Contact Us"} data={<ContactUs/>}/>
+                <AnimatedButton state={follow} setState={setFollow} btn={"Provide Feedback"} data={<Feedback/>}/>
             </div>
         </div>
         <div className='h-36 bg-black w-full'></div>

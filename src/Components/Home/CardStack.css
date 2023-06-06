@@ -1,0 +1,29 @@
+/* .swiper {
+  width: 240px;
+  height: 320px;
+} */
+
+/* .swiper-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #fff;
+} */
+
+.swiper-slide:nth-child(1n) {
+  background-color: #121212;
+}
+
+.swiper-slide:nth-child(2n) {
+  background-color: #00BCD4;
+}
+
+.swiper-slide:nth-child(3n) {
+  background-color: #FF5722;
+}
+
+
+
