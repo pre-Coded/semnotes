@@ -10,5 +10,5 @@ const Downloads = ({width, handleWidth}) => {
     </div>
   )
 }
-
+ 
 export default Downloads
