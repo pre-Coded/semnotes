@@ -5,9 +5,8 @@ import './style.css'
 const LoadingOverlay = ({isLoading}) => {
   return ( <>
     {isLoading && (
-      <div className="loading-overlay">
-        <div className="loading-spinner"></div>
-        <p>Loading...</p>
+      <div className="z-[9999] top-0 left-0 h-full w-full relative">
+        <div className="loading-spinner bg-gradient-to-r from-[#ff5722] to-[#FFEB00] h-1 rounded-lg w-full"></div>
       </div>
     )}
     </>
