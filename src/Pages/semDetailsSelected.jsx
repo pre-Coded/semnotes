@@ -1,6 +1,6 @@
 import { async } from '@firebase/util'
 import { connectStorageEmulator } from 'firebase/storage'
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import { AiOutlineLink } from 'react-icons/ai'
 import { CgPlayListSearch } from 'react-icons/cg'
 import { useNavigate } from 'react-router-dom'
@@ -19,7 +19,7 @@ const SemDetailsSelected = () => {
     //     const userEmail = email.substring(0, email.indexOf(".com"));
     //     await firebase.getData(`ExamRescue/${userEmail}/academicDetails`).then((snapshot)=>{
     //         const {branch, sem} = snapshot.val();
-  
+
     //         firebase.setDetails({
     //             branch : branch,
     //             sem : sem,
@@ -29,12 +29,12 @@ const SemDetailsSelected = () => {
     //         console.log(err);
     //     })
     //   }
-  
+
     //   useEffect( () =>{
     //       console.log("runningSemdetails");
     //       retrieveData();
     //   }, [firebase.user])
-    
+
     // useEffect( () => {
     //     firebase.getVideoLinks(info.branch, info.sub).then( (docs) => {
     //         console.log(docs);
@@ -69,87 +69,91 @@ const SemDetailsSelected = () => {
     //     })
     // }
 
-    useEffect( ()=>{
-        const email = firebase.user.email;
-        const userEmail = email.substring(0, email.indexOf(".com"));
+    useEffect(() => {
+        if (firebase.detailsOfUser.branch.length === 0) {
+            const email = firebase.user.email;
+            const userEmail = email.substring(0, email.indexOf(".com"));
 
-        firebase.setLoading(prev => !prev);
-        firebase.getData(`ExamRescue/${userEmail}/academicDetails`).then((snapshot)=>{
-            const {branch, sem} = snapshot.val();
-            
-            firebase.getSyllabusURL(`Syllabus/Sem${sem}.pdf`).then((url)=>{
-                firebase.setLoading(prev => !prev);
-                firebase.setsyllabusURL(url);
-            });
-            firebase.setDetails({
-                branch : branch,
-                sem : sem,
-                sub : ""
-        });
-        })
+            firebase.setLoading(prev => !prev);
+            firebase.getData(`ExamRescue/${userEmail}/academicDetails`).then((snapshot) => {
+                const { branch, sem } = snapshot.val();
+
+                firebase.getSyllabusURL(`Syllabus/Sem${sem}.pdf`).then((url) => {
+                    firebase.setLoading(prev => !prev);
+                    firebase.setsyllabusURL(url);
+                });
+
+                firebase.setDetails({
+                    branch: branch,
+                    sem: sem,
+                    sub: ""
+                });
+            }
+            )
+        }
     }, [])
 
     const subjectList = [
-            [
-                "APPLIED PHYSICS-A",
-                "BEC",
-                "CP",
-                "AM-A",
-                "MPP",
-                "EGC"
-            ],
-            [
-                "APPLIED CHEMISTRY-A",
-                "APPLIED MATHEMATICS-B",
-                "BEC-2",
-                "ENGLISH REPORT",
-                "MANUFACTURING PROCESS",
-                "ENVIRONMENTAL STUDIES"
-            ],
-            [
-                "OBJECT ORIENTED PROGRAMMING",
-                "DATA STRUCTURE",
-                "DATA COMMUNICATION AND NETWORKING",
-                "DATABASE MANAGEMENT SYSTEM",
-                "NUMERICAL MATHEMATICS",
-            ],
-            [   
-                "ALGORITH",
-                "JAVA PROGRAMMING",
-                "DATA MINING",
-                "FLAT",
-                "OPERATING SYSTEM",
-            ],
-            [   
-                "CNS",
-                "SEC",
-                "WDT",
-                "CGA",
-                "DM",
-                "DE-I",
-            ],
-            [
-                "SCC",
-                "OOM",
-                "MAD",
-                "ML",
-                "DE-II",
-                "OE-I",
-            ],
-            [   
-                "Software Testing",
-                "Cloud Testing",
-                "DE-III",
-                "DE-IV",
-                "OE-II",
-            ],
-            [
-                "SP",
-                "E-COMM",
-                "DSSM",
-                "DE-V",
-                "OE-III",
-            ]
+        [
+            "APPLIED PHYSICS-A",
+            "BEC",
+            "COMPUTER PROGRAMMING",
+            "APPLIED MATHEMATICS-A",
+            "MANAGEMENT, PRINCIPLES, PRACTICES",
+            "ENGINEERING GRAPHICS CADD"
+        ],
+        [
+            "APPLIED CHEMISTRY-A",
+            "APPLIED MATHEMATICS-B",
+            "BEC-2",
+            "ENGLISH REPORT",
+            "MANUFACTURING PROCESS",
+            "ENVIRONMENTAL STUDIES"
+        ],
+        [
+            "OBJECT ORIENTED PROGRAMMING",
+            "DATA STRUCTURE",
+            "DATA COMMUNICATION AND NETWORKING",
+            "DATABASE MANAGEMENT SYSTEM",
+            "NUMERICAL MATHEMATICS",
+        ],
+        [
+            "ALGORITH",
+            "JAVA PROGRAMMING",
+            "DATA MINING",
+            "FLAT",
+            "OPERATING SYSTEM",
+        ],
+        [
+            "CNS",
+            "SEC",
+            "WDT",
+            "CGA",
+            "DM",
+            "DE-I",
+        ],
+        [
+            "SCC",
+            "OOM",
+            "MAD",
+            "ML",
+            "DE-II",
+            "OE-I",
+        ],
+        [
+            "Software Testing",
+            "Cloud Testing",
+            "DE-III",
+            "DE-IV",
+            "OE-II",
+        ],
+        [
+            "SP",
+            "E-COMM",
+            "DSSM",
+            "DE-V",
+            "OE-III",
+        ]
     ]
 
 
@@ -162,21 +166,21 @@ const SemDetailsSelected = () => {
         "www.javatpoint.com",
     ]
 
-    const handleSubjectSelection = async (e)=>{
-        firebase.setDetails({...firebase.detailsOfUser, [e.target.name] : e.target.value});
+    const handleSubjectSelection = async (e) => {
+        firebase.setDetails({ ...firebase.detailsOfUser, [e.target.name]: e.target.value });
 
         firebase.setLoading(prev => !prev);
 
         await youtube.get('/search', {
             params: {
-                q : e.target.value,
-                type : "playList",
-                order : "rating",
+                q: e.target.value,
+                type: "playList",
+                order: "rating",
             }
-        }).then(async (response)=>{
+        }).then(async (response) => {
             firebase.setVideoList(response.data.items);
 
-            await axios.get(`${URL}${e.target.value}`).then((res)=>{
+            await axios.get(`${URL}${e.target.value}`).then((res) => {
                 firebase.setLoading(prev => !prev);
                 firebase.setNoteList(res.data.items);
             });
@@ -186,10 +190,10 @@ const SemDetailsSelected = () => {
 
     return (
         <div className='h-screen p-2 scroll-smooth w-screen flex flex-col text-white space-y-3 overflow-hidden relative bg-black'>
-            
-            <div className='w-full space-y-2 h-full scroll-smooth overflow-x-hidden overflow-y-scroll hide-scrollbar flex flex-col text-white '>
 
-                <div className='flex flex-col rounded-b-lg border-b-[2px] items-center justify-center pt-8 space-y-4 pb-6 sticky top-0 bg-black z-10'>
+            <div className='w-full space-y-2 h-full scroll-smooth overflow-x-hidden overflow-y-scroll hide-scrollbar flex flex-col items-center justify-center'>
+
+                {/* <div className='flex flex-col rounded-b-lg border-b-[2px] items-center justify-center pt-8 space-y-4 pb-6 sticky top-0 bg-black z-10'>
                     <div className=''>{"Branch : " + firebase.detailsOfUser.branch}</div>
                     <div className='flex items-center space-x-4'>
                         <span>{"Semester : " + firebase.detailsOfUser.sem}</span>
@@ -199,85 +203,153 @@ const SemDetailsSelected = () => {
                         <select name='sub' onChange={handleSubjectSelection} className='absolute opacity-0 h-full w-full bg-transparent'>
                             <option defaultValue={""}>Choose Subject</option>
                             {
-                                subjectList[Number(firebase.detailsOfUser.sem)-1] ? 
-                                subjectList[Number(firebase.detailsOfUser.sem)-1].map((sub)=>{
-                                    return <option value={sub}>{sub}</option>
-                                }) : 
-                                ""
+                                subjectList[Number(firebase.detailsOfUser.sem) - 1] ?
+                                    subjectList[Number(firebase.detailsOfUser.sem) - 1].map((sub) => {
+                                        return <option value={sub}>{sub}</option>
+                                    }) :
+                                    ""
                             }
                         </select>
                     </div>
-                </div>
-
+                </div> */}
                 {
                     firebase.detailsOfUser.sub === "" ?
-                    "" : 
-                    <>
-                    <div className='flex justify-start items-center space-x-3 py-2 px-3'>
-                    <span> Syllabus : </span>
-                    <a href={firebase.syllabusURL === null ? "#" : firebase.syllabusURL}  className='px-6 py-2 bg-white text-black rounded-lg' target="_blank" download>Preview</a>
-                    </div>
+                        <>
+                            <div className='para-text text-[1rem]'>{"Branch : " + firebase.detailsOfUser.branch}</div>
+                            <div className='para-text flex items-center space-x-4'>
+                                <span>{"Semester : " + firebase.detailsOfUser.sem}</span>
+                            </div>
+                            <div className='py-4 px-24 bg-btn-primary main-text tracking-wider font-bold text-black flex items-center justify-center overflow-hidden relative rounded-md shadow-md'>
+                                <div className=''>
+                                    Choose Subject
+                                </div>
+                                <select name='sub' onChange={handleSubjectSelection} className='absolute opacity-0 h-full w-full bg-transparent'>
+                                    <option defaultValue={""}>Choose Subject</option>
+                                    {
+                                        subjectList[Number(firebase.detailsOfUser.sem) - 1] ?
+                                            subjectList[Number(firebase.detailsOfUser.sem) - 1].map((sub) => {
+                                                return <option value={sub}>{sub}</option>
+                                            }) :
+                                            ""
+                                    }
+                                </select>
+                            </div>
 
-                <div className='flex flex-col border-[0.5px] border-gray-300 h-[50%] relative'>
-                    <span className='border-b-2 p-2 relative overflow-hidden whitespace-nowrap text-ellipsis'>{firebase.detailsOfUser.sub === "" ? "Youtube Videos for" : firebase.detailsOfUser.sub}</span>
+                        </>
+                        :
+                        <div className={`${firebase.detailsOfUser.sub === "" ? "-z-100" : "h-full scale-100 z-100"} h-0 transition-all flex flex-col space-y-4 scale-0`}>
 
-                    <div className='overflow-y-scroll h-full w-full relative hide-scrollbar'>
+                            <div></div>
 
-                        <div className='p-2'>
-                            {
-                                firebase.videoList === null ? 
-                                "No VideoPlaylist available" : 
-                                firebase.videoList.map((video)=>{
-                                    console.log(video);
-                                    const videoSrc = `https://www.youtube.com/playlist?list=${video.id.playlistId}`;
-                                    return <a href={videoSrc} target="_blank" className={`flex items-center mt-2`}>
-                                        <img src={video.snippet.thumbnails.default.url} className='object-cover aspect-square border-2 p-[3px] h-16 rounded-full'/>
-                                        <div className='text-white ml-2 flex flex-col'>
-                                            <span>{video.snippet.channelTitle}</span>
-                                            <span href={videoSrc} target="_blank">
-                                                {video.snippet.description.substring(0,30)}
-                                            </span>
-                                        </div>
-                                    </a>
-                                })
-                            }
+                            <div className='py-6 bg-btn-secondry main-text tracking-wider font-bold text-black flex items-center justify-center overflow-hidden rounded-md shadow-md z-10 relative'>
+                                <div className=''>
+                                    Change Subject
+                                </div>
+                                <select name='sub' onChange={handleSubjectSelection} className='absolute opacity-0 h-full w-full bg-transparent'>
+                                    <option defaultValue={""}>Change Subject</option>
+                                    {
+                                        subjectList[Number(firebase.detailsOfUser.sem) - 1] ?
+                                            subjectList[Number(firebase.detailsOfUser.sem) - 1].map((sub) => {
+                                                return <option value={sub}>{sub}</option>
+                                            }) :
+                                            ""
+                                    }
+                                </select>
+                            </div>
+
+
+                            <a href={firebase.syllabusURL === null ? "#" : firebase.syllabusURL} className='link flex items-center justify-center visited:text-[#FF5722]
+                            ' target="_blank" download>Download Syllabus</a>
+
+                            <div className='flex flex-col bg-main rounded-md shadow-md h-[50%] sticky top-0.5'>
+                                <span className='bg-[#222222] rounded-md px-2 main-text py-4 relative overflow-hidden whitespace-nowrap text-ellipsis flex items-center'>{firebase.detailsOfUser.sub === "" ? "Youtube Videos for" : firebase.detailsOfUser.sub}</span>
+
+                                <div className='overflow-y-scroll h-full w-full relative hide-scrollbar border-t-8 border-black'>
+
+                                    <div className='p-2'>
+                                        {
+                                            firebase.videoList === null ?
+                                                "No VideoPlaylist available" :
+                                                firebase.videoList.map((video) => {
+                                                    console.log(video);
+                                                    const videoSrc = `https://www.youtube.com/playlist?list=${video.id.playlistId}`;
+                                                    return <a href={videoSrc} target="_blank" className={`flex items-center mt-2 link visited:text-[#FF5722]`}>
+                                                        <img src={video.snippet.thumbnails.default.url} className='object-cover aspect-square border-[#FFC300] border-2 p-[3px] h-16 rounded-full' />
+
+                                                        <div className='ml-2 flex flex-col'>
+                                                            <span>{video.snippet.channelTitle}</span>
+                                                            <span href={videoSrc} target="_blank">
+                                                                {video.snippet.description.substring(0, 30)}
+                                                            </span>
+                                                        </div>
+                                                    </a>
+                                                })
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className='flex flex-col bg-main rounded-md shadow-md h-[50%] relative'>
+
+                                <div className='bg-[#222222] rounded-md px-2 main-text py-4 relative overflow-hidden whitespace-nowrap flex items-center text-ellipsis'>Reference</div>
+
+                                <div className='overflow-y-scroll h-full w-full relative hide-scrollbar border-t-8 border-black'>
+                                    <div className='flex flex-col p-2 mt-4 space-y-4 text-white overflow-x-hidden overflow-y-scroll hide-scrollbar'>
+                                        {
+
+                                            firebase.noteList === null ? "No Notes available" :
+                                                firebase.noteList.map((notes) => {
+                                                    const displayLink = notes.displayLink;
+
+                                                    if (allowedDomains.some(domain => displayLink.includes(domain))) {
+                                                        return <a
+                                                            href={notes.link} target="_blank"
+
+                                                            className='w-full flex items-center link visited:text-[#ff5722]'>
+                                                            <AiOutlineLink className='text-3xl' />
+                                                            <span className=' ml-2 flex items-center justify-between w-full'><span>{displayLink}</span></span>
+                                                        </a>
+                                                    }
+                                                })
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className='flex flex-col bg-main rounded-md shadow-md h-[50%] relative'>
+                                <div className='bg-[#222222] rounded-md px-2 main-text py-4 relative overflow-hidden whitespace-nowrap flex items-center text-ellipsis'>Previous Year Papers</div>
+
+                                <div className='overflow-y-scroll h-full w-full relative hide-scrollbar border-t-8 border-black'>
+                                
+                                <div className='flex flex-col space-y-2 p-2'>
+
+
+                                <a
+                                    href="#" target="_blank"
+                                    className='w-full flex items-center link visited:text-[#ff5722]'>
+                                    <AiOutlineLink className='text-3xl' />
+                                    <span className=' ml-2 flex items-center justify-between w-full'><span>link1</span></span>
+                                </a>
+
+                                <a
+                                    href="#" target="_blank"
+                                    className='w-full flex items-center link visited:text-[#ff5722]'>
+                                    <AiOutlineLink className='text-3xl' />
+                                    <span className=' ml-2 flex items-center justify-between w-full'><span>link1</span></span>
+                                </a>
+
+                                <a
+                                    href="#" target="_blank"
+                                    className='w-full flex items-center link visited:text-[#ff5722]'>
+                                    <AiOutlineLink className='text-3xl' />
+                                    <span className=' ml-2 flex items-center justify-between w-full'><span>link1</span></span>
+                                </a>
+
+                                </div>
+                                </div>
+                            </div>
+
                         </div>
-                    </div>
-                </div>
-
-                <div className='h-[50%] border-[0.5px] border-gray-300 relative flex flex-col'>
-                    <div className='border-b-2 p-2 overflow-hidden w-full'>Reference</div>
-
-                    <div className='overflow-y-scroll h-full w-full relative'>
-                    <ul className='flex flex-col p-2 mt-4 space-y-4 text-white overflow-x-hidden overflow-y-scroll hide-scrollbar'>
-                        {   
-
-                            firebase.noteList === null ? "No Notes available" :
-                            firebase.noteList.map((notes)=>{
-                                const displayLink = notes.displayLink;
-
-                                if(allowedDomains.some( domain => displayLink.includes(domain))){
-                                    return <li className='w-full flex items-center'>
-                                        <AiOutlineLink className='border-2 text-white text-3xl rounded-full'/>
-                                        <a href={notes.link} target="_blank" className=' ml-2 flex text-blue-700 underline visited:text-green-500 items-center justify-between w-full'><span>{displayLink}</span></a>
-                                    </li>
-                                }
-                            })
-                        }
-                    </ul>
-                    </div>
-                </div>
-
-                <div className='p-2'>
-                    <div>Previous Year Paper</div>
-                    <ol className='list-decimal flex flex-col items-start justify-center pl-4 mt-4 space-y-4'>
-                        <li className='w-full pl-2'>
-                            <li className='flex items-center justify-between w-full'><a href='#' target='_blank' className='px-6 py-2 bg-white text-black rounded-lg'>Preview</a> <button className="px-6 py-2 bg-blue-500 text-white rounded-lg">Download</button></li>
-                        </li>
-                    </ol>
-                </div>
-
-                </>
                 }
             </div>
             <div className='h-16 w-full'></div>

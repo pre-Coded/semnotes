@@ -24,7 +24,7 @@
     background-color: #ffffff;
 }
 
-.link {
+.link{
     color : #00BCD4;
 }
 
@@ -143,10 +143,10 @@ body{
 }
 
 .animate-TopWidth{
-    animation: width 1s ease-in 1s infinite;
+    animation: width 1s ease-out  alternate-reverse infinite;
 }
 .animate-BottomWidth{
-    animation: width 1s ease-in 1s infinite;
+    animation: width 1s ease-out alternate-reverse infinite;
 }
 .animate-LeftHeight{
     animation: height 1s ease-in 2s infinite;
