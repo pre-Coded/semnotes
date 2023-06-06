@@ -1,56 +1,55 @@
 import React from 'react'
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useLocation } from "react-router-dom";
 import {AiFillHome} from 'react-icons/ai'
 import {BsFillBookFill, BsCollection} from 'react-icons/bs'
 import {CgProfile} from 'react-icons/cg'
 import {MdAdd} from 'react-icons/md'
-import { useRef, useState } from 'react';
-
+import { useRef, useState, useEffect } from 'react';
 
 const NavBar = () => {
-    const [offset, setOffset] = useState("");
-    const ref = useRef();
 
     const handleActive = (e)=>{
-        const linkRect = e.target.getBoundingClientRect();
-        const navBar = document.querySelector('#navbar');
-        const navRect = navBar.getBoundingClientRect();
+        document.getElementById("navbar").querySelectorAll("*").forEach((link)=>{
+                link.classList.remove('active');
+        })
 
-        const transformValue = `translateX(${linkRect.left-navRect.left}px) scaleX(1)`;
-        setOffset(transformValue);
+        e.currentTarget.classList.add("active");
     }
 
-    
-  return (
-    <div className='fixed bottom-2 w-[95%] rounded-lg h-16 bg-[#0E0C0A] backdrop-blur-lg z-10 md:w-[50%] lg:w-[30%]  md:bottom-6 left-1/2 -translate-x-1/2 md:rounded-2xl
-    md:bg-white/5'>
 
-        <ul id="navbar" className='flex items-center justify-around h-full w-full text-white relative text-3xl overflow-hidden border-x-[1px] rounded-md'>
-            <div className={`h-[2px] rounded-md w-1/5 top-0 -left-5 lg:-left-7 bg-white transition-all absolute`} style={{transform : offset}}></div>
-            <li onClick={handleActive} id="1" className='navlink'>
-                <Link to="/">
+  return (
+    <div className='fixed bottom-0 flex w-full z-[1000] h-20'>
+
+        <ul id="navbar" className='flex justify-around items-center h-full w-full para-text text-3xl pb-3 px-4 space-x-4 relative'>
+
+            <li onClick={handleActive} className='active flex-1 transition-all relative h-full aspect-square flex items-center justify-center'>
+                <Link to="/" className=''>
                     <AiFillHome/>
                 </Link>
             </li>
-            <li onClick={handleActive} id="2" className='navlink'>
+            <li onClick={handleActive} className='flex-1 transition-all relative h-full aspect-square flex items-center justify-center'>
                 <Link to="/semselected">
                     <BsFillBookFill/>
                 </Link>
             </li>
-            <li  onClick={handleActive} id="3" className='rounded-full border text-4xl shadow-sm shadow-white navlink'>
+            <li onClick={handleActive} className='flex-1 transition-all relative h-full aspect-square flex items-center justify-center'>
                 <Link to="/addresource">
                     <MdAdd/>
                 </Link>
             </li>
-            <li ref={ref} onClick={handleActive} id="5" className='navlink'>
+            <li onClick={handleActive} className='flex-1 transition-all relative h-full aspect-square flex items-center justify-center'>
                 <Link to="/profile">
                     <CgProfile/>
                 </Link>
             </li>
+
         </ul>
+        <div className='absolute bottom-0 w-full h-[1px] bg-gradient-to-r from-[#00BFFF] to-[#0080FF]'></div>
         <Outlet/>
     </div>
   )
 }
+// #00BFFF
+// #0080FF
 
 export default NavBar

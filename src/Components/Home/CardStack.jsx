@@ -24,9 +24,10 @@ export default function App() {
         touchEventsTarget="wrapper"
         direction="horizontal"
       >
-        <SwiperSlide className="h-full w-full flex flex-col items-center bg-main space-y-3 rounded-lg shadow-lg">
+        <SwiperSlide className="h-full w-full flex flex-col items-center bg-main space-y-3 rounded-lg shadow-lg relative">
           <span></span>
-          <span className="main-text shadow-2xl">Problem</span>
+          <span className="main-text neumorphic px-10 py-3
+          ">Problem</span>
           <span className="para-text p-2 text-sm tracking-wider wrapper">
             Are you feeling overwhelmed and concerned about the time-consuming process of searching for the best reference notes, syllabus, previous year papers, and a suitable YouTube playlist for an upcoming exam? Do you worry that this search might be taking away valuable time that could be better utilized for preparation? We understand your concerns and are here to help!
           </span>
