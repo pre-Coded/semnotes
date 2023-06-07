@@ -18,9 +18,9 @@ const NavBar = () => {
 
 
   return (
-    <div className='fixed bottom-0 flex w-full z-[1000] h-20'>
+    <div className='fixed bottom-0 flex w-80 z-[1000] h-14 left-1/2 -translate-x-1/2 rounded-lg shadow-lg md:bottom-4 bg-black'>
 
-        <ul id="navbar" className='flex justify-around items-center h-full w-full para-text text-3xl pb-3 px-4 space-x-4 relative'>
+        <ul id="navbar" className='flex justify-around items-center h-full w-full para-text text-2xl space-x-4 relative'>
 
             <li onClick={handleActive} className='active flex-1 transition-all relative h-full aspect-square flex items-center justify-center'>
                 <Link to="/" className=''>
@@ -46,6 +46,7 @@ const NavBar = () => {
         </ul>
         <div className='absolute bottom-0 w-full h-[1px] bg-gradient-to-r from-[#00BFFF] to-[#0080FF]'></div>
         <Outlet/>
+
     </div>
   )
 }

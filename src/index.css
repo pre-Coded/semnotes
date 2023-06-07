@@ -156,6 +156,7 @@ body {
     border-bottom: solid 5px #00BFFF;
     border-radius: 50%;
     box-shadow: -0.5px 0 #0080FF;
+    background-color: black;
 }
 
 .animate-loading {

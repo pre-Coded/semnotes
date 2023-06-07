@@ -193,25 +193,6 @@ const SemDetailsSelected = () => {
 
             <div className='w-full space-y-2 h-full scroll-smooth overflow-x-hidden overflow-y-scroll hide-scrollbar flex flex-col items-center justify-center'>
 
-                {/* <div className='flex flex-col rounded-b-lg border-b-[2px] items-center justify-center pt-8 space-y-4 pb-6 sticky top-0 bg-black z-10'>
-                    <div className=''>{"Branch : " + firebase.detailsOfUser.branch}</div>
-                    <div className='flex items-center space-x-4'>
-                        <span>{"Semester : " + firebase.detailsOfUser.sem}</span>
-                    </div>
-                    <div className='h-12 w-48 bg-white text-black flex items-center justify-center overflow-hidden relative'>
-                        <div className=''>{firebase.detailsOfUser.sub !== "" ? "Another ?" : "Choose Subject"}</div>
-                        <select name='sub' onChange={handleSubjectSelection} className='absolute opacity-0 h-full w-full bg-transparent'>
-                            <option defaultValue={""}>Choose Subject</option>
-                            {
-                                subjectList[Number(firebase.detailsOfUser.sem) - 1] ?
-                                    subjectList[Number(firebase.detailsOfUser.sem) - 1].map((sub) => {
-                                        return <option value={sub}>{sub}</option>
-                                    }) :
-                                    ""
-                            }
-                        </select>
-                    </div>
-                </div> */}
                 {
                     firebase.detailsOfUser.sub === "" ?
                         <>
@@ -237,31 +218,36 @@ const SemDetailsSelected = () => {
 
                         </>
                         :
-                        <div className={`${firebase.detailsOfUser.sub === "" ? "-z-100" : "h-full scale-100 z-100"} h-0 transition-all flex flex-col space-y-4 scale-0`}>
+                        <div className={`${firebase.detailsOfUser.sub === "" ? "-z-100" : "h-full scale-100 z-100"} h-0 transition-all w-full flex flex-col space-y-4 scale-0`}>
 
                             <div></div>
 
-                            <div className='py-6 bg-btn-secondry main-text tracking-wider font-bold text-black flex items-center justify-center overflow-hidden rounded-md shadow-md z-10 relative'>
-                                <div className=''>
-                                    Change Subject
+                            <div className='flex flex-col items-center justify-center
+                             space-y-3 lg:flex-row lg:space-y-0 lg:space-x-4'>
+
+                                <div className='py-4 w-full bg-btn-primary main-text tracking-wider font-bold text-black flex items-center justify-center overflow-hidden rounded-md shadow-md z-10 relative lg:h-14 lg:w-96'>
+                                    <div className=''>
+                                        Change Subject
+                                    </div>
+                                    <select name='sub' onChange={handleSubjectSelection} className='absolute opacity-0 h-full w-full bg-transparent'>
+                                        <option defaultValue={""}>Change Subject</option>
+                                        {
+                                            subjectList[Number(firebase.detailsOfUser.sem) - 1] ?
+                                                subjectList[Number(firebase.detailsOfUser.sem) - 1].map((sub) => {
+                                                    return <option value={sub}>{sub}</option>
+                                                }) :
+                                                ""
+                                        }
+                                    </select>
                                 </div>
-                                <select name='sub' onChange={handleSubjectSelection} className='absolute opacity-0 h-full w-full bg-transparent'>
-                                    <option defaultValue={""}>Change Subject</option>
-                                    {
-                                        subjectList[Number(firebase.detailsOfUser.sem) - 1] ?
-                                            subjectList[Number(firebase.detailsOfUser.sem) - 1].map((sub) => {
-                                                return <option value={sub}>{sub}</option>
-                                            }) :
-                                            ""
-                                    }
-                                </select>
+
+                                <a href={firebase.syllabusURL === null ? "#" : firebase.syllabusURL} className='bg-btn-secondry main-text rounded-md font-bold tracking-wider flex items-center justify-center py-4 px-2 lg:w-96 lg:h-14 visited:bg-btn-success
+                                ' target="_blank" download>Download Syllabus</a>
+
                             </div>
 
-
-                            <a href={firebase.syllabusURL === null ? "#" : firebase.syllabusURL} className='link flex items-center justify-center visited:text-[#FF5722]
-                            ' target="_blank" download>Download Syllabus</a>
-
                             <div className='flex flex-col bg-main rounded-md shadow-md h-[50%] sticky top-0.5'>
+
                                 <span className='bg-[#222222] rounded-md px-2 main-text py-4 relative overflow-hidden whitespace-nowrap text-ellipsis flex items-center'>{firebase.detailsOfUser.sub === "" ? "Youtube Videos for" : firebase.detailsOfUser.sub}</span>
 
                                 <div className='overflow-y-scroll h-full w-full relative hide-scrollbar border-t-8 border-black'>
@@ -274,7 +260,7 @@ const SemDetailsSelected = () => {
                                                     console.log(video);
                                                     const videoSrc = `https://www.youtube.com/playlist?list=${video.id.playlistId}`;
                                                     return <a href={videoSrc} target="_blank" className={`flex items-center mt-2 link visited:text-[#FF5722]`}>
-                                                        <img src={video.snippet.thumbnails.default.url} className='object-cover aspect-square border-[#FFC300] border-2 p-[3px] h-16 rounded-full' />
+                                                        <img src={video.snippet.thumbnails.default.url} className='object-cover aspect-square border-white border-[1px] p-[3px] h-16 rounded-full shadow-3xl shadow-[#111111]' />
 
                                                         <div className='ml-2 flex flex-col'>
                                                             <span>{video.snippet.channelTitle}</span>
@@ -289,64 +275,71 @@ const SemDetailsSelected = () => {
                                 </div>
                             </div>
 
-                            <div className='flex flex-col bg-main rounded-md shadow-md h-[50%] relative'>
+                            <div className='w-full h-[30%] flex flex-col space-y-4 lg:space-y-0 lg:space-x-4 lg:flex-row items-start'>
+                                
+                                <div className='h-full flex  flex-col bg-main  rounded-md shadow-md relative w-full'>
 
-                                <div className='bg-[#222222] rounded-md px-2 main-text py-4 relative overflow-hidden whitespace-nowrap flex items-center text-ellipsis'>Reference</div>
+                                    <div className='bg-[#222222] rounded-md px-2 main-text py-4 relative overflow-hidden whitespace-nowrap flex items-center text-ellipsis'>Reference</div>
 
-                                <div className='overflow-y-scroll h-full w-full relative hide-scrollbar border-t-8 border-black'>
-                                    <div className='flex flex-col p-2 mt-4 space-y-4 text-white overflow-x-hidden overflow-y-scroll hide-scrollbar'>
-                                        {
+                                    <div className='overflow-y-scroll h-full w-full relative hide-scrollbar border-t-8 border-black'>
+                                        <div className='flex flex-col p-2  space-y-4 text-white overflow-x-hidden overflow-y-scroll hide-scrollbar'>
+                                            {
 
-                                            firebase.noteList === null ? "No Notes available" :
-                                                firebase.noteList.map((notes) => {
-                                                    const displayLink = notes.displayLink;
+                                                firebase.noteList === null ? "No Notes available" :
+                                                    firebase.noteList.map((notes) => {
+                                                        const displayLink = notes.displayLink;
 
-                                                    if (allowedDomains.some(domain => displayLink.includes(domain))) {
-                                                        return <a
-                                                            href={notes.link} target="_blank"
+                                                        if (allowedDomains.some(domain => displayLink.includes(domain))) {
+                                                            return <a
+                                                                href={notes.link} target="_blank"
 
-                                                            className='w-full flex items-center link visited:text-[#ff5722]'>
-                                                            <AiOutlineLink className='text-3xl' />
-                                                            <span className=' ml-2 flex items-center justify-between w-full'><span>{displayLink}</span></span>
-                                                        </a>
-                                                    }
-                                                })
-                                        }
+                                                                className='w-full flex items-center link visited:text-[#ff5722]'>
+                                                                <AiOutlineLink className='text-3xl' />
+                                                                <span className=' ml-2 flex items-center justify-between w-full'><span>{displayLink}</span></span>
+                                                            </a>
+                                                        }
+                                                    })
+                                            }
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div className='flex flex-col bg-main rounded-md shadow-md h-[50%] relative'>
-                                <div className='bg-[#222222] rounded-md px-2 main-text py-4 relative overflow-hidden whitespace-nowrap flex items-center text-ellipsis'>Previous Year Papers</div>
+                                <div className='flex flex-col h-full bg-main rounded-md shadow-md relative w-full'>
 
-                                <div className='overflow-y-scroll h-full w-full relative hide-scrollbar border-t-8 border-black'>
-                                
-                                <div className='flex flex-col space-y-2 p-2'>
+                                    <div className='bg-[#222222] rounded-md px-2 main-text py-4 relative overflow-hidden whitespace-nowrap flex items-center text-ellipsis'>Previous Year Papers</div>
+
+                                    <div className='overflow-y-scroll h-full w-full relative hide-scrollbar border-t-8 border-black'>
+
+                                        <div className='flex flex-col space-y-2 p-2'>
 
 
-                                <a
-                                    href="#" target="_blank"
-                                    className='w-full flex items-center link visited:text-[#ff5722]'>
-                                    <AiOutlineLink className='text-3xl' />
-                                    <span className=' ml-2 flex items-center justify-between w-full'><span>link1</span></span>
-                                </a>
+                                            <a
+                                                href="#" target="_blank"
+                                                className='w-full flex items-center link visited:text-[#ff5722]'>
+                                                <AiOutlineLink className='text-3xl' />
+                                                <span className=' ml-2 flex items-center justify-between w-full'><span>link1</span></span>
+                                            </a>
 
-                                <a
-                                    href="#" target="_blank"
-                                    className='w-full flex items-center link visited:text-[#ff5722]'>
-                                    <AiOutlineLink className='text-3xl' />
-                                    <span className=' ml-2 flex items-center justify-between w-full'><span>link1</span></span>
-                                </a>
+                                            <a
+                                                href="#" target="_blank"
+                                                className='w-full flex items-center link visited:text-[#ff5722]'>
+                                                <AiOutlineLink className='text-3xl' />
+                                                <span className=' ml-2 flex items-center justify-between w-full'><span>link1</span></span>
+                                            </a>
 
-                                <a
-                                    href="#" target="_blank"
-                                    className='w-full flex items-center link visited:text-[#ff5722]'>
-                                    <AiOutlineLink className='text-3xl' />
-                                    <span className=' ml-2 flex items-center justify-between w-full'><span>link1</span></span>
-                                </a>
+                                            <a
+                                                href="#" target="_blank"
+                                                className='w-full flex items-center link visited:text-[#ff5722]'>
+                                                <AiOutlineLink className='text-3xl' />
+                                                <span className=' ml-2 flex items-center justify-between w-full'><span>link1</span></span>
+                                            </a>
 
+                                        </div>
+                                    </div>
                                 </div>
-                                </div>
+
+
+
                             </div>
 
                         </div>
