@@ -26,8 +26,9 @@ const Login = () => {
 
   const [errors, setErrors] = useState({});
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
 
     if (!validator.isEmail(email)) {
       return toast.error('Please enter valid email.');
@@ -37,14 +38,13 @@ const Login = () => {
       return toast.error('Please enter valid password.');
     }
 
+
     firebase.setLoading(prev => !prev);
-    firebase.signInUser(email, pass).then((res) => {
-      console.log(res);
-      firebase.setLoading(prev => !prev);
-    }).catch((res) => {
-      firebase.setLoading(prev => !prev);
-      toast.error(res);
-    })
+    try{
+      await firebase.signInUser(email, pass);
+    }catch(e){
+      console.log(e);
+    }
   }
 
   return (

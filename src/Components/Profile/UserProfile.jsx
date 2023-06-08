@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState , useEffect, } from 'react'
 import { CgProfile } from 'react-icons/cg'
 import { AiFillCaretDown} from 'react-icons/ai'
 import { useFireBase } from '../../utilities/Firebase'
@@ -7,31 +7,61 @@ import AnimatedButton from './AnimatedButton'
 import AccountInfo from './AccountInfo'
 import ContactUs from './ContactUs'
 import Feedback from './Feedback'
+import { MdGroupAdd } from 'react-icons/md'
+import {RiAddCircleLine} from 'react-icons/ri'
+import Bg from '../../assets/blankProfile.png'
 
 const UserProfile = () => {
     const firebase = useFireBase();
-    const [call, setCall] = useState(false);
 
     const [account, setAccount] = useState(false);
     const [contact, setContact] = useState(false);
     const [follow, setFollow] = useState(false);
 
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const snapshot = await firebase.getData(`ExamRescue/${firebase.user.uid}/userDetails`);
+            const data = snapshot.val(); // Extract the data from the snapshot using .val()
+
+            const profileUrl = data.profileUrl;
+            const username = data.username;
+            
+            firebase.setprofileUrl(profileUrl);
+            firebase.setusername(username);
+
+          } catch (err) {
+            console.log(err);
+          }
+        };
+
+        fetchData();
+    }, []);
+
+
   return (
     <div className='h-full w-full main-text text-s flex flex-col overflow-hidden'>
-        <EditAccount call={call} setCall={setCall}/>
 
-        <div className='flex w-full justify-start pt-8 px-6 pb-4 space-x-4 items-center bg-main shadow-md rounded-b-md'>
-            <div className='text-6xl text-white'><CgProfile/></div>
-            <h1>{firebase.user.email}</h1>
+        <div className='flex w-full h-32 justify-start pt-8 px-6 pb-4 space-x-4 items-center bg-main relative'>
+
+        <div className='flex justify-start items-center space-x-4 w-full h-full'>
+
+        <div className='h-full aspect-square border-[2px] border-white rounded-full relative flex justify-center items-center'>
+            <RiAddCircleLine className='absolute top-0 right-0 text-xl bg-black rounded-full shadow-sm'/>
+            <input onChange={(e)=>{
+                if(e !== null) firebase.handleProfilePhotoUpload(firebase.user.uid, e.target.files[0]);
+            }} type="file" name="" id="" className=' h-full w-full aspect-square opacity-0 absolute' />
+            <img src={firebase.profileUrl === null || firebase.profileUrl === "" ? Bg : firebase.profileUrl} alt="ProfilePhoto" className='h-full w-full object-cover p-0.5 rounded-full text-sm'/>
         </div>
 
-        <div className='flex justify-between items-center p-4 w-full'>
-            <button onClick={()=>{
-                setCall(prev => !prev);
-            }} className='text-sm mt-4 px-9 py-3 bg-btn-secondry main-text rounded-md shadow-md tracking-wider'>Edit Account</button>
-            <button onClick={firebase.handleSignOut} className='tracking-wider text-sm mt-4 px-9 py-3 bg-btn-primary main-text rounded-md shadow-md'>Log Out</button>
+        <h1 className='main-text text-[1.2rem]'>{firebase.username === "" ? firebase.user.email : firebase.username}</h1>
+        
         </div>
+        
+        <button onClick={firebase.handleSignOut} className='tracking-wider w-48 text-sm py-3 bg-btn-primary main-text rounded-md shadow-md'>Log Out</button>
 
+        </div>
+            
         <div className='flex flex-col px-2 mt-4 w-full overflow-y-scroll'>
             <div className='p-2 text-sm flex flex-col space-y-2'>
                 <AnimatedButton state={account} setState={setAccount} btn={"Account Info"} data={<AccountInfo/>}/>

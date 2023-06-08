@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { initializeApp } from "firebase/app";
 import { useNavigate } from "react-router-dom";
+import BlankPhoto from '../assets/blankProfile.png'
 
 import { getAuth, 
     onAuthStateChanged, 
@@ -17,12 +18,13 @@ import { getDatabase,
         child, 
         update,
         ref as dataBaseRef,
+        onValue,
 } from "firebase/database";
 
 import { collection, getDocs, getFirestore,
 } from 'firebase/firestore'
 
-import { getStorage, uploadBytes, getDownloadURL, ref as storageRef
+import { getStorage, uploadBytes, getDownloadURL, ref as storageRef, deleteObject
 } from "firebase/storage";
 
 const fireBaseConfig = {
@@ -59,13 +61,14 @@ export const FireBaseProvider = (props) => {
         sub : ""
     })
 
-
     const [videoList, setVideoList] = useState(null);
     const [noteList, setNoteList] = useState(null);
     const [user, setUser] = useState(null);
 
-    useEffect( () => {
+    const authStateChange = () => {
         onAuthStateChanged(auth, user => {
+            console.log("Auth State Changed");
+
             setLoading(prev => !prev);
             if (user) {
                 console.log("running")
@@ -75,26 +78,46 @@ export const FireBaseProvider = (props) => {
                 setUser(null);
             }
             setLoading(prev => !prev);
-        })      
+        })     
+    }
+
+    useEffect( () => {
+        authStateChange();
     }, []);
 
 
     const navigate = useNavigate();
+
     const signUpWithEmailAndPassword = async (email, password) => {
         setLoading(prev => !prev);
-        await createUserWithEmailAndPassword(fireBaseAuth, email, password).then((sucess)=>{
-            console.log("signed Up");
-        }).catch((err)=>{
-            console.log(err);
-        });
-        setLoading(prev => !prev);
+
+        try {
+          const userCredential = await createUserWithEmailAndPassword(
+            fireBaseAuth,
+            email,
+            password
+          );
+          const user = userCredential.user;
+
+          setUser(user);
+            
+          await putData(`ExamRescue/${user.uid}/academicDetails`, {
+              branch: detailsOfUser.branch,
+              sem: detailsOfUser.sem,
+            })
+
+        } catch (error) {
+          // Handle any errors during the sign-up process
+          console.log("Sign up error:", error.message);
+          throw error;
+        }
+
         navigate('/');
-    };
+        setLoading(prev => !prev);
+      };
 
     const signInWithGoogle = async () => {
-        setLoading(prev => !prev);
         await signInWithPopup(auth, googleProvider);
-        setLoading(prev => !prev);
     };
 
     const signInUser = async (email, pass) => {
@@ -114,57 +137,43 @@ export const FireBaseProvider = (props) => {
         setLoading(prev => !prev);
     }
 
-    const handleUploads = async (sem, syllabus) => {
-        // setLoading(prev => !prev);
-
-        // const syllabusRef = ref(storage, `${branch}/${year}/${sem}/${subject}/${Date.now()}-${file.name}`);
-        // const uploadResult = await uploadBytes(syllabusRef, file);
-
-        // const db = getDatabase();
-
-        // return await ref(db, `${branch}/${year}/${sem}/${subject}/${type}`).push().set(data).then(()=>{
-        //     alert("sucessful");
-        // })
-
-        // updates
-
-        // const newPostKey = push(child(ref(db), `${branch}/${year}/${sem}/${subject}/${type}`)).key;
-        // const updates = {};
-        // updates [`${branch}/${year}/${sem}/${subject}/${type}/`+ newPostKey] = {link : data};
-        // return await update(ref(db), updates).then(()=>{
-        //     setLoading( prev => !prev);
-        //     alert("Successfull");
-        // }).catch(()=>{
-        //     alert("Unsuccessfull");
-        // })
-
-        // getting already existing value;
-
-        // await get(child(ref(db), `${branch}/${year}/${sem}/${subject}/${type}`)).then(async (snapshot) => {
-        //     if (snapshot.exists()) {
-        //         const arr = (snapshot.val().link);
-        //         arr.push(data);
-        //         return await update(ref(db, `${branch}/${year}/${sem}/${subject}/${type}`),
-        //             { link: arr, }
-        //         ).then(() => {
-        //             setLoading(prev => !prev); alert("File is successfully uploaded.");
-        //         })
-        //     }
-
-        //     const arr = [data];
-
-        //     return await set(ref(db, `${branch}/${year}/${sem}/${subject}/${type}`), {
-        //         link: arr,
-        //     }).then(() => { setLoading(prev => !prev); alert("File is successfully uploaded.") }).catch(() => { alert("File wasn't uploaded successfully.") })
-        // })
-
-        const imageRef = storageRef(storage, `Syllabus/Sem${sem}/${syllabus.name}`);
-        return await uploadBytes(imageRef,syllabus).then((url)=>{
-            console.log(url);
-        })
+    const putData = async (path, data) => {
+        return await set( dataBaseRef(database, path), data);
     }
 
+    const getData = async (path) =>{
+        return await get(child(dataBaseRef(database), path))
+    }
+
+
+    const [profileUrl, setprofileUrl] = useState('');
+    const [username, setusername] = useState("Click to set");
+    
+    const handleProfilePhotoUpload = async (userId, image) => {
+        const extension = image.name.split(".").pop();
+        const renameImage = userId + "." + extension;
+
+        const imageRef = storageRef(storage, `ProfilePhoto/${renameImage}`);
+        try {
+
+          await uploadBytes(imageRef, image);
+          const url = await getDownloadURL(imageRef);
+
+          setprofileUrl(url);
+          const result = await updateData(`ExamRescue/${userId}/userDetails`,{
+            profileUrl : url,
+          })
+
+          return result;
+        } catch (error) {
+          console.log("Error in saving:", error);
+          throw error; // Rethrow the error to handle it in the caller function
+        }
+      };
+      
+      
     const [syllabusURL, setsyllabusURL] = useState(null);
+
     const getSyllabusURL = async (path)=>{
         const fileRef = storageRef(storage, path);
         try {
@@ -180,21 +189,37 @@ export const FireBaseProvider = (props) => {
         await getDocs(collection(firestore, `/${branch}/${subject}/Video-Links/`));
         setLoading(prev => !prev);
     }
-    const putData = async (path, data) => {
-        return await set( dataBaseRef(database, path), data);
-    }
 
-    const getData = async (path) =>{
-        return await get(child(dataBaseRef(database), path))
+    const updateData = async (path, data) =>{
+        await update(dataBaseRef(database, path), data); 
     }
     
     const isLoggedIn = user ? true : false;
 
+    // onValue(dataBaseRef(`ExamRescue/${ !user.uid ? user.uid : "fake"}/userDetails`), (snapshot)=>{
+    //     const data = snapshot.val();
+
+    //     setprofileUrl(data.profileUrl);
+    //     setusername(data.username);
+    // })
+
+    // onValue(dataBaseRef(`ExamRescue/${ !user.uid ? user.uid : "fake"}/academicDetails`), (snapshot)=>{
+    //     const data = snapshot.val();
+
+    //     const prevSub = detailsOfUser.sub;
+
+    //     setDetails({
+    //         branch : data.branch,
+    //         sem : data.sem,
+    //         sub : prevSub,
+    //     })
+    // })
+
     return (
         <FireBaseContext.Provider value={{
             signUpWithEmailAndPassword, 
-            signInWithGoogle, 
-            handleUploads, 
+            signInWithGoogle,  
+            handleProfilePhotoUpload,
             user, 
             isLoggedIn, 
             handleSignOut, 
@@ -212,7 +237,13 @@ export const FireBaseProvider = (props) => {
             videoList, 
             setVideoList,
             noteList, 
-            setNoteList
+            setNoteList,
+            handleProfilePhotoUpload,
+            profileUrl,
+            setprofileUrl,
+            username,
+            setusername,
+            updateData
         }}>
             {props.children}
         </FireBaseContext.Provider>

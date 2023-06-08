@@ -5,6 +5,7 @@ import { useFireBase } from '../utilities/Firebase'
 import validator from 'validator';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import BlankPhoto from '../assets/blankProfile.png';
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -25,21 +26,13 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const index = email.indexOf(".com");
-    if (email.indexOf(".com") === -1) {
-      return;
+    try
+    {
+      await firebase.signUpWithEmailAndPassword(email, pass);
     }
-
-    await firebase.signUpWithEmailAndPassword(email, pass);
-
-    await firebase.putData(`ExamRescue/${email.substring(0, index)}/academicDetails`, {
-      branch: firebase.detailsOfUser.branch,
-      sem: firebase.detailsOfUser.sem,
-    }).then((res) => {
-      console.log("Uploaded Successfully", res);
-    }).catch((err) => {
-      console.log("Error in uploading", err);
-    })
+    catch(e)
+    {console.log(e);}
+    
   }
 
   const sems = [1, 2, 3, 4, 5, 6, 7, 8];

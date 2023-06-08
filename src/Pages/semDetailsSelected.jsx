@@ -71,11 +71,9 @@ const SemDetailsSelected = () => {
 
     useEffect(() => {
         if (firebase.detailsOfUser.branch.length === 0) {
-            const email = firebase.user.email;
-            const userEmail = email.substring(0, email.indexOf(".com"));
 
             firebase.setLoading(prev => !prev);
-            firebase.getData(`ExamRescue/${userEmail}/academicDetails`).then((snapshot) => {
+            firebase.getData(`ExamRescue/${firebase.user.uid}/academicDetails`).then((snapshot) => {
                 const { branch, sem } = snapshot.val();
 
                 firebase.getSyllabusURL(`Syllabus/Sem${sem}.pdf`).then((url) => {
@@ -88,6 +86,7 @@ const SemDetailsSelected = () => {
                     sem: sem,
                     sub: ""
                 });
+            
             }
             )
         }

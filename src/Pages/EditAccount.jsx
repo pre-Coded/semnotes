@@ -1,4 +1,5 @@
 import React, {useState, useRef} from 'react'
+import { useNavigate } from 'react-router-dom';
 import { RxCross1 } from 'react-icons/rx'
 import {AiFillEyeInvisible, AiFillEye} from 'react-icons/ai'
 import { useFireBase } from '../utilities/Firebase';
@@ -11,16 +12,20 @@ const EditAccount = ({call, setCall}) => {
     const [username, setUsername] = useState("");
     const [usernameLabel, setUserlabel] = useState(false);
 
-    const [email, setemail] = useState("");
-    const [emailLabel, setEmailLabel] = useState(false);
-
-    const [pass, setPass] = useState("");
-    const [passLabel, setPassLabel] = useState(false);
-    const [eye, setEye] = useState(true);
-
     const sems = [1,2,3,4,5,6,7,8];
 
     const firebase = useFireBase();
+
+    const [sem, setSem] = useState('');
+    const [img, setImg] = useState('');
+
+    const navigate = useNavigate();
+
+    const handleSubmit = () => {
+      setCall(prev => !prev);
+      firebase.handleUploadEditAccount(username, sem, img);
+      // navigate('/profile');
+    }
 
   return (
     <div className={`${call ? "h-screen w-screen z-9999" : "h-0 w-0 -z-[9999]"} absolute flex items-center justify-center bg-transparent backdrop-blur-sm overflow-hidden`}>
@@ -44,7 +49,7 @@ const EditAccount = ({call, setCall}) => {
             <div className='h-14 p-2 flex justify-center items-center relative rounded-md shadow-md bg-main overflow-hidden'>
               <div>{firebase.detailsOfUser.sem === "" ? "Change Semester" : "Semester "+firebase.detailsOfUser.sem}</div>
               <select onChange={(e)=>{
-                firebase.setDetails({...firebase.detailsOfUser, [e.target.name] : e.target.value});
+                setSem(e.target.value);
               }} className='h-full w-full outline-none text-white bg-transparent absolute opacity-0' name="sem" required>
                 <option className='' defaultValue={"Select Semester"}>Select Semester</option>
                 {
@@ -60,9 +65,10 @@ const EditAccount = ({call, setCall}) => {
             <div className='h-14 p-2 flex justify-center items-center relative rounded-md shadow-md bg-main overflow-hidden'>
               <div className='flex items-center  justify-center'><BiCloudUpload className='text-2xl mr-2'/>Profile Photo</div>
               <input onChange={(e)=>{
+                setImg(e.target.files[0]);
               }} className='h-full w-full outline-none text-white bg-transparent absolute opacity-0' type="file" required/>
             </div>
-            <button className='py-4 rounded-md text-xl tracking-wider bg-btn-success grid place-items-center brightness-125'>Save</button>
+            <button onClick={handleSubmit} className='py-4 rounded-md text-xl tracking-wider bg-btn-success grid place-items-center brightness-125'>Save</button>
         </div>
     </div>
   )
