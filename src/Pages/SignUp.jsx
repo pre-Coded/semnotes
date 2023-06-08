@@ -31,7 +31,10 @@ const SignUp = () => {
       await firebase.signUpWithEmailAndPassword(email, pass);
     }
     catch(e)
-    {console.log(e);}
+    {
+      firebase.setLoading(prev => !prev);
+      toast.error("User already exists");
+    }
     
   }
 
