@@ -69,27 +69,49 @@ const SemDetailsSelected = () => {
     //     })
     // }
 
-    useEffect(() => {
-        if (firebase.detailsOfUser.branch.length === 0) {
+    // useEffect(() => {
+    //     if (firebase.detailsOfUser.branch.length === 0) {
 
-            firebase.setLoading(prev => !prev);
-            firebase.getData(`ExamRescue/${firebase.user.uid}/academicDetails`).then((snapshot) => {
-                const { branch, sem } = snapshot.val();
+    //         firebase.setLoading(prev => !prev);
+    //         firebase.getData(`ExamRescue/${firebase.user.uid}/academicDetails`).then((snapshot) => {
+    //             const { branch, sem } = snapshot.val();
 
-                firebase.getSyllabusURL(`Syllabus/Sem${sem}.pdf`).then((url) => {
-                    firebase.setLoading(prev => !prev);
-                    firebase.setsyllabusURL(url);
-                });
+    //             firebase.getSyllabusURL(`Syllabus/Sem${sem}.pdf`).then((url) => {
+    //                 firebase.setLoading(prev => !prev);
+    //                 firebase.setsyllabusURL(url);
+    //             });
 
-                firebase.setDetails({
-                    branch: branch,
-                    sem: sem,
-                    sub: ""
-                });
+    //             firebase.setDetails({
+    //                 branch: branch,
+    //                 sem: sem,
+    //                 sub: ""
+    //             });
             
-            }
-            )
-        }
+    //         }
+    //         )
+    //     }
+    // }, [])
+
+
+    useState(()=>{
+        const fetchAcademicDetails = async ()=> {  
+        await firebase.getData(`ExamRescue/${firebase.user.uid}/academicDetails`).then((snapshot) => {
+            const { branch, sem } = snapshot.val();
+
+            firebase.getSyllabusURL(`Syllabus/Sem${sem}.pdf`).then((url) => {
+                firebase.setLoading(prev => !prev);
+                firebase.setsyllabusURL(url);
+            });
+
+            firebase.setDetails({
+                branch: branch,
+                sem: sem,
+                sub: ""
+            });
+        
+        })
+        fetchAcademicDetails();
+    }
     }, [])
 
     const subjectList = [

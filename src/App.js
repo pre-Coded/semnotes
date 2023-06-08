@@ -10,12 +10,33 @@ import Login from "./Pages/Login";
 import NoPage from "./Pages/NoPage";
 import SemDetailsSelected from "./Pages/semDetailsSelected";
 import LoadingOverlay from "./Pages/LoadingOverlay";
-
-
+import { useState } from "react";
+import { async } from "@firebase/util";
 
 function App() {
-
     const firebase = useFireBase();
+
+    useState(()=>{
+          const fetchAcademicDetails = async ()=> {  
+          await firebase.getData(`ExamRescue/${firebase.user.uid}/academicDetails`).then((snapshot) => {
+              const { branch, sem } = snapshot.val();
+  
+              firebase.getSyllabusURL(`Syllabus/Sem${sem}.pdf`).then((url) => {
+                  firebase.setLoading(prev => !prev);
+                  firebase.setsyllabusURL(url);
+              });
+  
+              firebase.setDetails({
+                  branch: branch,
+                  sem: sem,
+                  sub: ""
+              });
+          
+          })
+          fetchAcademicDetails();
+    }
+    }, [])
+
     return (
         <div className={`w-full h-screen bg-black relative hide-scrollbar overflow-hidden`}>
            <LoadingOverlay isLoading ={firebase.isLoading}></LoadingOverlay>

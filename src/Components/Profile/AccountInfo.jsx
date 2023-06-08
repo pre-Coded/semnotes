@@ -10,6 +10,9 @@ const AccountInfo = () => {
 
     const [username, setUserName] = useState(firebase.username);
     const [visible, setVisible] = useState(false);
+    
+    const [semVis, setVis] = useState(false);
+    const [sem, setsem] = useState(firebase.detailsOfUser.sem);
 
   return (
     <div className='flex flex-col p-2 space-y-3'>
@@ -54,29 +57,29 @@ const AccountInfo = () => {
         <div className='flex items-center space-x-2'>
             <div className='w-full flex justify-start items-center'>
                 <div onClick={()=>{
-                        if(!visible){
-                            setVisible(prev => !prev);
+                        if(!semVis){
+                            setVis(prev => !prev);
                             if (semRef.current) {
                                 semRef.current.disabled = false;
                                 semRef.current.focus();
                             }
-                            setUserName("");
+                            setsem("");
                         }
                     }} >
-                    <button className='py-2 px-3 bg-[#222222] main-text rounded-md shadow-md text-xs'>Username :</button>
+                    <button className='py-2 px-3 bg-[#222222] main-text rounded-md shadow-md text-xs'>Semester :</button>
                     <input onChange={(e)=>{
-                        setUserName(e.target.value);
-                    }} ref={semRef} disabled={true} type="text" className='text-sm bg-transparent outline-none p-2 para-text' value={username} />
+                        setsem(e.target.value);
+                    }} ref={semRef} disabled={true} type="text" className='text-sm bg-transparent outline-none p-2 para-text' value={sem} />
                 </div>
             </div>
 
             {!semRef.current?.disabled && (
                 <button onClick={async ()=> {
-                    firebase.setusername(username);
-                    await firebase.updateData(`ExamRescue/${firebase.user.uid}/userDetails`,{username : username});
+                    firebase.setDetails({...firebase.detailsOfUser, [sem] : sem});
+                    await firebase.updateData(`ExamRescue/${firebase.user.uid}/userDetails`,{sem : sem});
                     setVisible(prev => !prev);
                     semRef.current.disabled = true;
-                }} className={`bg-btn-success py-2 px-6 text-sm rounded-md ${visible ? "block" : "hidden"} `}>Save</button>
+                }} className={`bg-btn-success py-2 px-6 text-sm rounded-md ${semVis ? "block" : "hidden"} `}>Save</button>
             )}
 
         </div>
