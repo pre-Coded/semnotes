@@ -41,12 +41,13 @@ const Login = () => {
 
     firebase.setLoading(prev => !prev);
     try{
-      await firebase.signInUser(email, pass);
+      const user = await firebase.signInUser(email, pass);
+      firebase.setUser(user);
     }catch(e){
-      firebase.setLoading(prev => !prev);
       toast.error("Email or password is incorrect.");
       console.log(e);
     }
+    firebase.setLoading(prev => !prev);
   }
 
   return (

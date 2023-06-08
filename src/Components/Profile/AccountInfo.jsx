@@ -76,7 +76,7 @@ const AccountInfo = () => {
             {!semRef.current?.disabled && (
                 <button onClick={async ()=> {
                     firebase.setDetails({...firebase.detailsOfUser, [sem] : sem});
-                    await firebase.updateData(`ExamRescue/${firebase.user.uid}/userDetails`,{sem : sem});
+                    await firebase.updateData(`ExamRescue/${firebase.user.uid}/academicDetails`,{sem : sem});
                     setVisible(prev => !prev);
                     semRef.current.disabled = true;
                 }} className={`bg-btn-success py-2 px-6 text-sm rounded-md ${semVis ? "block" : "hidden"} `}>Save</button>

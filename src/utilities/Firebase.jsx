@@ -68,8 +68,6 @@ export const FireBaseProvider = (props) => {
     const authStateChange = () => {
         onAuthStateChanged(auth, user => {
             console.log("Auth State Changed");
-
-            setLoading(prev => !prev);
             if (user) {
                 console.log("running")
                 setUser(user);
@@ -77,7 +75,6 @@ export const FireBaseProvider = (props) => {
             else{
                 setUser(null);
             }
-            setLoading(prev => !prev);
         })     
     }
 
@@ -121,8 +118,9 @@ export const FireBaseProvider = (props) => {
     };
 
     const signInUser = async (email, pass) => {
-        return await signInWithEmailAndPassword(auth, email, pass);
+        await signInWithEmailAndPassword(auth, email, pass);
     }
+
     const handleSignOut = async () => {
         setLoading(prev => !prev);
         await signOut(auth).then(() => {
@@ -132,6 +130,9 @@ export const FireBaseProvider = (props) => {
                 sem: "",
                 sub : "",
             })
+            setusername(null);
+            setsyllabusURL(null);
+            setprofileUrl(null);
             navigate('/')
         })
         setLoading(prev => !prev);
@@ -171,7 +172,7 @@ export const FireBaseProvider = (props) => {
         }
       };
       
-      
+
     const [syllabusURL, setsyllabusURL] = useState(null);
 
     const getSyllabusURL = async (path)=>{
