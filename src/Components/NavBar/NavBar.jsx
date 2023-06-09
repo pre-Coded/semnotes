@@ -33,7 +33,7 @@ const NavBar = () => {
                 </Link>
             </li>
             <li id={3} onClick={handleActive} className='transition-all relative h-full aspect-square flex items-center justify-center'>
-                <Link to="/addresource" className='h-full aspect-square flex justify-center items-center '>
+                <Link to="/chat" className='h-full aspect-square flex justify-center items-center '>
                     <MdAdd/>
                 </Link>
             </li>

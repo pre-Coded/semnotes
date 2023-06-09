@@ -50,7 +50,7 @@ const googleProvider = new GoogleAuthProvider();
 export const database = getDatabase(fireBaseApp);
 const storage = getStorage(fireBaseApp);
 
-const firestore = getFirestore(fireBaseApp);
+export const firestore = getFirestore(fireBaseApp);
 
 const FireBaseContext = createContext(null);
 export const useFireBase = () => {
@@ -60,6 +60,7 @@ export const useFireBase = () => {
 export const FireBaseProvider = (props) => {
     const [isLoading, setLoading] = useState(false);
     const [sub, setSub] = useState(null);
+    const [messageList, setMessageList] = useState([]);
 
     const [academicDetails, setAcademicDetails] = useState({
         branch: "",
@@ -312,7 +313,8 @@ export const FireBaseProvider = (props) => {
             syllabusURL,
             setsyllabusURL,
             handleProfilePhotoUpload,
-            updateData
+            updateData,
+            messageList, setMessageList,
         }}>
             {props.children}
         </FireBaseContext.Provider>

@@ -9,6 +9,7 @@ import NoPage from "./Pages/NoPage";
 import SemDetailsSelected from "./Pages/semDetailsSelected";
 import LoadingOverlay from "./Pages/LoadingOverlay";
 import { useState } from "react";
+import Chat from "./Components/Chat/chat";
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
                             <Route path="/" element={<Home />} />
                             <Route path="profile" element={<UserProfile />}></Route>
                             <Route path="semselected" element={<SemDetailsSelected />}></Route>
+                            <Route path="chat" element={<Chat />}></Route>
                             <Route path="*" element={<NoPage />} />
                         </Routes>
                     </> :
