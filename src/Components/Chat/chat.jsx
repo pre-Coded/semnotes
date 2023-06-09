@@ -65,19 +65,22 @@ const Chat = () => {
         const timeDifference = currentDate.getTime() - postDate.getTime();
 
         const hoursAgo = Math.floor(timeDifference / (1000 * 60 * 60));
+        const minuteAgo = Math.floor(timeDifference / (1000 * 60));
 
-        console.log(hoursAgo);
+        if(hoursAgo === 0){
+            return `${minuteAgo} m`;
+        }
 
-        return hoursAgo
+        return `${hoursAgo} h`
     }
 
   return (
-    <div className='main-text p-2 relative h-full w-full flex flex-col space-y-2 items-center'>
+    <div className='main-text p-2 relative h-full w-full flex flex-col space-y-2 items-center overflow-hidden'>
         <div className='w-full border-b-2 flex items-center justify-center p-2'>
             <h1 className='text-2xl'>Recents</h1>
         </div>
 
-        <div className='flex flex-col w-full h-full space-y-4'>
+        <div className='flex flex-col w-full h-full space-y-4 overflow-x-hidden overflow-y-scroll hide-scrollbar'>
             <form onSubmit={postMessage} className='w-full bg-transparent rounded-md flex flex-col space-y-2'>
                 <div></div>
                 <input type="text" onChange={(e)=>{
@@ -96,7 +99,7 @@ const Chat = () => {
                         <div className='flex flex-col space-y-2 bg-main rounded-md shadow-md p-2'>
                             <div className='flex items-center justify-start space-x-2'>
                                 <span className='text-[1rem] main-text'>{data.username ? data.username : data.email}</span>
-                                <span className='text-[1rem] main-text text-sm para-text'>{Number(time(data.date))}{" "}Hours ago</span>
+                                <span className='text-[1rem] main-text text-sm para-text'>{time(data.date)}</span>
                             </div>
                             <div className='flex flex-col space-y-2'>
                                 <div className='flex space-x-2 text-sm'>
@@ -116,6 +119,8 @@ const Chat = () => {
             }
 
         </div>
+
+        <div className='h-24'></div>
     </div>
   )
 }
