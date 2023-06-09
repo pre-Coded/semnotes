@@ -22,13 +22,15 @@ const SignUp = () => {
 
   const [emailLabel, setEmailLabel] = useState(false);
   const [passLabel, setPassLabel] = useState(false);
+  const [sem , setSem] = useState("");
+  const [branch, setBranch] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try
     {
-      await firebase.signUpWithEmailAndPassword(email, pass);
+      await firebase.signUpWithEmailAndPassword(email, pass, branch, sem);
     }
     catch(e)
     {
@@ -85,9 +87,9 @@ const SignUp = () => {
           </div>
 
           <div className='w-[90%] h-14 relative flex justify-center items-center bg-main rounded-md shadow-md para-text overflow-hidden'>
-            <div>{firebase.detailsOfUser.sem === "" ? "Select Semester" : "Semester " + firebase.detailsOfUser.sem}</div>
+            <div>{firebase.academicDetails.sem === "" ? "Select Semester" : "Semester " + firebase.detailsOfUser.sem}</div>
             <select onChange={(e) => {
-              firebase.setDetails({ ...firebase.detailsOfUser, [e.target.name]: e.target.value });
+              setSem(e.target.value);
             }} className='h-full w-full outline-none text-white bg-transparent absolute opacity-0' name="sem" required>
               <option className='' defaultValue={"Select Semester"}>Select Semester</option>
               {
@@ -101,9 +103,9 @@ const SignUp = () => {
           </div>
 
           <div className='w-[90%] h-14 relative flex justify-center items-center bg-main rounded-md shadow-md para-text overflow-hidden'>
-            <div>{firebase.detailsOfUser.branch === "" ? "Select Branch" : firebase.detailsOfUser.branch}</div>
+            <div>{firebase.academicDetails.branch === "" ? "Select Branch" : firebase.detailsOfUser.branch}</div>
             <select onChange={(e) => {
-              firebase.setDetails({ ...firebase.detailsOfUser, [e.target.name]: e.target.value })
+              setBranch(e.target.value);
             }} className='h-full w-full outline-none text-white bg-transparent absolute opacity-0 ' name='branch' required>
               <option className='' defaultValue={"Select Branch"}>Select Branch</option>
               {

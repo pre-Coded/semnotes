@@ -61,6 +61,7 @@ export const FireBaseProvider = (props) => {
     const [isLoading, setLoading] = useState(false);
     const [sub, setSub] = useState(null);
     const [messageList, setMessageList] = useState([]);
+    const [onlineStatus, setOnlineStatus] = useState(null);
 
     const [academicDetails, setAcademicDetails] = useState({
         branch: "",
@@ -145,12 +146,23 @@ export const FireBaseProvider = (props) => {
                 const onValueCallback = (snapshot) => {
                     const data = snapshot.val();
                     setAcademicDetails(data.academicDetails);
-                    setUserDetails(data.userDetails);
+
+                    if(data.userDetails){
+                        setUserDetails(data.userDetails);
+                    }else{
+                        setUserDetails({...userDetails, profileUrl : BlankPhoto, username : ""})
+                    }
+
                 };
                 const onError = (error) => {
                     console.log('Error:', error);
                 };
                 onValue(databaseRef, onValueCallback, onError);
+
+
+                await updateData(`user/${user.uid}/`, {
+                    status : true,
+                })
             }
         };
         fetchData();
@@ -158,7 +170,7 @@ export const FireBaseProvider = (props) => {
 
     const navigate = useNavigate();
 
-    const signUpWithEmailAndPassword = async (email, password) => {
+    const signUpWithEmailAndPassword = async (email, password, branch, sem) => {
         setLoading(prev => !prev);
 
         try {
@@ -169,13 +181,14 @@ export const FireBaseProvider = (props) => {
             );
             const user = userCredential.user;
 
-            setUser(user);
-
             await putData(`ExamRescue/${user.uid}/academicDetails`, {
-                branch: academicDetails.branch,
-                sem: academicDetails.sem,
+                branch: branch,
+                sem: sem,
             })
 
+            setUserDetails({...userDetails, profileUrl : BlankPhoto})
+
+            setUser(user);
         } catch (error) {
             // Handle any errors during the sign-up process
             console.log("Sign up error:", error.message);
@@ -211,6 +224,11 @@ export const FireBaseProvider = (props) => {
             setsyllabusURL(null);
             navigate('/')
         })
+
+        await updateData(`user/${user.uid}/`, {
+            status : false,
+        })
+
         setLoading(prev => !prev);
     }
 
@@ -315,6 +333,7 @@ export const FireBaseProvider = (props) => {
             handleProfilePhotoUpload,
             updateData,
             messageList, setMessageList,
+            onlineStatus, setOnlineStatus,
         }}>
             {props.children}
         </FireBaseContext.Provider>

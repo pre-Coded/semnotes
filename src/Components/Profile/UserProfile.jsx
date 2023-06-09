@@ -7,7 +7,6 @@ import { RiAddCircleLine } from 'react-icons/ri'
 
 import { useFireBase } from '../../utilities/Firebase'
 
-
 const UserProfile = () => {
   const firebase = useFireBase();
 

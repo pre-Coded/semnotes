@@ -43,6 +43,13 @@ const Login = () => {
     try{
       const user = await firebase.signInUser(email, pass);
       firebase.setUser(user);
+
+      // const loggedOut = await firebase.updateData(`user/${user.uid}/`, {
+      //   status : true,
+      // })
+
+      // console.log(loggedOut);
+
       navigate('/');
     }catch(e){
       toast.error("Email or password is incorrect.");
