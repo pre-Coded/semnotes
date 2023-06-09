@@ -43,6 +43,7 @@ const Login = () => {
     try{
       const user = await firebase.signInUser(email, pass);
       firebase.setUser(user);
+      navigate('/');
     }catch(e){
       toast.error("Email or password is incorrect.");
       console.log(e);

@@ -7,7 +7,6 @@ import {MdAdd} from 'react-icons/md'
 import { useRef, useState, useEffect } from 'react';
 
 const NavBar = () => {
-
     const handleActive = (e)=>{
         document.getElementById("navbar").querySelectorAll("*").forEach((link)=>{
                 link.classList.remove('active');
@@ -18,35 +17,34 @@ const NavBar = () => {
 
 
   return (
-    <div className='fixed bottom-0 flex w-80 z-[1000] h-14 left-1/2 -translate-x-1/2 rounded-lg shadow-lg md:bottom-4 bg-black'>
+    <div className='fixed bottom-0 flex w-80 z-[1000] h-14 left-1/2 -translate-x-1/2 rounded-lg shadow-lg md:bottom-4 bg-[#121111]
+    border-t-2 border-t-[#00BFFF]'>
 
-        <ul id="navbar" className='flex justify-around items-center h-full w-full para-text text-2xl space-x-4 relative'>
+        <ul id="navbar" className='flex justify-around items-center h-full w-full para-text text-2xl space-x-4 relative bg-transparent px-2'>
 
-            <li onClick={handleActive} className='active flex-1 transition-all relative h-full aspect-square flex items-center justify-center'>
-                <Link to="/" className=''>
+            <li id={1} onClick={handleActive} className='active transition-all relative h-full aspect-square flex items-center justify-center bg-transparent'>
+                <Link to="/" className='h-full aspect-square flex justify-center items-center '>
                     <AiFillHome/>
                 </Link>
             </li>
-            <li onClick={handleActive} className='flex-1 transition-all relative h-full aspect-square flex items-center justify-center'>
-                <Link to="/semselected">
+            <li id={2} onClick={handleActive} className='transition-all relative h-full aspect-square flex items-center justify-center'>
+                <Link to="/semselected"  className='h-full aspect-square flex justify-center items-center '>
                     <BsFillBookFill/>
                 </Link>
             </li>
-            <li onClick={handleActive} className='flex-1 transition-all relative h-full aspect-square flex items-center justify-center'>
-                <Link to="/addresource">
+            <li id={3} onClick={handleActive} className='transition-all relative h-full aspect-square flex items-center justify-center'>
+                <Link to="/addresource" className='h-full aspect-square flex justify-center items-center '>
                     <MdAdd/>
                 </Link>
             </li>
-            <li onClick={handleActive} className='flex-1 transition-all relative h-full aspect-square flex items-center justify-center'>
-                <Link to="/profile">
+            <li id={4} onClick={handleActive} className='transition-all relative h-full aspect-square flex items-center justify-center'>
+                <Link to="/profile" className='h-full aspect-square flex justify-center items-center '>
                     <CgProfile/>
                 </Link>
             </li>
 
         </ul>
-        <div className='absolute bottom-0 w-full h-[1px] bg-gradient-to-r from-[#00BFFF] to-[#0080FF]'></div>
         <Outlet/>
-
     </div>
   )
 }

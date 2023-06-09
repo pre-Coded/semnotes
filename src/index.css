@@ -152,11 +152,10 @@ body {
 
 .active {
     color: white;
-    transform: translateY(-14px);
-    border-bottom: solid 5px #00BFFF;
+    transform: scale(1.3) translateY(-15px);
+    background-color: #00BFFF;
+    border: solid 5px black;
     border-radius: 50%;
-    box-shadow: -0.5px 0 #0080FF;
-    background-color: black;
 }
 
 .animate-loading {
