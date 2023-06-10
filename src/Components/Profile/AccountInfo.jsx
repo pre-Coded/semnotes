@@ -22,7 +22,7 @@ const AccountInfo = () => {
     const [sem, setsem] = useState(academicDetails.sem);
 
     return (
-        <div className='flex flex-col p-2 space-y-3 relative h-full w-full text-sm'>
+        <div className='flex flex-col p-2 space-y-3 relative h-full w-full text-sm select-none'>
             <div className='flex flex-col space-y-2  space-x-2 w-full'>
 
                 <div className='w-full h-full flex'>
@@ -67,37 +67,49 @@ const AccountInfo = () => {
                 <span className='py-1 px-2 bg-[#222222] main-text rounded-md shadow-md text-xs flex items-center justify-center'>Email :</span>
                 <span className='text-sm para-text'>{firebase.user.email}</span>
             </div>
+
             <div className='flex items-center space-x-2'>
                 <span className='py-2 px-3 bg-[#222222] main-text rounded-md shadow-md text-xs'>Branch :</span>
-                <span className='text-sm main-text'>{academicDetails ? academicDetails.branch : "Not set"}</span>
+                <span className='text-sm para-text'>{academicDetails ? academicDetails.branch : "Not set"}</span>
             </div>
 
-            <div className='flex items-center space-x-2'>
-                <div className='w-full flex justify-start items-center'>
+            <div className='flex flex-col space-y-2  space-x-2 w-full'>
+
+                <div className='w-full h-full flex'>
                     <div onClick={() => {
-                        if (!semVis) {
+                        if (semRef.current || !semVis) {
                             setVis(prev => !prev);
-                            if (semRef.current) {
-                                semRef.current.disabled = false;
-                                semRef.current.focus();
-                            }
+                            semRef.current.disabled = false;
+                            semRef.current.focus();
+
                             setsem("");
                         }
-                    }} >
-                        <button className='py-2 px-3 bg-[#222222] main-text rounded-md shadow-md text-xs'>Semester :</button>
+                    }} className="w-full flex flex-row space-x-1">
+
+                        <div className='py-1 px-2 bg-[#222222] main-text rounded-md shadow-md text-xs flex items-center justify-center'>Semester :</div>
+
                         <input onChange={(e) => {
                             setsem(e.target.value);
-                        }} ref={semRef} disabled={true} type="text" className='text-sm bg-transparent outline-none p-2 para-text' value={!sem ? firebase.userDetails.sem : sem} />
+                        }} ref={semRef} disabled={true} type="text" className='text-xs bg-transparent outline-none p-2 para-text' value={!sem ? firebase.academicDetails.sem : sem} />
+
                     </div>
+
                 </div>
 
-                {!semRef.current?.disabled && (
-                    <button onClick={async () => {
-                        await firebase.updateData(`ExamRescue/${firebase.user.uid}/academicDetails`, { sem: sem });
-                        setVisible(prev => !prev);
-                        semRef.current.disabled = true;
-                    }} className={`bg-btn-success py-2 px-6 text-sm rounded-md ${semVis ? "block" : "hidden"} `}>Save</button>
-                )}
+                    {!usernameRef.current?.disabled && (
+                        <div className='flex items-center justify-between text-sm space-x-2 w-full'>
+                            <button onClick={async () => {
+                                await firebase.updateData(`ExamRescue/${firebase.user.uid}/academicDetails`, { sem: sem });
+                                setVis(prev => !prev);
+                                semRef.current.disabled = true;
+                            }} className={`bg-btn-success py-2 px-6 text-sm rounded-md ${semVis ? "block" : "hidden"} `}>Save</button>
+
+                            <button onClick={async () => {
+                                setVis(prev => !prev);
+                                semRef.current.disabled = true;
+                            }} className={`bg-btn-light text-black py-2 px-6 text-sm rounded-md ${semVis ? "block" : "hidden"} `}>Cancle</button>
+                        </div>
+                    )}
 
             </div>
         </div>

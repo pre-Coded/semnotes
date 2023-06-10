@@ -17,7 +17,7 @@ const UserProfile = () => {
   return (
     <div className='main-text h-full w-full lg:w-[50%] lg:border-l-2 border-l-[#121212] relative flex flex-col space-y-4 overflow-hidden'>
 
-      <div className='w-full flex flex-col lg:flex-row items-center justify-center space-y-3 relative px-2'>
+      <div className='w-full flex flex-col lg:flex-row items-center justify-center space-y-5 relative px-2'>
 
         <div className='h-full w-full flex justify-start items-center relative space-x-4 space-y-4'>
 
@@ -32,9 +32,11 @@ const UserProfile = () => {
 
           </div>
 
-          <h1 className='main-text text-sm'>{!firebase.userDetails.username ? firebase.user.email : firebase.userDetails.username}</h1>
+          <h1 className='main-text text-xl lg:text-sm'>{!firebase.userDetails.username ? firebase.user.email : firebase.userDetails.username}</h1>
 
         </div>
+
+        <button onClick={firebase.handleSignOut} className='tracking-wider lg:hidden w-full py-4 text-sm bg-btn-primary main-text rounded-md shadow-md'>Log Out</button>
       </div>
 
       <div className='flex flex-col px-2 w-full overflow-y-scroll h-full hide-scrollbar'>

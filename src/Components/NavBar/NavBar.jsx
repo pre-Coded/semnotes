@@ -7,19 +7,31 @@ import { MdAdd } from 'react-icons/md'
 import { useRef, useState, useEffect } from 'react';
 import TopBar from '../Home/TopBar';
 import { useFireBase } from '../../utilities/Firebase';
-import {LuMessageSquare} from 'react-icons/lu'
+import { LuMessageSquare } from 'react-icons/lu'
+import { motion } from 'framer-motion';
 
 const NavBar = () => {
     const firebase = useFireBase();
 
-    const handleActive = (e) => {
-        document.getElementById("navbar").querySelectorAll("*").forEach((link) => {
-            link.classList.remove('active');
-        })
-        e.currentTarget.classList.add("active");
-    }
+    const ref = useRef(null);
 
-    const handleActiveLarger = (e)=> {
+    const [num, setNum] = useState(0);
+
+    const handleClick = (event) => {
+        document.getElementById("navbar").querySelectorAll("*").forEach((item)=>{
+        item.classList.remove('active');
+        })
+
+        event.currentTarget.classList.add('active');
+
+        const targetTab = event.currentTarget.getBoundingClientRect();
+        const navbar = document.getElementById('navbar').getBoundingClientRect();
+        const difference = targetTab.left - navbar.left;
+        setNum(difference);
+        // ref.current.style.transform = `translateX(${difference}px)`;
+    };
+
+    const handleActiveLarger = (e) => {
         document.getElementById("navbarLarge").querySelectorAll("*").forEach((link) => {
             link.classList.remove('active-navLarge');
         })
@@ -48,19 +60,19 @@ const NavBar = () => {
                     <ul id="navbarLarge" className='para-text text-xl w-full h-full bg-transparent'>
                         <li onClick={handleActiveLarger} id={1} className='active-navLarge bg-transparent w-full relative h-16 flex p-2 border-b-2 border-b-[#222222]  transition-all'>
                             <Link to="/" className='h-full w-full flex justify-start items-center space-x-2'>
-                                <AiFillHome/>
+                                <AiFillHome />
                                 <span className='text-sm'>Home</span>
                             </Link>
                         </li>
                         <li onClick={handleActiveLarger} id={1} className='w-full relative h-16 flex p-2 border-b-2 border-b-[#222222]  transition-all'>
                             <Link to="/semselected" className='h-full w-full flex justify-start items-center space-x-2'>
-                                <BsBookFill/>
+                                <BsBookFill />
                                 <span className='text-sm'>Choose Subject</span>
                             </Link>
                         </li>
                         <li onClick={handleActiveLarger} id={1} className='w-full relative h-16 flex p-2 border-b-2 border-b-[#222222] transition-all'>
                             <Link to="/chat" className='h-full w-full flex justify-start items-center space-x-2'>
-                                <LuMessageSquare/>
+                                <LuMessageSquare />
                                 <span className='text-sm'>Recents</span>
                             </Link>
                         </li>
@@ -70,31 +82,64 @@ const NavBar = () => {
                 </nav>
             </div>
 
-            <div className='fixed lg:hidden bottom-0 flex w-80 z-[1000] h-14 left-1/2 -translate-x-1/2 rounded-lg shadow-lg md:bottom-4 bg-[#121111] border-t-2 border-t-[#00BFFF]'>
+            <div className='fixed lg:hidden bottom-2 flex w-80 z-[1000] h-14 left-1/2 -translate-x-1/2 rounded-lg shadow-lg md:bottom-4'>
 
-                <ul id="navbar" className='flex justify-around items-center h-full w-full para-text text-2xl space-x-4 relative bg-transparent px-2'>
-                    <li id={1} onClick={handleActive} className='active transition-all relative h-full aspect-square flex items-center justify-center bg-transparent'>
-                        <Link to="/" className='h-full aspect-square flex justify-center items-center '>
-                            <AiFillHome />
-                        </Link>
-                    </li>
-                    <li id={2} onClick={handleActive} className='transition-all relative h-full aspect-square flex items-center justify-center'>
-                        <Link to="/semselected" className='h-full aspect-square flex justify-center items-center '>
-                            <BsFillBookFill />
-                        </Link>
-                    </li>
-                    <li id={3} onClick={handleActive} className='transition-all relative h-full aspect-square flex items-center justify-center'>
-                        <Link to="/chat" className='h-full aspect-square flex justify-center items-center '>
-                            <LuMessageSquare />
-                        </Link>
-                    </li>
-                    <li id={4} onClick={handleActive} className='transition-all relative h-full aspect-square flex items-center justify-center'>
-                        <Link to="/profile" className='h-full aspect-square flex justify-center items-center '>
-                            <CgProfile />
-                        </Link>
-                    </li>
-                </ul>
-                <Outlet />
+                <nav className="h-14 w-80 bg-main rounded-lg relative p-2 px-4 para-text border-[#121212] border shadow-inner shadow-[#121212]">
+                    <ul id="navbar" className="flex flex-row justify-between items-center w-full h-full relative">
+
+                        {/* <div className="h-full absolute aspect-square">
+                            <div
+                                ref={ref}
+                                className={`h-14 aspect-square bg-btn-secondry -left-[8px] -top-[2rem] rounded-full transition-all relative`}
+                            ></div>
+                        </div> */}
+
+                    <motion.div
+                        initial={{ transform: 'translateX(0)' }}
+                        animate={{ transform: `translateX(${num}px)` }}
+                        transition={{ type: 'spring', stiffness: 400, damping: 25, duration : '150ms' }}
+                        className="h-14 aspect-square rounded-full bg-btn-secondry absolute -top-7 -left-2"
+                        >
+                        
+                    </motion.div>
+
+
+                        <li
+                            onClick={handleClick}
+                            className={`transition-all z-10 flex items-center justify-center h-full aspect-square text-2xl cursor-pointer active`}
+                        >
+                            <Link to="/">
+                                <AiFillHome />
+                            </Link>
+                        </li>
+
+                        <li
+                            onClick={handleClick}
+                            className={`transition-all flex items-center justify-center h-full aspect-square text-2xl cursor-pointer`}
+                        >
+                            <Link to="/semselected">
+                                <BsBookFill />
+                            </Link>
+                        </li>
+                        <li
+                            onClick={handleClick}
+                            className={`transition-all flex items-center justify-center h-full aspect-square text-2xl cursor-pointer`}
+                        >
+                            <Link to="/chat">
+                                <LuMessageSquare />
+                            </Link>
+                        </li>
+                        <li
+                            onClick={handleClick}
+                            className={`transition-all flex items-center justify-center h-full aspect-square text-2xl cursor-pointer`}
+                        >
+                            <Link to="/profile">
+                                <CgProfile />
+                            </Link>
+                        </li>
+                    </ul>
+                    <Outlet />
+                </nav>
             </div>
         </div>
     )
