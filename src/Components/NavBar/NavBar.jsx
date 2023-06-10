@@ -98,7 +98,7 @@ const NavBar = () => {
                         initial={{ transform: 'translateX(0)' }}
                         animate={{ transform: `translateX(${num}px)` }}
                         transition={{ type: 'spring', stiffness: 400, damping: 25, duration : '150ms' }}
-                        className="h-14 aspect-square rounded-full bg-btn-secondry absolute -top-7 -left-2"
+                        className="h-16 aspect-square rounded-full bg-btn-secondry absolute -top-8 -left-3 shadow-inner shadow-blue-900 border-4 border-blue-400"
                         >
                         
                     </motion.div>

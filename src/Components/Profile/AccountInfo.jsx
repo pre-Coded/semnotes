@@ -12,6 +12,8 @@ const AccountInfo = () => {
 
     const firebase = useFireBase();
 
+    const [loading, setLoading] = useState(false);
+
     const academicDetails = firebase.academicDetails;
     const userDetails = firebase.userDetails;
 
@@ -22,7 +24,7 @@ const AccountInfo = () => {
     const [sem, setsem] = useState(academicDetails.sem);
 
     return (
-        <div className='flex flex-col p-2 space-y-3 relative h-full w-full text-sm select-none'>
+        <div className='flex flex-col p-2 space-y-3 relative h-full w-full text-sm'>
             <div className='flex flex-col space-y-2  space-x-2 w-full'>
 
                 <div className='w-full h-full flex'>
@@ -49,10 +51,16 @@ const AccountInfo = () => {
                     {!usernameRef.current?.disabled && (
                         <div className='flex items-center justify-between text-sm space-x-2 w-full'>
                             <button onClick={async () => {
+                                setLoading(prev => !prev);
                                 await firebase.updateData(`ExamRescue/${firebase.user.uid}/userDetails`, { username: username });
+                                setLoading(prev => !prev);
                                 setVisible(prev => !prev);
                                 usernameRef.current.disabled = true;
-                            }} className={`bg-btn-success py-2 px-6 text-sm rounded-md ${visible ? "block" : "hidden"} `}>Save</button>
+                            }} className={`bg-btn-success py-2 px-6 text-sm rounded-md ${visible ? "block" : "hidden"} `}>{
+                                
+                                loading ? "Saving..." : "Save"
+                                
+                            }</button>
 
                             <button onClick={async () => {
                                 setVisible(prev => !prev);
@@ -98,10 +106,14 @@ const AccountInfo = () => {
                     {!semRef.current?.disabled && (
                         <div className='flex items-center justify-between text-sm space-x-2 w-full'>
                             <button onClick={async () => {
+                                setLoading(prev => !prev);
                                 await firebase.updateData(`ExamRescue/${firebase.user.uid}/academicDetails`, { sem: sem });
                                 setVis(prev => !prev);
+                                setLoading(prev => !prev);
                                 semRef.current.disabled = true;
-                            }} className={`bg-btn-success py-2 px-6 text-sm rounded-md ${semVis ? "block" : "hidden"} `}>Save</button>
+                            }} className={`bg-btn-success py-2 px-6 text-sm rounded-md ${semVis ? "block" : "hidden"} `}>{
+                                loading ? "Saving..." : "Save"
+                            }</button>
 
                             <button onClick={async () => {
                                 setVis(prev => !prev);
