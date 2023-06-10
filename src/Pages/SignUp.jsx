@@ -87,7 +87,7 @@ const SignUp = () => {
           </div>
 
           <div className='w-[90%] h-14 relative flex justify-center items-center bg-main rounded-md shadow-md para-text overflow-hidden'>
-            <div>{firebase.academicDetails.sem === "" ? "Select Semester" : "Semester " + firebase.detailsOfUser.sem}</div>
+            <div>{sem === "" ? "Select Semester" : "Semester " + sem}</div>
             <select onChange={(e) => {
               setSem(e.target.value);
             }} className='h-full w-full outline-none text-white bg-transparent absolute opacity-0' name="sem" required>
@@ -103,7 +103,7 @@ const SignUp = () => {
           </div>
 
           <div className='w-[90%] h-14 relative flex justify-center items-center bg-main rounded-md shadow-md para-text overflow-hidden'>
-            <div>{firebase.academicDetails.branch === "" ? "Select Branch" : firebase.detailsOfUser.branch}</div>
+            <div>{branch === "" ? "Select Branch" : branch}</div>
             <select onChange={(e) => {
               setBranch(e.target.value);
             }} className='h-full w-full outline-none text-white bg-transparent absolute opacity-0 ' name='branch' required>

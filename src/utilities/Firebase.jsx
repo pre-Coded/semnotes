@@ -73,6 +73,9 @@ export const FireBaseProvider = (props) => {
         username: "",
     })
 
+    const [videoList, setVideoList] = useState([]);
+    const [noteList, setNoteList] = useState([]);
+
     // const fetchData = async () =>{
     //     const databaseRef = dataBaseRef(database, `ExamRescue/${user.uid}`);
     //         const onValueCallback = (snapshot) => {
@@ -334,6 +337,8 @@ export const FireBaseProvider = (props) => {
             updateData,
             messageList, setMessageList,
             onlineStatus, setOnlineStatus,
+            videoList, setVideoList,
+            noteList, setNoteList,
         }}>
             {props.children}
         </FireBaseContext.Provider>
