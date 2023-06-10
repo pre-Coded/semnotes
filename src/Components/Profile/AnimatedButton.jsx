@@ -3,7 +3,7 @@ import { AiFillCaretDown, AiFillCaretUp } from 'react-icons/ai'
 
 const AnimatedButton = ({state, setState, btn, data}) => {
     return (
-        <div className='w-full flex flex-col justify-start items-center p-2'>
+        <div className='w-full flex flex-col justify-start items-center p-2 cursor-pointer select-none'>
             <div onClick={() => {
                 setState(prev => !prev);
             }} className='w-full p-4 bg-main rounded-md shadow-md space-x-2 main-text flex items-center justify-between'>

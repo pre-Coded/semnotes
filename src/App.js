@@ -16,7 +16,7 @@ function App() {
     const firebase = useFireBase();
 
     return (
-        <div className={`w-full h-screen bg-black relative hide-scrollbar overflow-hidden`}>
+        <div className={`w-screen h-screen bg-black relative hide-scrollbar overflow-hidden lg:flex lg:flex-row`}>
             <LoadingOverlay isLoading={firebase.isLoading}></LoadingOverlay>
             {
                 firebase.isLoggedIn ?
@@ -29,6 +29,7 @@ function App() {
                             <Route path="chat" element={<Chat />}></Route>
                             <Route path="*" element={<NoPage />} />
                         </Routes>
+                        <UserProfile/>
                     </> :
                     <>
                         <Routes>

@@ -24,7 +24,7 @@ import {
 } from "firebase/database";
 
 import {
-    collection, getDocs, getFirestore,
+    collection, getDocs, getFirestore,query,onSnapshot,orderBy
 } from 'firebase/firestore'
 
 import {
@@ -61,6 +61,7 @@ export const FireBaseProvider = (props) => {
     const [isLoading, setLoading] = useState(false);
     const [sub, setSub] = useState(null);
     const [messageList, setMessageList] = useState([]);
+
     const [onlineStatus, setOnlineStatus] = useState(null);
 
     const [academicDetails, setAcademicDetails] = useState({
@@ -145,29 +146,56 @@ export const FireBaseProvider = (props) => {
             if (!user) {
                 authStateChange();
             } else {
+                
                 const databaseRef = dataBaseRef(database, `ExamRescue/${user.uid}`);
                 const onValueCallback = (snapshot) => {
                     const data = snapshot.val();
                     setAcademicDetails(data.academicDetails);
 
-                    if(data.userDetails){
+                    if (data.userDetails) {
                         setUserDetails(data.userDetails);
-                    }else{
-                        setUserDetails({...userDetails, profileUrl : BlankPhoto, username : ""})
+                    } else {
+                        setUserDetails({ ...userDetails, profileUrl: BlankPhoto, username: "" })
                     }
 
                 };
                 const onError = (error) => {
                     console.log('Error:', error);
                 };
+
                 onValue(databaseRef, onValueCallback, onError);
 
 
+                // const chatCollectionRef = collection(firestore, "Chats");
+                // onSnapshot(
+                //     query(chatCollectionRef, orderBy("createdAt", "desc")),
+                //     (snapshot) => {
+                //         const messages = snapshot.docs.map((doc) => doc.data());
+                //         console.log(messages);
+                //         setMessageList(messages);
+                //     }
+                // );
+
+                // const databaseRefSecond = dataBaseRef(database, `user/`);
+                // const onValueCallbackSecond = (snapshot) => {
+                //     const data = snapshot.val();
+                //     console.log(data);
+                //     setOnlineStatus(data);
+                // };
+                // const onErrorSecond = (error) => {
+                //     console.log('Error:', error);
+                //     // Handle the error
+                // };
+                // onValue(databaseRefSecond, onValueCallbackSecond, onErrorSecond);
+
+
                 await updateData(`user/${user.uid}/`, {
-                    status : true,
+                    status: true,
                 })
+
             }
         };
+
         fetchData();
     }, [user, database, dataBaseRef]);
 
@@ -189,7 +217,7 @@ export const FireBaseProvider = (props) => {
                 sem: sem,
             })
 
-            setUserDetails({...userDetails, profileUrl : BlankPhoto})
+            setUserDetails({ ...userDetails, profileUrl: BlankPhoto })
 
             setUser(user);
         } catch (error) {
@@ -229,7 +257,7 @@ export const FireBaseProvider = (props) => {
         })
 
         await updateData(`user/${user.uid}/`, {
-            status : false,
+            status: false,
         })
 
         setLoading(prev => !prev);
@@ -320,7 +348,7 @@ export const FireBaseProvider = (props) => {
             setAcademicDetails,
             userDetails,
             setUserDetails,
-            sub, 
+            sub,
             setSub,
             isLoggedIn,
             handleSignOut,

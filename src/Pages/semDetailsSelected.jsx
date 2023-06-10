@@ -112,7 +112,7 @@ const SemDetailsSelected = () => {
     }
 
     return (
-        <div className='h-screen p-2 scroll-smooth w-screen flex flex-col text-white space-y-3 relative bg-black'>
+        <div className='h-screen p-2 scroll-smooth w-full flex flex-col text-white space-y-3 relative overflow-hidden'>
 
             <div className='text-white flex flex-col space-y-3 items-center justify-center h-full w-full overflow-hidden'>
 

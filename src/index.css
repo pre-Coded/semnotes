@@ -188,3 +188,11 @@ body {
     box-shadow: inset 4px 4px 8px #0a0a0a,
             inset -4px -4px 8px #1a1a1a;
 }
+
+.active-navLarge{
+    background: linear-gradient(to right, white, white, #121212);
+    color : black;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    transform: translateX(5px);
+}
