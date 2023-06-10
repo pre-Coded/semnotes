@@ -81,7 +81,6 @@ const AccountInfo = () => {
                             setVis(prev => !prev);
                             semRef.current.disabled = false;
                             semRef.current.focus();
-
                             setsem("");
                         }
                     }} className="w-full flex flex-row space-x-1">
@@ -96,7 +95,7 @@ const AccountInfo = () => {
 
                 </div>
 
-                    {!usernameRef.current?.disabled && (
+                    {!semRef.current?.disabled && (
                         <div className='flex items-center justify-between text-sm space-x-2 w-full'>
                             <button onClick={async () => {
                                 await firebase.updateData(`ExamRescue/${firebase.user.uid}/academicDetails`, { sem: sem });
