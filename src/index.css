@@ -187,10 +187,10 @@ body {
 }
 
 .neumorphic-chats{
-    border-radius: 10px;
-background: #222220;
-box-shadow: inset 6px -6px 12px #090909,
-            inset -6px 6px 12px #10100f;
+    border-radius: 0px;
+background: #121212;
+box-shadow: inset -2px -2px 4px #070707,
+            inset 2px 2px 4px #1d1d1d;
 }
 
 .active-navLarge{
