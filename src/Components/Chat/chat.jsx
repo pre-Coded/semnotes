@@ -136,15 +136,17 @@ const Chat = () => {
 
     return (
         <div className='main-text p-2 relative h-full w-full flex flex-col space-y-2 items-center overflow-hidden bg-[#121212]'>
-            <div className='w-full border-b-2 border-b-[#121212] pb-2 flex items-center justify-center relative'>
-                <h1 className='text-2xl'>ExamRescue</h1>
+            
+            <div className='w-full h-16 pb-2 flex flex-col items-center justify-center relative'>
+                <span className='text-2xl'>ExamRescue</span>
+                <div className='absolute w-full h-[1px] bottom-0 left-0 bg-gradient-to-r from-[#1e90ff] to-[#FF5722]'/>
             </div>
 
             <div className='flex flex-col w-full h-full space-y-4 overflow-x-hidden overflow-y-scroll hide-scrollbar scroll-smooth relative bg-main'>
 
                 <form onSubmit={postMessage} className='w-full lg:w-[40%] lg:h-[30%] lg:absolute lg:bottom-2 lg:right-2 bg-transparent rounded-md flex flex-col justify-end space-y-2 z-[100] text-sm fixed bottom-24 left-0 border-1 border-[#121212] px-2 bg-black neumorphic-chat'>
                     <div></div>
-                    <div className='flex justify-center items-center h-14 bg-[#121212] border-b-2 border-b-black'>
+                    <div className='flex justify-center items-center h-16 p-2 rounded-md bg-[#121212] border-[0.5px] border-white'>
                         <input type="text" onChange={(e) => {
                             setTopic(e.target.value);
                             if (e.target.value !== "" && expandTextArea === false) {
@@ -222,7 +224,7 @@ const Chat = () => {
                 }
 
             </div>
-            <div className='h-48 bg-black'></div>
+            <div className='h-52 bg-black'></div>
         </div>
     )
 }
