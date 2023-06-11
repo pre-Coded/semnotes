@@ -142,9 +142,9 @@ const Chat = () => {
 
             <div className='flex flex-col w-full h-full space-y-4 overflow-x-hidden overflow-y-scroll hide-scrollbar scroll-smooth relative bg-main'>
 
-                <form onSubmit={postMessage} className='w-full lg:w-[40%] lg:h-[30%] lg:absolute lg:bottom-2 lg:right-2 bg-transparent rounded-md flex flex-col justify-end space-y-2 z-[100] text-sm fixed bottom-24 left-0 border-1 border-[#121212] px-2 bg-main'>
+                <form onSubmit={postMessage} className='w-full lg:w-[40%] lg:h-[30%] lg:absolute lg:bottom-2 lg:right-2 bg-transparent rounded-md flex flex-col justify-end space-y-2 z-[100] text-sm fixed bottom-24 left-0 border-1 border-[#121212] px-2 bg-[#121212]'>
                     <div></div>
-                    <div className='flex justify-center items-center h-14 bg-transparent'>
+                    <div className='flex justify-center items-center h-14 bg-transparent border-b-2 border-b-black'>
                         <input type="text" onChange={(e) => {
                             setTopic(e.target.value);
                             if(e.target.value !== "" && expandTextArea === false){
@@ -154,7 +154,7 @@ const Chat = () => {
                             }
                         }} name="" id="" value={topic} placeholder='Enter Topic' className='h-full w-full p-3 bg-transparent outline-none' required/>
 
-                        <button typeof='submit'  className='h-full aspect-square rounded-full bg-btn-primary text-xl flex justify-center items-center cursor-pointer' type="submit" value="Post">
+                        <button typeof='submit'  className='h-full aspect-square rounded-full neumorphic text-xl flex justify-center items-center cursor-pointer' type="submit" value="Post">
                             {
                                 loading ? 
                                 <div className='h-7 aspect-square rounded-full animate-roll'></div> : 
