@@ -136,7 +136,7 @@ const Chat = () => {
     }
 
     const [expandedChatId, setExpandedChatId] = useState(null);
-    const [comments, setShowComments] = useState(false);
+    const [showComments, setShowComments] = useState(false);
     const [postClicked, setPostClick] = useState(null);
 
     const handleUploadComment = async (e) => {
@@ -184,9 +184,9 @@ const Chat = () => {
                 <div className='absolute w-full h-[1px] bottom-0 left-0 bg-gradient-to-r from-[#1e90ff] to-[#FF5722]' />
             </div>
 
-            <div className='flex flex-col w-full h-full space-y-4 overflow-x-hidden overflow-y-scroll hide-scrollbar scroll-smooth relative bg-main'>
+            <div className='flex flex-col w-full lg:w-[80%] h-full space-y-4 overflow-x-hidden overflow-y-scroll hide-scrollbar scroll-smooth relative bg-main'>
 
-                <form onSubmit={postMessage} className='w-full lg:w-[40%] lg:h-[30%] lg:absolute lg:bottom-2 lg:right-2 bg-transparent rounded-md flex flex-col justify-end space-y-2 z-[100] text-sm fixed bottom-24 left-0 border-1 border-[#121212] px-2 bg-black neumorphic-chat'>
+                <form onSubmit={postMessage} className='w-full lg:w-1/4 lg:bottom-4 lg:left-1/2 lg:-translate-x-[65%] bg-transparent rounded-md flex flex-col justify-end space-y-2 z-[100] text-sm fixed left-0 bottom-24  border-1 border-[#121212] px-2 bg-black neumorphic-chat'>
                     <div></div>
                     <div className='flex justify-center items-center h-16 p-2 rounded-md bg-[#121212] border-[0.5px] border-white'>
                         <input type="text" onChange={(e) => {
@@ -222,6 +222,7 @@ const Chat = () => {
                         firebase.messageList.map((data) => {
 
                             const isExpanded = expandedChatId === data.id;
+                            const commentExpanded = showComments === data.id;
 
                             return (
                                 <div key={data.id} className='flex flex-col space-y-1 rounded-md sticky top-0.5 cursor-pointer bg-[#222222] neumorphic-chats shadow-lg shadow-[#121212]'>
@@ -265,8 +266,8 @@ const Chat = () => {
                                                             }} className='text-[10px] para-text'>Show less</span>
                                                     }
                                                     {
-                                                        !comments && <span onClick={(e) => {
-                                                            setShowComments(prev => !prev);
+                                                        !commentExpanded && <span onClick={(e) => {
+                                                            setShowComments(data.id);
                                                         }} className='text-[10px] text-gray-400'>Show comments...</span>
                                                     }
                                                 </div>
@@ -276,11 +277,11 @@ const Chat = () => {
                                     </div>
 
                                     {
-                                        comments && <div>
+                                        commentExpanded && <div>
                                             <Comments postId={data.id}/>
 
                                             <span onClick={() => {
-                                                setShowComments(prev => !prev);
+                                                setShowComments(null);
                                             }} className='text-[10px] text-gray-400'>Hide Comments</span>
                                         </div>
                                     }
@@ -290,7 +291,7 @@ const Chat = () => {
 
                                         <button onClick={handleUploadComment} id={data.id} type='submit' className='h-full aspect-square text-xl'> 
 
-                                            {commentLoading[data.id] === true && postClicked === data.id ?
+                                            {commentLoading[data.id]  ?
                                             <div className='h-4 aspect-square rounded-full animate-roll'></div> :
                                             <FiSend className='text-white' />
                                             }  
@@ -305,7 +306,7 @@ const Chat = () => {
                 }
 
             </div>
-            <div className='h-52 bg-black'></div>
+            <div className='lg:h-24 h-52 bg-black'></div>
         </div>
     )
 }

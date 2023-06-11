@@ -70,7 +70,7 @@ const Comments = ({postId}) => {
 
 
   return (
-    <div className='h-80 w-full flex flex-col space-y-2 p-2 overflow-y-scroll hide-scrollbar'>
+    <div className='max-h-60 w-full flex flex-col space-y-2 p-2 overflow-y-scroll hide-scrollbar'>
         {
             commentList !== "" && commentList.map((comment)=>{
                 return (

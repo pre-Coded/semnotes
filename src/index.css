@@ -194,7 +194,7 @@ box-shadow: inset -2px -2px 4px #070707,
 }
 
 .active-navLarge{
-    background: linear-gradient(to right, white, white, #121212);
+    background-color: white;
     color : black;
     border-top-left-radius: 15px;
     border-bottom-left-radius: 15px;

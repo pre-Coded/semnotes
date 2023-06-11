@@ -69,7 +69,7 @@ const NavBar = () => {
 
     return (
         <div className='lg:h-screen h-auto lg:w-[24%] relative'>
-            <div className='lg:flex flex-col bg-main p-2 hidden relative border-r-2 border-r-[#121212] h-full w-full'>
+            <div className='lg:flex flex-col bg-main p-1 hidden  relative border-r-2 border-r-white h-full w-full'>
                 <div className='w-full'>
                     <div className='h-20 relative top-2 p-2 flex flex-col items-center justify-center main-text'>
                         <div className='h-full w-full flex justify-center items-center relative rounded-md shadow-2xl'>
@@ -105,7 +105,7 @@ const NavBar = () => {
                         </li>
                     </ul>
                     <Outlet />
-                    <button onClick={firebase.handleSignOut} className='tracking-wider py-2 w-[70%] h-12 text-sm bg-btn-secondry main-text rounded-md shadow-md'>Log Out</button>
+                    <button onClick={firebase.handleSignOut} className='tracking-wider py-2 w-[80%] h-12 text-sm bg-black text-white rounded-md shadow-md'>Log Out</button>
                 </nav>
             </div>
 
@@ -127,7 +127,6 @@ const NavBar = () => {
                         transition={{ type: 'spring', stiffness: 400, damping: 25, duration : '150ms' }}
                         className="h-16 aspect-square rounded-full bg-white absolute -top-8 -left-3 shadow-inner shadow-blue-900 border-4 border-black"
                         >
-                        
                     </motion.div>
 
 
