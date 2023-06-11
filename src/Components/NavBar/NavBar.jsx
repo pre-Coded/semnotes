@@ -13,9 +13,36 @@ import { motion } from 'framer-motion';
 const NavBar = () => {
     const firebase = useFireBase();
 
+    const location = useLocation();
+
     const ref = useRef(null);
 
     const [num, setNum] = useState(0);
+
+    const homeRef = useRef(null);
+    const semRef = useRef(null);
+    const chatRef = useRef(null);
+    const profileRef = useRef(null);
+
+    useEffect(()=>{
+        const setActive = () =>{
+            const path = location.pathname;
+
+            if(path === "/"){
+                homeRef.current?.click();
+            }else if(path === "/semselected"){
+                semRef.current?.click();
+            }else if(path === "/chat"){
+                chatRef.current?.click();
+            }else if(path === '/profile'){
+                profileRef.current?.click();
+            }
+        }
+
+        return(
+            setActive()
+        )
+    }, [location.pathname])
 
     const handleClick = (event) => {
         document.getElementById("navbar").querySelectorAll("*").forEach((item)=>{
@@ -104,7 +131,7 @@ const NavBar = () => {
                     </motion.div>
 
 
-                        <li
+                        <li ref={homeRef}
                             onClick={handleClick}
                             className={`transition-all z-10 flex items-center justify-center h-full aspect-square text-2xl cursor-pointer active`}
                         >
@@ -113,7 +140,7 @@ const NavBar = () => {
                             </Link>
                         </li>
 
-                        <li
+                        <li ref={semRef}
                             onClick={handleClick}
                             className={`transition-all flex items-center justify-center h-full aspect-square text-2xl cursor-pointer`}
                         >
@@ -121,7 +148,7 @@ const NavBar = () => {
                                 <BsBookFill />
                             </Link>
                         </li>
-                        <li
+                        <li ref={chatRef}
                             onClick={handleClick}
                             className={`transition-all flex items-center justify-center h-full aspect-square text-2xl cursor-pointer`}
                         >
@@ -129,7 +156,7 @@ const NavBar = () => {
                                 <LuMessageSquare />
                             </Link>
                         </li>
-                        <li
+                        <li ref={profileRef}
                             onClick={handleClick}
                             className={`transition-all flex items-center justify-center h-full aspect-square text-2xl cursor-pointer`}
                         >
