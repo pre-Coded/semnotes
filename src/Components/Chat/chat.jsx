@@ -26,6 +26,7 @@ import { useFireBase, firestore, database } from '../../utilities/Firebase'
 import { useState } from 'react';
 import Bg from '../../assets/blankProfile.png'
 import TopBar from '../Home/TopBar';
+import Comments from './comments';
 
 const Chat = () => {
     const firebase = useFireBase();
@@ -76,6 +77,7 @@ const Chat = () => {
     }, []);
 
     const [loading, setLoading] = useState(false);
+    const [commentLoading, setCommentLoading] = useState(false);
     const [expandTextArea, setTextArea] = useState(false);
 
     const postMessage = async (e) => {
@@ -134,6 +136,34 @@ const Chat = () => {
     }
 
     const [expandedChatId, setExpandedChatId] = useState(null);
+    const [comments, setShowComments] = useState(false);
+
+    const [commentText, setCommentText] = useState("");
+
+    const handleUploadComment = async (e) => {
+        e.preventDefault();
+
+        setCommentLoading(prev => !prev);
+        if (commentText === "") return;
+
+        try {
+            await addDoc(collection(firestore, `Information-Tech/Post/${e.currentTarget.id}`), {
+                userId: firebase.user.uid,
+                username: firebase.userDetails.username,
+                id: Date.now(),
+                text: commentText,
+                createdAt: serverTimestamp(),
+            })
+
+            console.log("Uploaded successfully");
+
+        } catch (error) {
+            console.error(error);
+        }
+
+        setCommentLoading(prev => !prev);
+    };
+
 
     return (
         <div className='main-text p-2 relative h-full w-full flex flex-col space-y-2 items-center overflow-hidden bg-[#121212]'>
@@ -211,24 +241,52 @@ const Chat = () => {
                                                         <span className='para-text'><span className='main-text font-bold'>Description : </span>
                                                             {data.desc}
                                                         </span>
-                                                    </div> 
+                                                    </div>
                                                 }
 
-                                                {
-                                                    !isExpanded ? <span onClick={(e) => {
-                                                        setExpandedChatId(data.id);
-                                                        }}  className='text-[10px] text-gray-400'>Show more...</span> : 
-                                                        <span onClick={(e) => {
-                                                            setExpandedChatId(null);
-                                                        }}  className='text-[10px] para-text'>Show less</span>
-                                                }
+                                                <div className='flex space-x-2'>
+                                                    {
+                                                        !isExpanded ? <span onClick={(e) => {
+                                                            setExpandedChatId(data.id);
+                                                        }} className='text-[10px] text-gray-400'>Show more...</span> :
+                                                            <span onClick={(e) => {
+                                                                setExpandedChatId(null);
+                                                            }} className='text-[10px] para-text'>Show less</span>
+                                                    }
+                                                    {
+                                                        !comments && <span onClick={(e) => {
+                                                            setShowComments(prev => !prev);
+                                                        }} className='text-[10px] text-gray-400'>Show comments...</span>
+                                                    }
+                                                </div>
                                             </div>
                                         </div>
 
                                     </div>
+
+                                    {
+                                        comments && <div>
+                                            <Comments postId={data.id}/>
+
+                                            <span onClick={() => {
+                                                setShowComments(prev => !prev);
+                                            }} className='text-[10px] text-gray-400'>Hide Comments</span>
+                                        </div>
+                                    }
+
                                     <div className='border-[0.5px] border-white h-12 w-full rounded-md p-2 flex items-center justify-center'>
-                                        <input type="text" className='bg-transparent h-full outline-none text-sm w-full' placeholder='Comment'/>
-                                        <button type='submit' className='h-full aspect-square text-xl'><FiSend className='text-white' /></button>
+                                        <input onChange={(e) => {
+                                            setCommentText(e.target.value);
+                                        }} type="text" className='bg-transparent h-full outline-none text-sm w-full' placeholder='Comment' value={commentText} />
+
+                                        <button onClick={handleUploadComment} id={data.id} type='submit' className='h-full aspect-square text-xl'> 
+
+                                            {commentLoading ?
+                                            <div className='h-4 aspect-square rounded-full animate-roll'></div> :
+
+                                            <FiSend className='text-white' />}
+                                            
+                                        </button>
                                     </div>
                                 </div>
                             )

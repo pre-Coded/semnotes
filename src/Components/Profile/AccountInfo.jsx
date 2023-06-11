@@ -42,7 +42,7 @@ const AccountInfo = () => {
 
                         <input onChange={(e) => {
                             setUserName(e.target.value);
-                        }} ref={usernameRef} disabled={true} type="text" className='text-xs bg-transparent outline-none p-2 para-text' value={!username ? firebase.userDetails.username : username} />
+                        }} ref={usernameRef} disabled={true} type="text" className='text-xs bg-transparent outline-none p-2 para-text' value={username} />
 
                     </div>
 
@@ -97,7 +97,7 @@ const AccountInfo = () => {
 
                         <input onChange={(e) => {
                             setsem(e.target.value);
-                        }} ref={semRef} disabled={true} type="text" className='text-xs bg-transparent outline-none p-2 para-text' value={!sem ? firebase.academicDetails.sem : sem} />
+                        }} ref={semRef} disabled={true} type="text" className='text-xs bg-transparent outline-none p-2 para-text' value={sem} />
 
                     </div>
 
