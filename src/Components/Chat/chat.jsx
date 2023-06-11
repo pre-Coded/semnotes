@@ -136,10 +136,10 @@ const Chat = () => {
 
     return (
         <div className='main-text p-2 relative h-full w-full flex flex-col space-y-2 items-center overflow-hidden bg-[#121212]'>
-            
+
             <div className='w-full h-16 pb-2 flex flex-col items-center justify-center relative'>
                 <span className='text-2xl'>ExamRescue</span>
-                <div className='absolute w-full h-[1px] bottom-0 left-0 bg-gradient-to-r from-[#1e90ff] to-[#FF5722]'/>
+                <div className='absolute w-full h-[1px] bottom-0 left-0 bg-gradient-to-r from-[#1e90ff] to-[#FF5722]' />
             </div>
 
             <div className='flex flex-col w-full h-full space-y-4 overflow-x-hidden overflow-y-scroll hide-scrollbar scroll-smooth relative bg-main'>
@@ -177,50 +177,57 @@ const Chat = () => {
 
                 {
                     firebase.messageList ?
-                            firebase.messageList.map((data) => {
+                        firebase.messageList.map((data) => {
 
                             const isExpanded = expandedChatId === data.id;
 
                             return (
-                            <div onClick={(e) => {
-                                setExpandedChatId(data.id);
-                            }} key={data.id} className='flex flex-row space-x-2 rounded-md p-1 sticky top-0.5 cursor-pointer bg-[#222222] neumorphic-chats shadow-lg shadow-[#121212]'>
+                                <div key={data.id} className='flex flex-col space-y-1 rounded-md sticky top-0.5 cursor-pointer bg-[#222222] neumorphic-chats shadow-lg shadow-[#121212]'>
 
-                                <div className='h-16 aspect-square relative rounded-full p-0.5'>
-                                    <img src={firebase.onlineStatus !== null ? firebase.onlineStatus[data.userId].profileUrl : Bg} className="h-full aspect-square rounded-full object-contain" />
-                                    {
-                                        firebase.onlineStatus !== null && firebase.onlineStatus[data.userId].status ?
-                                            <div className='h-3 aspect-square rounded-full bg-green-500 brightness-125 absolute top-1 right-1' /> :
-                                            ""
-                                    }
-                                </div>
-
-                                <div className='w-full flex flex-col space-y-1 mt-0.5 overflow-hidden'>
-                                    <div className='flex flex-row items-center justify-between pr-2'>
-                                        <span className='text-sm main-text'>{data.username ? data.username : data.email}</span>
-                                        <span className='main-text text-[10px] para-text ml-2'>{time(data.createdAt)}</span>
-                                    </div>
-                                    <div className='flex flex-col space-y-0.5'>
-                                        <div className='flex space-x-2 text-sm'>
-                                            <span className='para-text'><span className='main-text'>Topic : </span>
-                                                {data.topic}
-                                            </span>
+                                    <div onClick={(e) => {
+                                    setExpandedChatId(data.id);
+                                    }} className='w-full flex flex-row p-0.5 space-x-1'>
+                                        <div className='h-16 aspect-square relative rounded-full p-0.5'>
+                                            <img src={firebase.onlineStatus !== null ? firebase.onlineStatus[data.userId].profileUrl : Bg} className="h-full aspect-square rounded-full object-contain" />
+                                            {
+                                                firebase.onlineStatus !== null && firebase.onlineStatus[data.userId].status ?
+                                                    <div className='h-3 aspect-square rounded-full bg-green-500 brightness-125 absolute top-1 right-1' /> :
+                                                    ""
+                                            }
                                         </div>
-                                        {
-                                            isExpanded ? <div className='flex space-x-2 text-sm'>
-                                                <span className='para-text'><span className='main-text font-bold'>Description : </span>
-                                                    {data.desc}
-                                                </span>
-                                            </div> :
-                                                ""
-                                        }
+
+                                        <div className='w-full flex flex-col space-y-1 mt-0.5 overflow-hidden'>
+                                            <div className='flex flex-row items-center justify-between pr-2'>
+                                                <span className='text-sm main-text'>{data.username ? data.username : data.email}</span>
+                                                <span className='main-text text-[10px] para-text ml-2'>{time(data.createdAt)}</span>
+                                            </div>
+                                            <div className='flex flex-col space-y-0.5'>
+                                                <div className='flex space-x-2 text-sm'>
+                                                    <span className='para-text'><span className='main-text'>Topic : </span>
+                                                        {data.topic}
+                                                    </span>
+                                                </div>
+                                                {
+                                                    isExpanded ? <div className='flex space-x-2 text-sm'>
+                                                        <span className='para-text'><span className='main-text font-bold'>Description : </span>
+                                                            {data.desc}
+                                                        </span>
+                                                    </div> :
+                                                        <span className='text-[10px] para-text'>Show more...</span>
+                                                }
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div className='border-[0.5px] border-white h-12 w-full rounded-md p-2 flex items-center justify-center'>
+                                        <input type="text" className='bg-transparent h-full outline-none text-sm w-full' placeholder='Comment'/>
+                                        <button type='submit' className='h-full aspect-square text-xl'><FiSend className='text-white' /></button>
                                     </div>
                                 </div>
-                            </div>
                             )
                         })
                         :
-                        "Nothing to Show"
+                        <spna>Nothing to Show</spna>
                 }
 
             </div>

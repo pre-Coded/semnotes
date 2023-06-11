@@ -217,3 +217,17 @@ box-shadow: inset -2px -2px 4px #070707,
     border : solid #121212 2px;
     background : linear-gradient(to bottom right, #121212, #121212, #121212, #121212, #1e90ff);
 }
+
+.loading-bar{
+    animation: bg 150ms linear infinite;
+  }
+  
+  @keyframes bg {
+    0% {
+      background-position: 0% 50%;
+    }
+  
+    100% {
+      background-position: 100% 50%;
+    }
+  }

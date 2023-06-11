@@ -135,7 +135,7 @@ const NavBar = () => {
                             onClick={handleClick}
                             className={`transition-all z-10 flex items-center justify-center h-full aspect-square text-2xl cursor-pointer active`}
                         >
-                            <Link to="/">
+                            <Link to="/" className='h-full w-full flex items-center justify-center'>
                                 <AiFillHome />
                             </Link>
                         </li>
@@ -144,7 +144,7 @@ const NavBar = () => {
                             onClick={handleClick}
                             className={`transition-all flex items-center justify-center h-full aspect-square text-2xl cursor-pointer`}
                         >
-                            <Link to="/semselected">
+                            <Link to="/semselected" className='h-full flex w-full items-center justify-center'>
                                 <BsBookFill />
                             </Link>
                         </li>
@@ -152,7 +152,7 @@ const NavBar = () => {
                             onClick={handleClick}
                             className={`transition-all flex items-center justify-center h-full aspect-square text-2xl cursor-pointer`}
                         >
-                            <Link to="/chat">
+                            <Link to="/chat" className='h-full w-full flex items-center justify-center'>
                                 <LuMessageSquare />
                             </Link>
                         </li>
@@ -160,7 +160,7 @@ const NavBar = () => {
                             onClick={handleClick}
                             className={`transition-all flex items-center justify-center h-full aspect-square text-2xl cursor-pointer`}
                         >
-                            <Link to="/profile">
+                            <Link to="/profile" className='h-full w-full flex items-center justify-center'>
                                 <CgProfile />
                             </Link>
                         </li>
