@@ -151,8 +151,8 @@ body {
 }
 
 .active{
-    transform: translateY(-1.3rem) scale(1.2);
-    color: white;
+    transform: translateY(-1.2rem) scale(1.2);
+    color: black;
 }
 
 .animate-loading {
@@ -184,6 +184,13 @@ body {
     background: #121212;
     box-shadow: inset 4px 4px 8px #0a0a0a,
             inset -4px -4px 8px #1a1a1a;
+}
+
+.neumorphic-chats{
+    border-radius: 10px;
+background: #222220;
+box-shadow: inset 6px -6px 12px #090909,
+            inset -6px 6px 12px #10100f;
 }
 
 .active-navLarge{

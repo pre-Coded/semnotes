@@ -135,16 +135,16 @@ const Chat = () => {
     const [expandedChatId, setExpandedChatId] = useState(null);
 
     return (
-        <div className='main-text p-2 relative h-full w-full flex flex-col space-y-2 items-center overflow-hidden'>
+        <div className='main-text p-2 relative h-full w-full flex flex-col space-y-2 items-center overflow-hidden bg-black'>
             <div className='w-full border-b-2 border-b-[#121212] pb-2 flex items-center justify-center relative'>
                 <h1 className='text-2xl'>ExamRescue</h1>
             </div>
 
             <div className='flex flex-col w-full h-full space-y-4 overflow-x-hidden overflow-y-scroll hide-scrollbar scroll-smooth relative bg-main'>
 
-                <form onSubmit={postMessage} className='w-full lg:w-[40%] lg:h-[30%] lg:absolute lg:bottom-2 lg:right-2 bg-transparent rounded-md flex flex-col justify-end space-y-2 z-[100] text-sm fixed bottom-24 left-0 border-1 border-[#121212] px-2 bg-[#121212]'>
+                <form onSubmit={postMessage} className='w-full lg:w-[40%] lg:h-[30%] lg:absolute lg:bottom-2 lg:right-2 bg-transparent rounded-md flex flex-col justify-end space-y-2 z-[100] text-sm fixed bottom-24 bg-black left-0 border-1 border-[#121212] px-2 bg-black]'>
                     <div></div>
-                    <div className='flex justify-center items-center h-14 bg-transparent border-b-2 border-b-black'>
+                    <div className='flex justify-center items-center h-14 bg-black border-b-2 border-b-black'>
                         <input type="text" onChange={(e) => {
                             setTopic(e.target.value);
                             if(e.target.value !== "" && expandTextArea === false){
@@ -154,7 +154,7 @@ const Chat = () => {
                             }
                         }} name="" id="" value={topic} placeholder='Enter Topic' className='h-full w-full p-3 bg-transparent outline-none' required/>
 
-                        <button typeof='submit'  className='h-full aspect-square rounded-full neumorphic text-xl flex justify-center items-center cursor-pointer' type="submit" value="Post">
+                        <button typeof='submit'  className='h-full aspect-square rounded-full shadow-inner shadow-blue-800 bg-blue-400 text-xl flex justify-center items-center cursor-pointer' type="submit" value="Post">
                             {
                                 loading ? 
                                 <div className='h-7 aspect-square rounded-full animate-roll'></div> : 
@@ -168,7 +168,7 @@ const Chat = () => {
                         expandTextArea ? 
                         <textarea onChange={(e) => {
                         setDesc(e.target.value);
-                        }} value={desc} name="" id="" cols="30" rows="4" className='resize-none p-2 bg-transparent outline-none' placeholder='Enter description' required></textarea> : 
+                        }} value={desc} name="" id="" cols="30" rows="4" className='resize-none p-2 bg-black outline-none' placeholder='Enter description' required></textarea> : 
                         ""
                     }
                 </form>
@@ -182,7 +182,7 @@ const Chat = () => {
                             return (
                                 <div onClick={(e) => {
                                     setExpandedChatId(data.id);
-                                }} key={data.id} className='flex flex-row space-x-2 rounded-md shadow-md p-1 sticky top-0.5 cursor-pointer bg-chat'>
+                                }} key={data.id} className='flex flex-row space-x-2 rounded-md p-1 sticky top-0.5 cursor-pointer bg-[#222222] neumorphic-chats shadow-lg shadow-[#121212]'>
 
                                     <div className='h-16 aspect-square relative rounded-full p-0.5'>
                                         <img src={firebase.onlineStatus !== null ? firebase.onlineStatus[data.userId].profileUrl : Bg} className="h-full aspect-square rounded-full object-contain"/>
