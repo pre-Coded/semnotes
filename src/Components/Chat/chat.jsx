@@ -45,6 +45,7 @@ const Chat = () => {
         const unsubscribe = onSnapshot(
             query(chatCollectionRef, orderBy("createdAt", "desc")), // Add the orderBy clause here
             (snapshot) => {
+                console.log(snapshot);
                 const messages = snapshot.docs.map((doc) => doc.data());
                 console.log(messages);
                 firebase.setMessageList(messages);
@@ -138,7 +139,7 @@ const Chat = () => {
         <div className='main-text p-2 relative h-full w-full flex flex-col space-y-2 items-center overflow-hidden bg-[#121212]'>
 
             <div className='w-full h-16 pb-2 flex flex-col items-center justify-center relative'>
-                <span className='text-2xl'>ExamRescue</span>
+                <span className='text-2xl'>NITJ Tweets</span>
                 <div className='absolute w-full h-[1px] bottom-0 left-0 bg-gradient-to-r from-[#1e90ff] to-[#FF5722]' />
             </div>
 
@@ -184,9 +185,7 @@ const Chat = () => {
                             return (
                                 <div key={data.id} className='flex flex-col space-y-1 rounded-md sticky top-0.5 cursor-pointer bg-[#222222] neumorphic-chats shadow-lg shadow-[#121212]'>
 
-                                    <div onClick={(e) => {
-                                    setExpandedChatId(data.id);
-                                    }} className='w-full flex flex-row p-0.5 space-x-1'>
+                                    <div className='w-full flex flex-row p-0.5 space-x-1'>
                                         <div className='h-16 aspect-square relative rounded-full p-0.5'>
                                             <img src={firebase.onlineStatus !== null ? firebase.onlineStatus[data.userId].profileUrl : Bg} className="h-full aspect-square rounded-full object-contain" />
                                             {
@@ -208,12 +207,20 @@ const Chat = () => {
                                                     </span>
                                                 </div>
                                                 {
-                                                    isExpanded ? <div className='flex space-x-2 text-sm'>
+                                                    isExpanded && <div className='flex space-x-2 text-sm'>
                                                         <span className='para-text'><span className='main-text font-bold'>Description : </span>
                                                             {data.desc}
                                                         </span>
-                                                    </div> :
-                                                        <span className='text-[10px] para-text'>Show more...</span>
+                                                    </div> 
+                                                }
+
+                                                {
+                                                    !isExpanded ? <span onClick={(e) => {
+                                                        setExpandedChatId(data.id);
+                                                        }}  className='text-[10px] text-gray-400'>Show more...</span> : 
+                                                        <span onClick={(e) => {
+                                                            setExpandedChatId(null);
+                                                        }}  className='text-[10px] para-text'>Show less</span>
                                                 }
                                             </div>
                                         </div>
