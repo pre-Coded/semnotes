@@ -217,7 +217,7 @@ export const FireBaseProvider = (props) => {
                 sem: sem,
             })
 
-            await updateData(`user/${userId}`, {
+            await updateData(`user/${user.uid}`, {
                 profileUrl : BlankPhoto,
             })
 

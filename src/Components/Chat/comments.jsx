@@ -14,7 +14,7 @@ import {
 import { useState } from 'react'
 
 const Comments = ({postId}) => {
-    
+
     const [commentList, setCommentList] = useState("")
 
     const [currentDate, setCurrentDate] = useState(new Date());
