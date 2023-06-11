@@ -77,7 +77,7 @@ const Chat = () => {
     }, []);
 
     const [loading, setLoading] = useState(false);
-    const [commentLoading, setCommentLoading] = useState(false);
+    const [commentLoading, setCommentLoading] = useState({});
     const [expandTextArea, setTextArea] = useState(false);
 
     const postMessage = async (e) => {
@@ -137,21 +137,28 @@ const Chat = () => {
 
     const [expandedChatId, setExpandedChatId] = useState(null);
     const [comments, setShowComments] = useState(false);
-
-    const [commentText, setCommentText] = useState("");
+    const [postClicked, setPostClick] = useState(null);
 
     const handleUploadComment = async (e) => {
         e.preventDefault();
 
-        setCommentLoading(prev => !prev);
-        if (commentText === "") return;
+        const buttonId = e.currentTarget.id;
+        const inputField = document.getElementById(`input-${buttonId}`);
 
+        if (inputField && inputField.value === "") return;
+
+        setCommentLoading((prevState) => ({
+            ...prevState,
+            [buttonId]: true,
+        }));
+
+        setPostClick(e.currentTarget.id);
         try {
             await addDoc(collection(firestore, `Information-Tech/Post/${e.currentTarget.id}`), {
                 userId: firebase.user.uid,
                 username: firebase.userDetails.username,
                 id: Date.now(),
-                text: commentText,
+                text: inputField.value,
                 createdAt: serverTimestamp(),
             })
 
@@ -161,7 +168,11 @@ const Chat = () => {
             console.error(error);
         }
 
-        setCommentLoading(prev => !prev);
+        setPostClick(null);
+        setCommentLoading((prevState) => ({
+            ...prevState,
+            [buttonId]: false,
+        }));
     };
 
 
@@ -275,24 +286,22 @@ const Chat = () => {
                                     }
 
                                     <div className='border-[0.5px] border-white h-12 w-full rounded-md p-2 flex items-center justify-center'>
-                                        <input onChange={(e) => {
-                                            setCommentText(e.target.value);
-                                        }} type="text" className='bg-transparent h-full outline-none text-sm w-full' placeholder='Comment' value={commentText} />
+                                        <input id={`input-${data.id}`} type="text" className='bg-transparent h-full outline-none text-sm w-full' placeholder='Comment' />
 
                                         <button onClick={handleUploadComment} id={data.id} type='submit' className='h-full aspect-square text-xl'> 
 
-                                            {commentLoading ?
+                                            {commentLoading[data.id] === true && postClicked === data.id ?
                                             <div className='h-4 aspect-square rounded-full animate-roll'></div> :
+                                            <FiSend className='text-white' />
+                                            }  
 
-                                            <FiSend className='text-white' />}
-                                            
                                         </button>
                                     </div>
                                 </div>
                             )
                         })
                         :
-                        <spna>Nothing to Show</spna>
+                        <span>Nothing to Show</span>
                 }
 
             </div>
