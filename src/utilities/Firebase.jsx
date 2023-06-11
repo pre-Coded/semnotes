@@ -130,6 +130,7 @@ export const FireBaseProvider = (props) => {
     const [user, setUser] = useState(null);
 
     const authStateChange = () => {
+        setLoading(prev => !prev);
         onAuthStateChanged(auth, user => {
             if (user) {
                 console.log("logged in");
@@ -139,6 +140,7 @@ export const FireBaseProvider = (props) => {
                 setUser(null);
             }
         });
+        setLoading(prev => !prev);
     };
 
     useEffect(() => {

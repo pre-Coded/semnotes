@@ -120,7 +120,7 @@ const SignUp = () => {
           <div className='para-text text-sm py-2'>Already a user?<span onClick={() => {
             navigate('/')
           }} className='link'>{"  "}Log In</span></div>
-          <input className='tracking-wider py-4 px-24 bg-btn-primary rounded-md shadow-md text-xl button-color main-text' type="submit" value="Register" />
+          <input className='tracking-wider py-4 px-24 bg-btn-primary cursor-pointer rounded-md shadow-md text-xl button-color main-text' type="submit" value="Register" />
         </form>
       </div>
 
