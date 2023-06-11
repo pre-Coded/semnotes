@@ -155,7 +155,7 @@ export const FireBaseProvider = (props) => {
                     if (data.userDetails) {
                         setUserDetails(data.userDetails);
                     } else {
-                        setUserDetails({ ...userDetails, profileUrl: BlankPhoto, username: "" })
+                        setUserDetails({ ...userDetails, profileUrl: "", username: "" })
                     }
 
                 };
@@ -190,7 +190,6 @@ export const FireBaseProvider = (props) => {
 
 
                 await updateData(`user/${user.uid}/`, {
-                    profileUrl : userDetails.profileUrl,
                     status: true,
                 })
 
@@ -218,6 +217,10 @@ export const FireBaseProvider = (props) => {
                 sem: sem,
             })
 
+            await updateData(`user/${userId}`, {
+                profileUrl : BlankPhoto,
+            })
+
             setUserDetails({ ...userDetails, profileUrl: BlankPhoto })
 
             setUser(user);
@@ -241,17 +244,18 @@ export const FireBaseProvider = (props) => {
 
     const handleSignOut = async () => {
         setLoading(prev => !prev);
+
         await signOut(auth).then(() => {
             setUser(null);
             setAcademicDetails({
                 branch: "",
                 sem: "",
             })
+
             setUserDetails({
-                profileUrl: BlankPhoto,
+                profileUrl: "",
                 username: "",
             })
-
 
             setsyllabusURL(null);
             navigate('/')
@@ -284,6 +288,10 @@ export const FireBaseProvider = (props) => {
 
             const result = await updateData(`ExamRescue/${userId}/userDetails`, {
                 profileUrl: url,
+            })
+
+            await updateData(`user/${userId}`, {
+                profileUrl : url,
             })
 
             return result;
