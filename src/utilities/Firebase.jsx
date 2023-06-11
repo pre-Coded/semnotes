@@ -190,6 +190,7 @@ export const FireBaseProvider = (props) => {
 
 
                 await updateData(`user/${user.uid}/`, {
+                    profileUrl : userDetails.profileUrl,
                     status: true,
                 })
 

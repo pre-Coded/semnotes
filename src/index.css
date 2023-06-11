@@ -193,3 +193,20 @@ body {
     border-bottom-left-radius: 15px;
     transform: translateX(5px);
 }
+
+.animate-roll{
+    border-top: white 2px solid;
+    border-bottom: white 2px solid;
+    animation: roll 1s linear infinite;
+}
+
+@keyframes roll {
+    to  {
+        transform: rotate(360deg);
+    }
+}
+
+.bg-chat{
+    border : solid #121212 2px;
+    background : linear-gradient(to bottom right, #121212, #121212, #121212, #121212, #1e90ff);
+}

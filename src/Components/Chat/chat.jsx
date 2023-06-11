@@ -19,9 +19,13 @@ import {
     onValue
 } from "firebase/database";
 
+import {FiSend} from 'react-icons/fi'
+
 
 import { useFireBase, firestore, database } from '../../utilities/Firebase'
 import { useState } from 'react';
+import Bg from '../../assets/blankProfile.png'
+import TopBar from '../Home/TopBar';
 
 const Chat = () => {
     const firebase = useFireBase();
@@ -70,10 +74,16 @@ const Chat = () => {
 
     }, []);
 
+    const [loading, setLoading] = useState(false);
+    const [expandTextArea, setTextArea] = useState(false);
 
     const postMessage = async (e) => {
         e.preventDefault();
 
+        setTopic("");
+        setDesc("");
+        setTextArea(prev => !prev);
+        setLoading(prev => !prev);
         try {
             await addDoc(collection(firestore, 'Chats'), {
                 id: Date.now(),
@@ -83,14 +93,21 @@ const Chat = () => {
                 topic: topic,
                 desc: desc,
                 createdAt: serverTimestamp(),
-            });
+            }).then((res)=>{
+                console.log(res);
+            }).catch((err)=>{
+                console.log(err);
+            })
+            setLoading(prev => !prev);
 
         } catch (error) {
+            setLoading(prev => !prev);
             console.error(error);
         }
     };
 
     const time = (date) => {
+        if(date === null) return `seconds ago`;
 
         const createdAt = date ;
 
@@ -98,9 +115,11 @@ const Chat = () => {
 
         const timeDifference = currentDate - createdAtDate;
 
+
         const minutesDifference = Math.floor(timeDifference / (1000 * 60));
         const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
         const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+        if(daysDifference === -1) return `seconds ago`
 
         if(daysDifference === 0){
             if(hoursDifference === 0){
@@ -117,21 +136,41 @@ const Chat = () => {
 
     return (
         <div className='main-text p-2 relative h-full w-full flex flex-col space-y-2 items-center overflow-hidden'>
-            <div className='w-full border-b-2 flex items-center justify-center p-2'>
-                <h1 className='text-2xl'>Recents</h1>
+            <div className='w-full border-b-2 border-b-[#121212] pb-2 flex items-center justify-center relative'>
+                <h1 className='text-2xl'>ExamRescue</h1>
             </div>
 
-            <div className='flex flex-col w-full h-full space-y-4 overflow-x-hidden overflow-y-scroll hide-scrollbar scroll-smooth'>
+            <div className='flex flex-col w-full h-full space-y-4 overflow-x-hidden overflow-y-scroll hide-scrollbar scroll-smooth relative bg-main'>
 
-                <form onSubmit={postMessage} className='w-full lg:w-[40%] lg:h-[30%] lg:absolute lg:bottom-2 lg:right-2 bg-transparent rounded-md flex flex-col space-y-2 z-[100] text-sm'>
+                <form onSubmit={postMessage} className='w-full lg:w-[40%] lg:h-[30%] lg:absolute lg:bottom-2 lg:right-2 bg-transparent rounded-md flex flex-col justify-end space-y-2 z-[100] text-sm fixed bottom-24 left-0 border-1 border-[#121212] px-2 bg-main'>
                     <div></div>
-                    <input type="text" onChange={(e) => {
-                        setTopic(e.target.value);
-                    }} name="" id="" value={topic} placeholder='Enter Topic' className='h-12 p-3 w-full bg-main outline-none' />
-                    <textarea onChange={(e) => {
+                    <div className='flex justify-center items-center h-14 bg-transparent'>
+                        <input type="text" onChange={(e) => {
+                            setTopic(e.target.value);
+                            if(e.target.value !== "" && expandTextArea === false){
+                                setTextArea(prev => !prev);
+                            }else if(e.target.value === "" && expandTextArea === true){
+                                setTextArea(prev => !prev);
+                            }
+                        }} name="" id="" value={topic} placeholder='Enter Topic' className='h-full w-full p-3 bg-transparent outline-none' required/>
+
+                        <button typeof='submit'  className='h-full aspect-square rounded-full bg-btn-primary text-xl flex justify-center items-center cursor-pointer' type="submit" value="Post">
+                            {
+                                loading ? 
+                                <div className='h-7 aspect-square rounded-full animate-roll'></div> : 
+                                <FiSend className='text-white'/>
+                            }
+
+                        </button>
+                    </div>
+
+                    {
+                        expandTextArea ? 
+                        <textarea onChange={(e) => {
                         setDesc(e.target.value);
-                    }} value={desc} name="" id="" cols="30" rows="4" className='resize-none bg-main px-3 py-2 outline-none' placeholder='Enter description'></textarea>
-                    <input onClick={console.log("clicked")} className='py-3 w-full bg-btn-primary rounded-md text-sm flex justify-center items-center cursor-pointer' type="submit" value="Post" />
+                        }} value={desc} name="" id="" cols="30" rows="4" className='resize-none p-2 bg-transparent outline-none' placeholder='Enter description' required></textarea> : 
+                        ""
+                    }
                 </form>
 
                 {
@@ -143,28 +182,36 @@ const Chat = () => {
                             return (
                                 <div onClick={(e) => {
                                     setExpandedChatId(data.id);
-                                }} key={data.id} className='flex flex-col space-y-2 bg-main rounded-md shadow-md p-2 sticky top-0.5 cursor-pointer'>
-                                    <div className='flex items-center justify-start space-x-2'>
+                                }} key={data.id} className='flex flex-row space-x-2 rounded-md shadow-md p-1 sticky top-0.5 cursor-pointer bg-chat'>
+
+                                    <div className='h-16 aspect-square relative rounded-full p-0.5'>
+                                        <img src={firebase.onlineStatus !== null ? firebase.onlineStatus[data.userId].profileUrl : Bg} className="h-full aspect-square rounded-full object-contain"/>
                                         {
                                             firebase.onlineStatus !== null && firebase.onlineStatus[data.userId].status ? 
-                                                <span className='absolute top-0 left-0 h-full w-1 bg-green-400 '></span> :
-                                                <span className='absolute top-0 left-0 h-full w-1 bg-red-500'></span>
+                                            <div className='h-3 aspect-square rounded-full bg-green-500 brightness-125 absolute top-1 right-1'/> : 
+                                            ""
                                         }
-                                        <span className='text-[1rem] main-text'>{data.username ? data.username : data.email}</span>
-                                        <span className='text-[1rem] main-text text-xs para-text'>{time(data.createdAt)}</span>
                                     </div>
-                                    <div className='flex flex-col space-y-2'>
-                                        <div className='flex space-x-2 text-sm'>
-                                        <span className='para-text'><span className='main-text'>Topic : </span>
-                                                {data.topic}
-                                            </span>
+
+                                    <div className='w-full flex flex-col space-y-1 mt-0.5 overflow-hidden'>
+                                        <div className='flex flex-row items-center justify-between pr-2'>
+                                            <span className='text-sm main-text'>{data.username ? data.username : data.email}</span>
+                                            <span className='main-text text-[10px] para-text ml-2'>{time(data.createdAt)}</span>
                                         </div>
-                                        <div className='flex space-x-2 text-sm'>
-                                            <span className='para-text'><span className='main-text'>Description : </span>
-                                                {
-                                                    isExpanded ? data.desc : `${data.desc.slice(0, 20)}...`
-                                                }
-                                            </span>
+                                        <div className='flex flex-col space-y-0.5'>
+                                            <div className='flex space-x-2 text-sm'>
+                                            <span className='para-text'><span className='main-text'>Topic : </span>
+                                                    {data.topic}
+                                                </span>
+                                            </div>
+                                            {
+                                                isExpanded ? <div className='flex space-x-2 text-sm'>
+                                                <span className='para-text'><span className='main-text font-bold'>Description : </span>
+                                                    {data.desc}
+                                                </span>
+                                                </div> : 
+                                                ""
+                                            }
                                         </div>
                                     </div>
                                 </div>
@@ -175,7 +222,7 @@ const Chat = () => {
 
             </div>
 
-            <div className='h-24'></div>
+            <div className='h-32'></div>
         </div>
     )
 }
